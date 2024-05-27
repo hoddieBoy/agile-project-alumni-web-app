@@ -28,11 +28,11 @@ services:
 
   api:
     build:
-      context: .
+      context: ./app/api
       target: development
     restart: always
     ports:
-      - "8081:8080"
+      - "${API_PORT}:8000"
     depends_on:
       - postgres
     env_file: .env
