@@ -39,10 +39,10 @@ services:
     environment:
       DB_HOST: postgres
     volumes:
-      - ./src:/app/src
-      - ./pom.xml:/app/pom.xml
-      - ./target:/app/target
-      - ./.m2:/root/.m2
+      - ./app/api/src:/app/src
+      - ./app/api/pom.xml:/app/pom.xml
+      - ./app/api/target:/app/target
+      - ./app/api/.m2:/root/.m2
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/actuator/health"]
       interval: 10s
