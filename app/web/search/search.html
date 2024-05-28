@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Alumni</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+		  background-color: #f8f9fa;
+		  display: flex;
+		  flex-direction: column;
+		  min-height: 100vh;
+		  margin: 0;
+		}
+        .header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background-color: #002855;
+			padding: 10px;
+		}
+
+        .header .navbar-brand,
+        .header .nav-link,
+        .header .btn {
+            color: #ffffff; 
+        }
+        .header .btn {
+            background-color: #ffffff;
+            color: #002855;
+        }
+        .header .navbar-brand img {
+            max-height: 120px; 
+			margin-top: -15px;
+			margin-bottom: -15px;
+        }
+        .header .navbar-brand {
+            margin-right: 20px;
+        }
+        .search-section {
+            border: 1px solid #002855;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-row {
+            justify-content: center;
+        }
+        .form-group {
+            margin-right: 20px;
+        }
+        .profile-card {
+            border: 1px solid #002855;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #f8f9fa;
+            color: #002855;
+        }
+        .profile-info {
+            display: flex;
+            align-items: center;
+        }
+        .profile-info img {
+            border-radius: 50%;
+            margin-right: 15px;
+			height: 100px;
+        }
+        .profile-actions {
+            text-align: right;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #002855;
+        }
+        .footer a {
+            color: #002855;
+        }
+        .btn-custom {
+            width: 150px;
+            margin-right: 10px;
+            color: #002855;
+        }
+        .btn-custom-reset {
+            border: 1px solid #002855;
+            color: #002855;
+        }
+        .btn-dark {
+            background-color: #002855;
+            border-color: #002855;
+            color: white;
+        }
+        .btn-outline-primary {
+            border-color: #002855;
+            color: #002855;
+        }
+        .title {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #002855;
+        }
+        .under-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #002855;
+        }
+        .navbar-search {
+            width: 300px;
+            margin-left: 15px;
+            color: #002855;
+        }
+        .form-control {
+            color: #002855;
+        }
+        label {
+            color: #002855;
+        }
+		.navbar {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="d-flex align-items-center">
+            <a href="#" class="navbar-brand">
+                <img src="https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png" alt="IMT Atlantique Logo">
+            </a>
+            <input type="text" class="form-control navbar-search" placeholder="Search">
+        </div>
+        <div class="d-flex align-items-center">
+            <a href="#" class="nav-link">Search</a>
+            <a href="#" class="nav-link">Import/Export</a>
+            <a href="#" class="nav-link">Gestion Utilisateurs</a>
+            <button class="btn">Log out</button>
+        </div>
+    </div>
+
+    <h2 class="title">Find Alumni</h2>
+    <p class="under-title">Search for specific alumni based on various criteria</p>
+
+    <div class="search-section">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter name">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="graduationYear">Graduation Year</label>
+                    <select id="graduationYear" class="form-control">
+                        <option selected>Select Year</option>
+                        <option>2023</option>
+                        <option>2022</option>
+                        <option>2021</option>
+                        <option>2020</option>
+                        <option>2019</option>
+                        <option>2018</option>
+                        <option>2017</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="currentCompany">Current Company</label>
+                    <input type="text" class="form-control" id="currentCompany" placeholder="Enter company name">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" placeholder="Enter city">
+                </div>
+            </div>
+            <div class="form-row justify-content-center">
+                <button type="reset" class="btn btn-light btn-custom btn-custom-reset">Reset</button>
+                <button type="submit" class="btn btn-dark btn-custom">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-info">
+            <img src="https://media.licdn.com/dms/image/D4E03AQEKkJQd9PNBUg/profile-displayphoto-shrink_800_800/0/1699457773614?e=1722470400&v=beta&t=mCtQvKDTu0Qg0KFmnBtI45p_pPRrJZak-Ux0KpmpD_M" alt="Profile Picture">
+            <div>
+                <h5>KITSOUKOU Manne Emile</h5>
+                <p>Diplômé en 2026, La Poste, Nantes</p>
+            </div>
+        </div>
+        <div class="profile-actions">
+            <a href="#" class="btn btn-outline-primary">View Profile</a>
+        </div>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-info">
+            <img src="https://media.licdn.com/dms/image/D4E03AQFFfLDjNwog6g/profile-displayphoto-shrink_800_800/0/1683799491821?e=1722470400&v=beta&t=yhy5FIvnsSTocK-cfs87a7T8b7R7LJGwMPCAdi9W4NU" alt="Profile Picture">
+            <div>
+                <h5>ZEBIAN Jana</h5>
+                <p>Diplômé en 2026, DGFIP, Nantes</p>
+            </div>
+        </div>
+        <div class="profile-actions">
+            <a href="#" class="btn btn-outline-primary">View Profile</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>
+            <a href="#">Contact Us</a> |
+            <a href="#">Privacy Policy</a>
+        </p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
