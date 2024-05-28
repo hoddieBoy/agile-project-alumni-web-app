@@ -1,4 +1,4 @@
-package fr.imt.alumni.fil.bo;
+package fr.imt.alumni.fil.domain.bo;
 
 import jakarta.persistence.*;
 

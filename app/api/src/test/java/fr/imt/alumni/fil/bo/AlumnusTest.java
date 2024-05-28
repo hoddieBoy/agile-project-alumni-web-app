@@ -1,6 +1,7 @@
 package fr.imt.alumni.fil.bo;
 
-import org.junit.jupiter.api.BeforeEach;
+import fr.imt.alumni.fil.domain.bo.Alumnus;
+import fr.imt.alumni.fil.domain.bo.Sex;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -14,7 +15,7 @@ class AlumnusTest {
     @Test
     void AlumusTest(){
         id  = UUID.randomUUID();
-        alumnus = new Alumnus(id, "jay", "z",Sex.WOMAN);
+        alumnus = new Alumnus(id, "jay", "z", Sex.WOMAN);
 
         assertEquals(alumnus.getId(), id);
         assertEquals(alumnus.getFirstName(), "jay");
