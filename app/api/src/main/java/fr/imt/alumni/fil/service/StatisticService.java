@@ -1,9 +1,6 @@
 package fr.imt.alumni.fil.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-import fr.imt.alumni.fil.persistance.AlumniDao;
 
 @Service
 public class StatisticService {
