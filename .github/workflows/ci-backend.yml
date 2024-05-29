@@ -9,16 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check-paths:
-    uses: ./.github/workflows/path-checker.yml
-    with:
-      base_ref: ${{ github.event.pull_request.base.sha }}
-      head_ref: ${{ github.event.pull_request.head.sha }}
-      paths: './app/api/'
-
   build-and-analyze:
-    needs: [check-paths]
-    if: ${{ needs.check-paths.outputs.changes_detected == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
