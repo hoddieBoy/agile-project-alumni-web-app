@@ -10,17 +10,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AlumnusTest {
 
-    private Alumnus alumnus ;
-    private UUID id;
     @Test
-    void AlumusTest(){
-        id  = UUID.randomUUID();
-        alumnus = new Alumnus(id, "jay", "z", Sex.WOMAN);
+    void AlumnusConstructorTest(){
+        UUID id = UUID.randomUUID();
+        Alumnus alumnus = new Alumnus(id, "jay", "z", Sex.WOMAN, "jay.z@gmail.com",
+                "DGFiP", "DGFiP", "https://www.jayz.com",
+                "France", "Paris", true);
 
         assertEquals(alumnus.getId(), id);
-        assertEquals(alumnus.getFirstName(), "jay");
-        assertEquals(alumnus.getLastName(), "z");
-        assertEquals(alumnus.getSex(),Sex.WOMAN);
+        assertEquals("jay", alumnus.getFirstName());
+        assertEquals("z", alumnus.getLastName());
+        assertEquals(Sex.WOMAN, alumnus.getSex());
+        assertEquals("jay.z@gmail.com", alumnus.getMail());
+        assertEquals("DGFiP", alumnus.getCoopCompany());
+        assertEquals("DGFiP", alumnus.getCurrentCompany());
+        assertEquals("https://www.jayz.com", alumnus.getWebsite());
+        assertEquals("France", alumnus.getCountry());
+        assertEquals("Paris", alumnus.getCity());
+        assertTrue(alumnus.getIsStayed());
+
     }
 
 }
