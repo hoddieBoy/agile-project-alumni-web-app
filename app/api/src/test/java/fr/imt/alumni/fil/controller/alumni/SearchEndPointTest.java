@@ -3,10 +3,10 @@ package fr.imt.alumni.fil.controller.alumni;
 import fr.imt.alumni.fil.domain.bo.Alumnus;
 import fr.imt.alumni.fil.domain.bo.Sex;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class SearchEndPointTest {
     private AlumniDAO alumniDAO;
 
     private String getBaseUrl() {
-        return "http://localhost:" + port + "/api/alumni/search";
+        return "http://localhost:" + port + "/api/v1/alumni-fil/search";
     }
 
     @BeforeEach
@@ -52,7 +52,9 @@ public class SearchEndPointTest {
     @DisplayName("When: The request is a GET request")
     @Nested
     class GetRequest {
+
         @DisplayName("Then: The response should be a JSON")
+        @Test
         void testJsonResponse() {
             webTestClient.get()
                     .uri(getBaseUrl())
@@ -75,7 +77,10 @@ public class SearchEndPointTest {
                         .exchange()
                         .expectStatus().isOk()
                         .expectBody()
-                        .jsonPath("$.length()").isEqualTo(2);
+                        .jsonPath("$.length()").isEqualTo(2)
+                        .jsonPath("$.search_name").isEqualTo(searchName)
+                        .jsonPath("$.results[0].name").isEqualTo("John Doe")
+                        .jsonPath("$.results[1].name").isEqualTo("Johnathan Doe");
             }
         }
 
