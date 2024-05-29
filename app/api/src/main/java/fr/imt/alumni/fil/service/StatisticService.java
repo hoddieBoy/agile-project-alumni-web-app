@@ -1,13 +1,14 @@
 package fr.imt.alumni.fil.service;
 
+import fr.imt.alumni.fil.persistance.AlumniDAO;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StatisticService {
     
-    private final AlumniDao repository;
+    private final AlumniDAO repository;
 
-    public StatisticService(AlumniDao repository) {
+    public StatisticService(AlumniDAO repository) {
         this.repository = repository;
     }
 
