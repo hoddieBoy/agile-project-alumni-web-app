@@ -6,7 +6,7 @@ CREATE TABLE alumni
     mail    VARCHAR(255),
     sex SMALLINT,
     coop_company    VARCHAR(255),
-    curent_company  VARCHAR(255),
+    current_company  VARCHAR(255),
     website VARCHAR(255),
     country VARCHAR(255),
     city    VARCHAR(255),

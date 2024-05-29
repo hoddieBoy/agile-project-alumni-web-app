@@ -8,9 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/alumni-fil")
@@ -24,8 +22,8 @@ public class AlumniController {
 
     @GetMapping(path = "/search",produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
-            summary = "Search alumni by name",
-            description = "Search alumni by name",
+            summary = "Search alumni",
+            description = "Search alumni by name, city, country, or current company",
             tags = {"alumni"},
             responses = {
                 @ApiResponse(
@@ -34,18 +32,44 @@ public class AlumniController {
                 )
         }
     )
-    public ResponseEntity<Map<String, Object>> getAlumni(@RequestParam String name) {
+    public ResponseEntity<Map<String, Object>> searchAlumni(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String currentCompany) {
         List<Map<String, String>> results = new ArrayList<>();
-        for (Alumnus alumnus : alumniService.getAlumni(name)) {
-            results.add(Map.of(
-                    "id", alumnus.getId().toString(),
-                    "name", alumnus.getFullName()
-            ));
+        for (Alumnus alumnus : alumniService.searchAlumni(name, city, country, currentCompany)) {
+            results.add(
+                    Map.of("id", alumnus.getId().toString(),
+                            "fullName", alumnus.getFullName(),
+                            "currentCompany", alumnus.getCurrentCompany(),
+                            "city", alumnus.getCity(),
+                            "country", alumnus.getCountry()
+                    )
+            );
         }
-        return ResponseEntity.ok(
-                Map.of("search_name", name,
-                        "results", results)
-        );
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (name != null && !name.isBlank()) {
+            response.put("search_name", name);
+        }
+
+        if (city != null && !city.isBlank()) {
+            response.put("search_city", city);
+        }
+
+        if (country != null && !country.isBlank()) {
+            response.put("search_country", country);
+        }
+
+        if (currentCompany != null && !currentCompany.isBlank()) {
+            response.put("search_current_company", currentCompany);
+        }
+
+        response.put("results", results);
+
+        return ResponseEntity.ok(response);
     }
 
 }
