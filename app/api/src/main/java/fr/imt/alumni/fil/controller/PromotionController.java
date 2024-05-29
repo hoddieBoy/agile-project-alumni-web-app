@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.imt.alumni.fil.service.StatisticService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/alumni-fil/statistic")
 public class PromotionController {
 
     @Autowired
