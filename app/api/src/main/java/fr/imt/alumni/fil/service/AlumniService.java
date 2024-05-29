@@ -16,10 +16,12 @@ public class AlumniService {
         this.alumniDAO = alumniDAO;
     }
 
-    public List<Alumnus> getAlumni(String name) {
+
+    public List<Alumnus> searchAlumni(String name, String city, String country, String currentCompany) {
         name = Optional.ofNullable(name).map(String::trim).orElse("");
-        return(!name.isBlank())
-                ? alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name)
-                : List.of();
+        city = Optional.ofNullable(city).map(String::trim).orElse("");
+        country = Optional.ofNullable(country).map(String::trim).orElse("");
+        currentCompany = Optional.ofNullable(currentCompany).map(String::trim).orElse("");
+        return alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCase(name, name, city, country, currentCompany);
     }
 }

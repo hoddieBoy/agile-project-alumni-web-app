@@ -1,7 +1,5 @@
-package fr.imt.alumni.fil.bo;
+package fr.imt.alumni.fil.domain.bo;
 
-import fr.imt.alumni.fil.domain.bo.Alumnus;
-import fr.imt.alumni.fil.domain.bo.Sex;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
