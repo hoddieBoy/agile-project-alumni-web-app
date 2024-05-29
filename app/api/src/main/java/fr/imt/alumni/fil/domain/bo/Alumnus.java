@@ -58,4 +58,8 @@ public class Alumnus {
     public void setSex(Sex sex) {
         this.sex = sex;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }
