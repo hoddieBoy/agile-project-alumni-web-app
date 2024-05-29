@@ -2,6 +2,8 @@ package fr.imt.alumni.fil.controller;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
 import fr.imt.alumni.fil.service.AlumniService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,17 @@ public class AlumniController {
     }
 
     @GetMapping(path = "/search",produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Search alumni by name",
+            description = "Search alumni by name",
+            tags = {"alumni"},
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Found alumni"
+                )
+        }
+    )
     public ResponseEntity<Map<String, Object>> getAlumni(@RequestParam String name) {
         List<Map<String, String>> results = new ArrayList<>();
         for (Alumnus alumnus : alumniService.getAlumni(name)) {
