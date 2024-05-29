@@ -17,9 +17,9 @@ public class AlumniService {
     }
 
     public List<Alumnus> getAlumni(String name) {
-        name = Optional.ofNullable(name).map(String::trim).orElse(null);
-        return(name != null)
+        name = Optional.ofNullable(name).map(String::trim).orElse("");
+        return(!name.isBlank())
                 ? alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name)
-                : alumniDAO.findAll();
+                : List.of();
     }
 }

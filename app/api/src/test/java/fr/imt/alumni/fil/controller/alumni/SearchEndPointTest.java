@@ -38,6 +38,7 @@ public class SearchEndPointTest {
 
     @BeforeEach
     void setUp() {
+        alumniDAO.deleteAll();
         Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN);
         Alumnus johnathan = new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN);
         Alumnus jane = new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN);
@@ -57,7 +58,7 @@ public class SearchEndPointTest {
         @Test
         void testJsonResponse() {
             webTestClient.get()
-                    .uri(getBaseUrl())
+                    .uri(getBaseUrl() + "?name=JacK")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType("application/json");
@@ -77,7 +78,7 @@ public class SearchEndPointTest {
                         .exchange()
                         .expectStatus().isOk()
                         .expectBody()
-                        .jsonPath("$.length()").isEqualTo(2)
+                        .jsonPath("$.results.length()").isEqualTo(2)
                         .jsonPath("$.search_name").isEqualTo(searchName)
                         .jsonPath("$.results[0].name").isEqualTo("John Doe")
                         .jsonPath("$.results[1].name").isEqualTo("Johnathan Doe");
@@ -97,7 +98,7 @@ public class SearchEndPointTest {
                         .exchange()
                         .expectStatus().isOk()
                         .expectBody()
-                        .jsonPath("$.length()").isEqualTo(3);
+                        .jsonPath("$.results.length()").isEqualTo(3);
             }
         }
 
@@ -113,7 +114,7 @@ public class SearchEndPointTest {
                         .exchange()
                         .expectStatus().isOk()
                         .expectBody()
-                        .jsonPath("$.length()").isEqualTo(0);
+                        .jsonPath("$.results.length()").isEqualTo(0);
             }
         }
     }
