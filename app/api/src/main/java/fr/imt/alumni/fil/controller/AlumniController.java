@@ -11,7 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/alumni-fil")
 public class AlumniController {
-    private AlumniService alumniService;
+
+    private final AlumniService alumniService;
+
+    public AlumniController(AlumniService alumniService) {
+        this.alumniService = alumniService;
+    }
 
     @GetMapping(path = "/search",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Alumnus>> getAlumni(@RequestParam String name) {

@@ -2,19 +2,18 @@ package fr.imt.alumni.fil.service;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AlumniService {
 
-    private AlumniDAO alumniDAO;
+    private final AlumniDAO alumniDAO;
 
-    private Alumnus alumnus;
-
-    public AlumniService(AlumniDAO alumniDAO, Alumnus alumnus) {
+    public AlumniService(AlumniDAO alumniDAO) {
         this.alumniDAO = alumniDAO;
-        this.alumnus = alumnus;
     }
 
     public List<Alumnus> getAlumni(String name) {
