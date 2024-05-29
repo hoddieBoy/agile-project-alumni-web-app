@@ -9,5 +9,4 @@ import java.util.UUID;
 public interface AlumniDAO extends JpaRepository<Alumnus, UUID>{
 
     List<Alumnus> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName);
-
 }
