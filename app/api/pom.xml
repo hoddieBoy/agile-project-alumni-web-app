@@ -9,12 +9,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.imt</groupId>
-	<artifactId>alumni-fil-backend</artifactId>
+	<artifactId>alumni-fil-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>alumni-fil-backend</name>
+	<name>alumni-fil-api</name>
 	<description>An API for managing Alumni information for the FIL program of IMT ATLANTIQUE Nantes</description>
 	<properties>
 		<java.version>21</java.version>
+		<sonar.organization>jarhead-killgrave</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -119,7 +121,7 @@
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.8.7</version>
+						<version>0.8.12</version>
 						<executions>
 							<execution>
 								<id>prepare-agent</id>
