@@ -39,10 +39,14 @@ public class SearchEndPointTest {
     @BeforeEach
     void setUp() {
         alumniDAO.deleteAll();
-        Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN);
-        Alumnus johnathan = new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN);
-        Alumnus jane = new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN);
-        Alumnus jenny = new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN);
+        Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN," "," ",
+                " "," "," "," ",false);
+        Alumnus johnathan = new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN,
+                " "," "," "," "," "," ",false);
+        Alumnus jane = new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN
+                ," "," "," "," "," "," ",false);
+        Alumnus jenny = new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
+                " "," "," "," "," "," ",false);
 
         alumniDAO.save(john);
         alumniDAO.save(johnathan);
