@@ -39,12 +39,15 @@ public class SearchEndPointTest {
     @BeforeEach
     void setUp() {
         alumniDAO.deleteAll();
-        Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN," "," ",
-                " "," "," "," ",false);
+        Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN,"john.doe@gmail.com "
+                ," Grey Sloan Memorial", "RHMC "," https://john-doe.fr",
+                "France "," Lyon",false);
         Alumnus johnathan = new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN,
-                " "," "," "," "," "," ",false);
+                " johnathan.doe@yahoo.com","NMC", " BMC ",
+                " https://johnathan-doe.fr", "France "," Bordeaux",false);
         Alumnus jane = new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN
-                ," "," "," "," "," "," ",false);
+                ," jane.jossman@gmail.com"," Grey Sloan Memorial", "RHMC ",
+                " https://jane-jossman.fr", "France "," Lyon",false);
         Alumnus jenny = new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
                 " "," "," "," "," "," ",false);
 
@@ -84,8 +87,14 @@ public class SearchEndPointTest {
                         .expectBody()
                         .jsonPath("$.results.length()").isEqualTo(2)
                         .jsonPath("$.search_name").isEqualTo(searchName)
-                        .jsonPath("$.results[0].name").isEqualTo("John Doe")
-                        .jsonPath("$.results[1].name").isEqualTo("Johnathan Doe");
+                        .jsonPath("$.results[0].fullName").isEqualTo("John Doe")
+                        .jsonPath("$.results[1].fullName").isEqualTo("Johnathan Doe")
+                        .jsonPath("$.results[0].currentCompany").isEqualTo("RHMC")
+                        .jsonPath("$.results[1].currentCompany").isEqualTo("BMC")
+                        .jsonPath("$.results[0].city").isEqualTo("Lyon")
+                        .jsonPath("$.results[1].city").isEqualTo("Bordeaux")
+                        .jsonPath("$.results[0].country").isEqualTo("France")
+                        .jsonPath("$.results[1].country").isEqualTo("France");
             }
         }
 
