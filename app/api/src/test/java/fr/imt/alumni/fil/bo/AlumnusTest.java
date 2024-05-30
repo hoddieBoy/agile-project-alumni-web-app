@@ -1,12 +1,12 @@
 package fr.imt.alumni.fil.bo;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
-import fr.imt.alumni.fil.domain.bo.Sex;
+import fr.imt.alumni.fil.domain.enums.Sex;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AlumnusTest {
 
@@ -17,10 +17,10 @@ class AlumnusTest {
         id  = UUID.randomUUID();
         alumnus = new Alumnus(id, "jay", "z", Sex.WOMAN);
 
-        assertEquals(alumnus.getId(), id);
-        assertEquals(alumnus.getFirstName(), "jay");
-        assertEquals(alumnus.getLastName(), "z");
-        assertEquals(alumnus.getSex(),Sex.WOMAN);
+        assertEquals(id, alumnus.getId());
+        assertEquals("jay", alumnus.getFirstName());
+        assertEquals("z", alumnus.getLastName());
+        assertEquals(Sex.WOMAN, alumnus.getSex());
     }
 
 }

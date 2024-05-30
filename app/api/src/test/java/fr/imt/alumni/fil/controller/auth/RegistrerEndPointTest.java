@@ -66,7 +66,7 @@ public class RegistrerEndPointTest {
 
                 User user = userDAO.findAll().getFirst();
                 assert user.getUsername().equals("john");
-                assert user.getPasswordHash().startsWith("$2a$");
+                assert user.getPassword().startsWith("$2a$");
             }
         }
     }

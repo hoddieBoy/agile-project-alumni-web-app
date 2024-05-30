@@ -1,7 +1,7 @@
 package fr.imt.alumni.fil.controller.alumni;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
-import fr.imt.alumni.fil.domain.bo.Sex;
+import fr.imt.alumni.fil.domain.enums.Sex;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
