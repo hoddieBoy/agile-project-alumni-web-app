@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.imt</groupId>
-	<artifactId>alumni-fil-backend</artifactId>
+	<artifactId>alumni-fil-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>alumni-fil-backend</name>
+	<name>alumni-fil-api</name>
 	<description>An API for managing Alumni information for the FIL program of IMT ATLANTIQUE Nantes</description>
 	<properties>
 		<java.version>21</java.version>
