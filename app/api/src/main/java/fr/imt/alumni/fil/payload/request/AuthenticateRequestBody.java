@@ -1,6 +1,6 @@
 package fr.imt.alumni.fil.payload.request;
 
-public record LoginRequest(
+public record AuthenticateRequestBody(
         String username,
         String password
 ) {
