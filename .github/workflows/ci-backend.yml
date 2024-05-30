@@ -33,7 +33,10 @@ jobs:
           path: ~/.m2
           key: "${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}"
           restore-keys: ${{ runner.os }}-m2
-
+      
+      - name: Create private security key pem file
+        run: echo "${{ secrets.PRIVATE_SECRET_PEM }}" > src/main/resources/private-key.pem
+        
       - name: Build and Generate coverage report
         run: mvn clean verify -Pcoverage --batch-mode
 
