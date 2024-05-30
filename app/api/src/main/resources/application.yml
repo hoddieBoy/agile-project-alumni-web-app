@@ -40,12 +40,9 @@ springdoc:
 application:
   security:
     jwt:
-      secret-key: ${JWT_SECRET_KEY:eyJhbGciOiJIUzI1NiJ9.eyJVc2VyIjoiTWFubmUiLCJhcHBOYW1lIjoiYXBpLWFsdW1uaS1maWwifQ.mKCB6YnCuk6hKSPoG-WbxHD26ysgTcVnwEKE_RwlC4s}
+      secret-key:
+        public: classpath:public-key.pem
+        private: classpath:private-key.pem
       expiration: ${JWT_EXPIRATION:3600}
       refresh-token:
         expiration: ${JWT_REFRESH_EXPIRATION:86400}
-
-security:
-  user:
-    name: user
-    password: password
