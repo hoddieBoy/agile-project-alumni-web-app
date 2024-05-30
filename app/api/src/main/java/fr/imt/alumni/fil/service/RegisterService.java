@@ -3,18 +3,19 @@ package fr.imt.alumni.fil.service;
 import fr.imt.alumni.fil.domain.bo.RefreshToken;
 import fr.imt.alumni.fil.domain.bo.User;
 import fr.imt.alumni.fil.domain.enums.TokenType;
-import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
-import fr.imt.alumni.fil.persistance.UserDAO;
 import fr.imt.alumni.fil.payload.request.BodyValidator;
 import fr.imt.alumni.fil.payload.request.RegisterRequestBody;
+import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
+import fr.imt.alumni.fil.persistance.UserDAO;
+import jakarta.transaction.Transactional;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class RegisterService {
 
     private final UserDAO userDAO;
