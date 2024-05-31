@@ -42,6 +42,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(
+                        exceptionHandling -> exceptionHandling
+                                .authenticationEntryPoint((request, response, authException) -> response.sendError(401))
+                                .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(403))
+                )
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(
