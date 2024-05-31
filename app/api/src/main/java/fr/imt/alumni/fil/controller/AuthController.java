@@ -4,6 +4,7 @@ import fr.imt.alumni.fil.payload.request.AuthenticateRequestBody;
 import fr.imt.alumni.fil.payload.request.RefreshTokenRequest;
 import fr.imt.alumni.fil.payload.request.RegisterRequestBody;
 import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
+import fr.imt.alumni.fil.payload.response.MessageResponse;
 import fr.imt.alumni.fil.payload.response.RefreshTokenResponse;
 import fr.imt.alumni.fil.service.AuthenticateService;
 import fr.imt.alumni.fil.service.JWTService;
@@ -91,7 +92,7 @@ public class AuthController {
 
     @Operation(summary = "Logout user", description = "Logout the user and invalidate the refresh token")
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request) {
+    public ResponseEntity<MessageResponse> logout(HttpServletRequest request) {
         String refreshToken = refreshTokenService.getRefreshTokenFromCookie(request);
 
         if (refreshToken != null) {
@@ -105,6 +106,6 @@ public class AuthController {
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
-                .build();
+                .body(new MessageResponse("Logout successful"));
     }
 }
