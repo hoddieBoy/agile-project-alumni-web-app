@@ -39,6 +39,10 @@ public class RegisterService {
     public AuthenticationResponse execute(RegisterRequestBody requestBody) {
         bodyValidator.validate(requestBody);
 
+        userDAO.findByUsername(requestBody.username()).ifPresent(user -> {
+            throw new IllegalArgumentException("Username already exists");
+        });
+
         User user = new User(
                 UUID.randomUUID(),
                 requestBody.username(),
