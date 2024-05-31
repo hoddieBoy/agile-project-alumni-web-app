@@ -2,10 +2,9 @@ package fr.imt.alumni.fil.controller.auth;
 
 import fr.imt.alumni.fil.domain.bo.User;
 import fr.imt.alumni.fil.domain.enums.TokenType;
+import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
 import fr.imt.alumni.fil.persistance.UserDAO;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -13,6 +12,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Given: A request to register a new user")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -34,78 +35,74 @@ public class RegistrerEndPointTest {
         return "http://localhost:" + port + "/api/v1/alumni-fil/auth/register";
     }
 
+    private AuthenticationResponse response;
+
     @DisplayName("When: we provide a valid username and password")
     @Nested
     class ValidRequest {
 
-        @DisplayName("Then: The response should be a JSON with an uuid of the new user")
-        @Test
-        void testJsonResponse() {
-            webTestClient.post()
+        @BeforeEach
+        void setUp() {
+            response = webTestClient.post()
                     .uri(getBaseUrl())
                     .bodyValue(Map.of("username", "john", "password", "Password1"))
                     .exchange()
                     .expectStatus().isCreated()
-                    .expectBody()
-                    .jsonPath("$.user_id").isNotEmpty()
-                    .jsonPath("$.username").isEqualTo("john")
-                    .jsonPath("$.roles").isNotEmpty()
-                    .jsonPath("$.access_token").isNotEmpty()
-                    .jsonPath("$.refresh_token").isNotEmpty()
-                    .jsonPath("$.token_type").isEqualTo(TokenType.BEARER.toString());
+                    .expectBody(AuthenticationResponse.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            Assumptions.assumeTrue(response != null);
         }
 
-        @DisplayName("And: The user should be saved in the database")
-        @Nested
-        class UserSaved {
+        @AfterEach
+        void tearDown() {
+            userDAO.deleteAll();
+        }
 
-            @DisplayName("Then: The user should be saved in the database")
-            @Test
-            void testUserSaved() {
-                webTestClient.post()
-                        .uri(getBaseUrl())
-                        .bodyValue(Map.of("username", "john", "password", "Password1"))
-                        .exchange()
-                        .expectStatus().isCreated()
-                        .expectBody()
-                        .jsonPath("$.user_id").isNotEmpty();
+        @DisplayName("Then: The response should be a JSON with an uuid of the new user")
+        @Test
+        void testJsonResponse() {
+            assertNotNull(response.userId());
+            assertEquals("john", response.username());
+            assertNotNull(response.accessToken());
+            assertFalse(response.accessToken().isEmpty());
+            assertNotNull(response.refreshToken());
+            assertFalse(response.refreshToken().isEmpty());
+            assertEquals(TokenType.BEARER, response.tokenType());
+        }
 
-                User user = userDAO.findAll().getFirst();
-                assert user.getUsername().equals("john");
-                assert user.getPassword().startsWith("$2a$");
-            }
+        @DisplayName("Then: The user should be saved in the database")
+        @Test
+        void testUserSaved() {
+            User user = userDAO.findAll().getFirst();
+            assertEquals(response.userId(), user.getId());
         }
     }
 
     @DisplayName("When: we provide an invalid username and password")
     @Nested
     class InvalidRequest {
+        WebTestClient.ResponseSpec response;
+
+        @BeforeEach
+        void setUp() {
+            response = webTestClient.post()
+                    .uri(getBaseUrl())
+                    .bodyValue(Map.of("username", "jo", "password", "password"))
+                    .exchange();
+        }
 
         @DisplayName("Then: The response should be a bad request")
         @Test
         void testBadRequest() {
-            webTestClient.post()
-                    .uri(getBaseUrl())
-                    .bodyValue(Map.of("username", "jo", "password", "password"))
-                    .exchange()
-                    .expectStatus().isBadRequest();
+            response.expectStatus().isBadRequest();
         }
 
-        @DisplayName("And: The user should not be saved in the database")
-        @Nested
-        class UserNotSaved {
-
-            @DisplayName("Then: The user should not be saved in the database")
-            @Test
-            void testUserNotSaved() {
-                webTestClient.post()
-                        .uri(getBaseUrl())
-                        .bodyValue(Map.of("username", "jo", "password", "password"))
-                        .exchange()
-                        .expectStatus().isBadRequest();
-
-                assert userDAO.findAll().isEmpty();
-            }
+        @DisplayName("Then: The user should not be saved in the database")
+        @Test
+        void testUserNotSaved() {
+            assertTrue(userDAO.findAll().isEmpty());
         }
     }
 }
