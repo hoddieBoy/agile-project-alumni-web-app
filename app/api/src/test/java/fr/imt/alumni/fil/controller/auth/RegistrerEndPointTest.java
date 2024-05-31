@@ -1,6 +1,7 @@
 package fr.imt.alumni.fil.controller.auth;
 
 import fr.imt.alumni.fil.domain.bo.User;
+import fr.imt.alumni.fil.domain.enums.TokenType;
 import fr.imt.alumni.fil.persistance.UserDAO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,7 +31,7 @@ public class RegistrerEndPointTest {
     private UserDAO userDAO;
 
     private String getBaseUrl() {
-        return "http://localhost:" + port + "/api/v1/alumni-fil/register";
+        return "http://localhost:" + port + "/api/v1/alumni-fil/auth/register";
     }
 
     @DisplayName("When: we provide a valid username and password")
@@ -46,7 +47,12 @@ public class RegistrerEndPointTest {
                     .exchange()
                     .expectStatus().isCreated()
                     .expectBody()
-                    .jsonPath("$.id").isNotEmpty();
+                    .jsonPath("$.user_id").isNotEmpty()
+                    .jsonPath("$.username").isEqualTo("john")
+                    .jsonPath("$.roles").isNotEmpty()
+                    .jsonPath("$.access_token").isNotEmpty()
+                    .jsonPath("$.refresh_token").isNotEmpty()
+                    .jsonPath("$.token_type").isEqualTo(TokenType.BEARER.toString());
         }
 
         @DisplayName("And: The user should be saved in the database")
@@ -62,7 +68,7 @@ public class RegistrerEndPointTest {
                         .exchange()
                         .expectStatus().isCreated()
                         .expectBody()
-                        .jsonPath("$.id").isNotEmpty();
+                        .jsonPath("$.user_id").isNotEmpty();
 
                 User user = userDAO.findAll().getFirst();
                 assert user.getUsername().equals("john");
