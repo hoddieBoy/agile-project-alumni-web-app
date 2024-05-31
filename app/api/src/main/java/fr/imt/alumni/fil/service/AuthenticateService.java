@@ -2,12 +2,12 @@ package fr.imt.alumni.fil.service;
 
 import fr.imt.alumni.fil.domain.bo.User;
 import fr.imt.alumni.fil.domain.enums.TokenType;
-import fr.imt.alumni.fil.exception.NotFoundException;
 import fr.imt.alumni.fil.payload.request.AuthenticateRequestBody;
 import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
 import fr.imt.alumni.fil.persistance.UserDAO;
 import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class AuthenticateService {
                 new UsernamePasswordAuthenticationToken(requestBody.username(), requestBody.password())
         );
 
-        User user = userDAO.findByUsername(requestBody.username()).orElseThrow(() -> new NotFoundException("No user found with username " + requestBody.username()));
+        User user = userDAO.findByUsername(requestBody.username()).orElseThrow(() -> new BadCredentialsException(String.format("Failed to authenticate user %s", requestBody.username())));
         String jwt = jwtService.generateToken(user);
         String refreshToken = refreshTokenService.createRefreshToken(user.getId()).getId().toString();
 
