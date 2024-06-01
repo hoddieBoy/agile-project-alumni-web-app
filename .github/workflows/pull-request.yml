@@ -1,0 +1,15 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+    
+concurrency:
+  group: ${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: true
+
+jobs:
+  sonar-analyze:
+    uses: ./.github/workflows/sonar-backend.yml

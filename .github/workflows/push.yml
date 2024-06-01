@@ -1,0 +1,14 @@
+name: Push Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: push-workflow-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+    sonar-analyze:
+        uses: ./.github/workflows/sonar-backend.yml

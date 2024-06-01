@@ -1,0 +1,42 @@
+name: Analyze API code with SonarCloud
+
+on:
+    workflow_call:
+
+jobs:
+    build-and-analyze:
+      runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: ./app/api
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0  # Ensures all history is fetched
+  
+        - name: Set up JDK
+          uses: actions/setup-java@v4
+          with:
+            java-version: '21'  # Ensure this version is correct for your project
+            distribution: 'temurin'
+  
+        - name: Cache Maven dependencies
+          uses: actions/cache@v4
+          with:
+            path: ~/.m2
+            key: "${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}"
+            restore-keys: ${{ runner.os }}-m2
+        
+        - name: Create private security key pem file
+          run: echo "${{ secrets.PRIVATE_SECRET_PEM }}" > src/test/resources/private-key.pem
+          
+        - name: Build and Generate coverage report
+          run: mvn clean verify -Pcoverage --batch-mode
+  
+        - name: Run SonarCloud analysis
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
+          run: mvn sonar:sonar -Dsonar.java.binaries=target/classes -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml --batch-mode
+  
