@@ -19,8 +19,8 @@ FROM nginx:alpine AS production
 
 COPY --from=build /app/build /usr/share/nginx/html
 
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

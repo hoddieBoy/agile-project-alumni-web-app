@@ -18,18 +18,12 @@ services:
       timeout: 5s
       retries: 5
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-
   api:
+    image: ${REGISTRY_URL}/alumni-fil-api:${TAG}
+    platform: linux/amd64
     build:
       context: ./app/api
-      target: development
+      target: ${BUILD_TARGET}
     restart: always
     ports:
       - "${API_PORT}:8080"
@@ -43,28 +37,21 @@ services:
       - ./app/api/pom.xml:/app/pom.xml
       - ./app/api/target:/app/target
       - ./app/api/.m2:/root/.m2
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 10s
-      timeout: 20s
-      retries: 5
 
   web:
+    image: ${REGISTRY_URL}/alumni-fil-web:${TAG}
+    platform: linux/amd64
     build:
       context: ./app/web
-      target: development
+      target: ${BUILD_TARGET}
     restart: always
     ports:
-      - "${FRONTEND_PORT}:3000"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    env_file: .env
     volumes:
       - ./app/web/src:/app/src
       - ./app/web/public:/app/public
       - ./app/web/node_modules:/app/node_modules
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 10s
-      timeout: 20s
-      retries: 5
 
 volumes:
   db-data:
