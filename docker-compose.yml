@@ -44,7 +44,24 @@ services:
       - ./app/api/target:/app/target
       - ./app/api/.m2:/root/.m2
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+
+  web:
+    build:
+      context: ./app/web
+      target: development
+    restart: always
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    volumes:
+      - ./app/web/src:/app/src
+      - ./app/web/public:/app/public
+      - ./app/web/node_modules:/app/node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 10s
       timeout: 20s
       retries: 5
