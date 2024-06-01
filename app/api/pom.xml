@@ -10,7 +10,7 @@
     </parent>
     <groupId>fr.imt</groupId>
     <artifactId>alumni-fil-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>alumni-fil-api</name>
     <description>An API for managing Alumni information for the FIL program of IMT ATLANTIQUE Nantes</description>
     <properties>
