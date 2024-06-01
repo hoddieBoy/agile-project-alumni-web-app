@@ -1,28 +1,34 @@
 package fr.imt.alumni.fil.controller.alumni;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
-import fr.imt.alumni.fil.domain.bo.Sex;
+import fr.imt.alumni.fil.domain.enums.Sex;
+import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import fr.imt.alumni.fil.persistance.UserDAO;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @DisplayName("Given: A request to search for alumni")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SearchEndPointTest {
+
+    private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil";
+    private static final String SEARCH_URL = "/search";
+    private static final String REGISTER_URL = "/auth/register";
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String BEARER = "Bearer ";
+
     @LocalServerPort
     private int port;
 
@@ -32,29 +38,55 @@ public class SearchEndPointTest {
     @Autowired
     private AlumniDAO alumniDAO;
 
+    @Autowired
+    private UserDAO userDAO;
+
+    private String token;
+
     private String getBaseUrl() {
-        return "http://localhost:" + port + "/api/v1/alumni-fil/search";
+        return String.format(BASE_URL_TEMPLATE, port);
     }
 
     @BeforeEach
     void setUp() {
-        alumniDAO.deleteAll();
-        Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN,"john.doe@gmail.com "
-                ," Grey Sloan Memorial", "RHMC "," https://john-doe.fr",
-                "France "," Lyon",false);
-        Alumnus johnathan = new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN,
-                " johnathan.doe@yahoo.com","NMC", " BMC ",
-                " https://johnathan-doe.fr", "France "," Bordeaux",false);
-        Alumnus jane = new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN
-                ," jane.jossman@gmail.com"," Grey Sloan Memorial", "RHMC ",
-                " https://jane-jossman.fr", "France "," Lyon",false);
-        Alumnus jenny = new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
-                " "," "," "," "," "," ",false);
+        saveAlumniData();
+        registerUserAndGenerateToken();
+        validateSetup();
+    }
 
-        alumniDAO.save(john);
-        alumniDAO.save(johnathan);
-        alumniDAO.save(jane);
-        alumniDAO.save(jenny);
+    private void saveAlumniData() {
+        alumniDAO.save(new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN, "john.doe@gmail.com",
+                "Grey Sloan Memorial", "RHMC", "https://john-doe.fr", "France", "Lyon", false));
+        alumniDAO.save(new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN,
+                "johnathan.doe@yahoo.com", "NMC", "BMC", "https://johnathan-doe.fr", "France", "Bordeaux", false));
+        alumniDAO.save(new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN,
+                "jane.jossman@gmail.com", "Grey Sloan Memorial", "RHMC", "https://jane-jossman.fr", "France", "Lyon", false));
+        alumniDAO.save(new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
+                "", "", "", "", "", "", false));
+    }
+
+    private void registerUserAndGenerateToken() {
+        EntityExchangeResult<AuthenticationResponse> response = webTestClient.post()
+                .uri(getBaseUrl() + REGISTER_URL)
+                .header("Content-Type", "application/json")
+                .bodyValue("{\"username\":\"john\",\"password\":\"Password1\"}")
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(AuthenticationResponse.class)
+                .returnResult();
+
+        token = Objects.requireNonNull(response.getResponseBody()).accessToken();
+    }
+
+    private void validateSetup() {
+        Assumptions.assumeTrue(token != null && !token.isEmpty(), "Token should not be null or empty");
+        Assumptions.assumeTrue(alumniDAO.count() == 4, "Alumni count should be 4");
+    }
+
+    @AfterEach
+    void tearDown() {
+        alumniDAO.deleteAll();
+        userDAO.deleteAll();
     }
 
     @DisplayName("When: The request is a GET request")
@@ -65,12 +97,12 @@ public class SearchEndPointTest {
         @Test
         void testJsonResponse() {
             webTestClient.get()
-                    .uri(getBaseUrl() + "?name=JacK")
+                    .uri(getBaseUrl() + SEARCH_URL + "?name=JacK")
+                    .header(AUTH_HEADER, BEARER + token)
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType("application/json");
         }
-
 
         @DisplayName("And When: The request is a GET request with a specific search name")
         @Nested
@@ -81,7 +113,8 @@ public class SearchEndPointTest {
             @ValueSource(strings = {"John", "john", "JOHN"})
             void testSearchCaseInsensitive(String searchName) {
                 webTestClient.get()
-                        .uri(getBaseUrl() + "?name=" + searchName)
+                        .uri(getBaseUrl() + SEARCH_URL + "?name=" + searchName)
+                        .header(AUTH_HEADER, BEARER + token)
                         .exchange()
                         .expectStatus().isOk()
                         .expectBody()
@@ -107,7 +140,8 @@ public class SearchEndPointTest {
             @ValueSource(strings = {"Jo", "jo", "JO"})
             void testPartialSearch(String searchName) {
                 webTestClient.get()
-                        .uri(getBaseUrl() + "?name=" + searchName)
+                        .uri(getBaseUrl() + SEARCH_URL + "?name=" + searchName)
+                        .header(AUTH_HEADER, BEARER + token)
                         .exchange()
                         .expectStatus().isOk()
                         .expectBody()
@@ -118,12 +152,14 @@ public class SearchEndPointTest {
         @DisplayName("And When: The request is a GET request with a name that does not match any alumni")
         @Nested
         class GetRequestWithNoMatch {
+
             @DisplayName("Then: The search should return an empty list.")
             @ParameterizedTest
             @ValueSource(strings = {"Zoe", "zoe", "ZOE", " "})
             void testNoMatch(String searchName) {
                 webTestClient.get()
-                        .uri(getBaseUrl() + "?name=" + searchName)
+                        .uri(getBaseUrl() + SEARCH_URL + "?name=" + searchName)
+                        .header(AUTH_HEADER, BEARER + token)
                         .exchange()
                         .expectStatus().isOk()
                         .expectBody()
