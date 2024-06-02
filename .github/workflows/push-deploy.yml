@@ -52,26 +52,38 @@ jobs:
           echo "TAG=${{ env.TAG }}" >> .env
           echo "BUILD_TARGET=${{ env.BUILD_TARGET }}" >> .env
 
+      - name: Configure aws credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region ${{ secrets.AWS_REGION }}
+
+      - name: Login to AWS ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
       - name: Build and Publish Docker image
         run: |
-          docker compose build -f docker-compose.prod.yml
-          docker compose push -f docker-compose.prod.yml
+          docker compose -f docker-compose.prod.yml build
+          docker compose -f docker-compose.prod.yml push
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.ECS_INSTANCE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.ECS_INSTANCE_KEY }}" > ~/.ssh/key.pem
+          chmod 400 ~/.ssh/key.pem
           ssh-keyscan -H ${{ secrets.ECS_INSTANCE_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
       - name: Send files to ECS Instance
         run: |
-          scp -i ~/.ssh/id_rsa .env ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }}:~/app/.env
-          scp -i ~/.ssh/id_rsa docker-compose.prod.yml ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }}:~/app/docker-compose.yml
+          scp -i "~/.ssh/key.pem" ".env" ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }}:~/app/.env
+          scp -i "~/.ssh/key.pem" docker-compose.prod.yml ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }}:~/app/docker-compose.yml
 
       - name: Deploy to AWS ECS Instance
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }}
+          ssh -i ~/.ssh/key.pem ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }} << 'EOF'
           cd ~/app
-          docker compose pull
-          docker compose up -d
+          docker-compose pull
+          docker-compose up -d
+          EOF
