@@ -10,8 +10,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-    sonar-analyze:
-        uses: ./.github/workflows/sonar-backend.yml
-        secrets:
-            PRIVATE_SECRET_PEM: ${{ secrets.PRIVATE_SECRET_PEM }}
-            SONAR_TOKEN_BACKEND: ${{ secrets.SONAR_TOKEN_BACKEND }}
+  sonar-analyze-backend:
+    uses: ./.github/workflows/sonar-backend.yml
+    secrets:
+      PRIVATE_SECRET_PEM: ${{ secrets.PRIVATE_SECRET_PEM }}
+      SONAR_TOKEN_BACKEND: ${{ secrets.SONAR_TOKEN_BACKEND }}
+
+  sonar-analyze-frontend:
+    uses: ./.github/workflows/sonar-frontend.yml
+    secrets:
+      SONAR_TOKEN_FRONTEND: ${{ secrets.SONAR_TOKEN_FRONTEND }}
