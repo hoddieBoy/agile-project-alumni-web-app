@@ -24,6 +24,7 @@ jobs:
   deploy:
     name: Deploy to AWS ECS Instance
     runs-on: ubuntu-latest
+    environment: production
     needs:
       - sonar-analyze-backend
       - sonar-analyze-frontend
