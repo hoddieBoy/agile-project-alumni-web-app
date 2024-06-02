@@ -1,4 +1,4 @@
-name: Pull Request Workflow
+name: Analyze Pull Request for Code Quality
 
 on:
   pull_request:
@@ -41,3 +41,67 @@ jobs:
     uses: ./.github/workflows/sonar-frontend.yml
     secrets:
       SONAR_TOKEN_FRONTEND: ${{ secrets.SONAR_TOKEN_FRONTEND }}
+
+  deploy:
+    name: Deploy to AWS ECS Instance
+    runs-on: ubuntu-latest
+    env:
+      API_PORT: 8081
+      APP_NAME: alumni-fil-api
+      FRONTEND_PORT: 8080
+      TAG: latest
+      BUILD_TARGET: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures all history is fetched
+
+      - name: Create environment file
+        run: |
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "API_PORT=${{ env.API_PORT }}" >> .env
+          echo "APP_NAME=${{ env.APP_NAME }}" >> .env
+          echo "FRONTEND_PORT=${{ env.FRONTEND_PORT }}" >> .env
+          echo "REGISTRY_URL=${{ secrets.REGISTRY_URL }}" >> .env
+          echo "TAG=${{ env.TAG }}" >> .env
+          echo "BUILD_TARGET=${{ env.BUILD_TARGET }}" >> .env
+
+      - name: Configure aws credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region ${{ secrets.AWS_REGION }}
+
+      - name: Login to AWS ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      - name: Build and Publish Docker image
+        run: |
+          docker compose -f docker-compose.prod.yml build
+          docker compose -f docker-compose.prod.yml push
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.ECS_INSTANCE_KEY }}" > ~/.ssh/key.pem
+          chmod 400 ~/.ssh/key.pem
+          ssh-keyscan -H ${{ secrets.ECS_INSTANCE_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
+      - name: Send files to ECS Instance
+        run: |
+          scp -i "~/.ssh/key.pem" ".env" ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }}:~/app/.env
+          scp -i "~/.ssh/key.pem" docker-compose.prod.yml ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }}:~/app/docker-compose.yml
+
+      - name: Deploy to AWS ECS Instance
+        run: |
+          ssh -i ~/.ssh/key.pem ${{ secrets.ECS_INSTANCE_USER }}@${{ secrets.ECS_INSTANCE_IP }} << 'EOF'
+          cd ~/app
+          docker-compose pull
+          docker-compose up -d
+          EOF
