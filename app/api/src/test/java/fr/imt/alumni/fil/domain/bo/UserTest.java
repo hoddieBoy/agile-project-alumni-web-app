@@ -17,7 +17,7 @@ class UserTest {
                 "passwordHash"
         );
         assertEquals("username", user.getUsername());
-        assertEquals("passwordHash", user.getPasswordHash());
+        assertEquals("passwordHash", user.getPassword());
     }
 
     @Test

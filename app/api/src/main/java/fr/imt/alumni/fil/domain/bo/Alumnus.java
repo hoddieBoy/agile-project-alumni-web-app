@@ -1,5 +1,6 @@
 package fr.imt.alumni.fil.domain.bo;
 
+import fr.imt.alumni.fil.domain.enums.Sex;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -49,15 +50,15 @@ public class Alumnus {
                    String coopCompany, String currentCompany, String website,
                    String country, String city, boolean isStayed) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = firstName.trim();
+        this.lastName = lastName.trim();
         this.sex = sex;
-        this.mail = mail;
-        this.coopCompany = coopCompany;
-        this.currentCompany = currentCompany;
-        this.website = website;
-        this.country = country;
-        this.city = city;
+        this.mail = mail.trim();
+        this.coopCompany = coopCompany.trim();
+        this.currentCompany = currentCompany.trim();
+        this.website = website.trim();
+        this.country = country.trim();
+        this.city = city.trim();
         this.isStayed = isStayed;
     }
 

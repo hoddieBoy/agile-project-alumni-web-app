@@ -22,6 +22,9 @@ public class AlumniService {
         city = Optional.ofNullable(city).map(String::trim).orElse("");
         country = Optional.ofNullable(country).map(String::trim).orElse("");
         currentCompany = Optional.ofNullable(currentCompany).map(String::trim).orElse("");
-        return alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCase(name, name, city, country, currentCompany);
+        return (!name.isBlank()|| !city.isBlank() || !country.isBlank() || !currentCompany.isBlank())
+                ? alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCase(name, name, city, country, currentCompany)
+                : List.of();
+
     }
 }
