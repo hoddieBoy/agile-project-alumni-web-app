@@ -1,13 +1,13 @@
-import { ActionFunctionArgs, redirect, json } from "react-router-dom";
+import { ActionFunctionArgs, redirect } from "react-router-dom";
 import axiosConfig from "config/axiosConfig";
-import { AuthenticateResponse } from "payload/response/AuthenticateResponse";
+import AuthenticateResponse from "payload/response/AuthenticateResponse";
 
 export async function action({ request }: ActionFunctionArgs<'post'>) {
     const formData = await request.formData();
     const payload = Object.fromEntries(formData);
 
     if (!payload.username || !payload.password) {
-        return json({ message: 'Username and Password are required.' }, { status: 400 });
+        return { message: 'Username and password are required.' };
     }
 
     try {
@@ -20,6 +20,6 @@ export async function action({ request }: ActionFunctionArgs<'post'>) {
         document.cookie = `refresh_token=${data.refresh_token}; expires=${refreshTokenExpiry.toUTCString()}; path=/`;
         return redirect('/');
     } catch (error) {
-        return json({ message: 'Invalid username or password.' }, { status: 401 });
+        return { message: 'Invalid username or password.' };
     }
 }

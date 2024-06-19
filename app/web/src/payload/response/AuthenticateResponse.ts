@@ -1,4 +1,4 @@
-export interface AuthenticateResponse {
+export default interface AuthenticateResponse {
     user_id: string;
     username: string;
     roles: string[];
