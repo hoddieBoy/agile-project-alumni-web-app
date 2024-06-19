@@ -2,6 +2,9 @@ import React from 'react';
 import {createBrowserRouter, Navigate} from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import {getAccessToken} from "utils/Token";
+import ErrorPage from "components/pages/ErrorPage";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 export const isAuthenticated = () => {
     console.log(getAccessToken());
@@ -12,19 +15,24 @@ export const isAuthenticated = () => {
 const router = createBrowserRouter(
     [
         {
-            path: '/login',
-            element: <div>Welcome to the login page</div>
-        },
-        {
-            element: <ProtectedRoute isAuthenticated={isAuthenticated()} />,
+            errorElement: <ErrorPage />,
             children: [
                 {
-                    path: '/',
-                    element: <Navigate to='/search' />,
+                    element: <ProtectedRoute isAuthenticated={isAuthenticated()} />,
+                    children: [
+                        {
+                            path: '/',
+                            element: <Navigate to={'/search'} />
+                        },
+                        {
+                            path: '/search',
+                            element: <div>Welcome to the search page</div>
+                        }
+                    ]
                 },
                 {
-                    path: '/search',
-                    element: <div>Welcome to the search page</div>
+                    path: '/login',
+                    element: <div>Welcome to the login page</div>
                 }
             ]
         }
