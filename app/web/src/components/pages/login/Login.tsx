@@ -1,15 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'components/pages/login/Login.css';
-import {Form, useActionData} from 'react-router-dom';
+import {Spin} from 'antd';
+import {Form, useActionData, useLoaderData} from 'react-router-dom';
 
 interface ErrorMessages {
     message: string;
 }
 
+interface LoaderData {
+    username: string;
+}
+
 function Login() {
-    const [username, setUsername] = useState('');
+    const loaderData = useLoaderData() as LoaderData;
+    const [username, setUsername] = useState(loaderData.username);
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const error = useActionData() as ErrorMessages;
+
+    useEffect(() => {
+        setLoading(false);
+    }, [error]);
 
     return (
         <>
@@ -23,7 +34,7 @@ function Login() {
 
             <div className="main-content">
                 <div className="login-container">
-                    <Form method="post" id="login-form" action="/login">
+                    <Form method="post" id="login-form" action="/login" onSubmit={() => setLoading(true)}>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
                             <input
@@ -49,7 +60,17 @@ function Login() {
                             />
                         </div>
                         {error?.message && <small className="danger">{error.message}</small>}
-                        <button type="submit" className="btn btn-custom btn-block">Login</button>
+                        {loading ? (
+                            <Spin data-testid="loading"/>
+                        ) : (
+                            <button
+                                type="submit"
+                                className="btn btn-custom btn-block"
+                                disabled={loading}
+                            >
+                                Login
+                            </button>
+                        )}
                     </Form>
                 </div>
             </div>

@@ -1,9 +1,10 @@
 import React from 'react';
-import {createBrowserRouter, Navigate} from 'react-router-dom';
+import {createBrowserRouter, redirect} from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import {getAccessToken} from "utils/Token";
 import ErrorPage from "components/pages/ErrorPage";
-import {action as LoginAction} from "components/pages/login/Login.action";
+import LoginAction from "components/pages/login/Login.action";
+import LogingLoader from "components/pages/login/Login.loader";
 import Login from "components/pages/login/Login";
 
 export const isAuthenticated = () => !!getAccessToken();
@@ -18,7 +19,7 @@ const router = createBrowserRouter(
                     children: [
                         {
                             path: '/',
-                            element: <Navigate to={'/search'} />
+                            loader: () => redirect('/search')
                         },
                         {
                             path: '/search',
@@ -28,8 +29,9 @@ const router = createBrowserRouter(
                 },
                 {
                     path: '/login',
-                    element: isAuthenticated() ? <Navigate to={'/'} /> : <Login />,
-                    action: LoginAction
+                    element: <Login />,
+                    action: LoginAction,
+                    loader: LogingLoader
                 }
             ]
         }
