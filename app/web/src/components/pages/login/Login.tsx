@@ -76,7 +76,7 @@ function Login() {
             </div>
 
             <footer className="login-footer">
-                <a href="#">Contact Us</a> | <a href="#">Privacy Policy</a>
+                <p>© 2024 Alumni FIL</p>
             </footer>
         </>
     );

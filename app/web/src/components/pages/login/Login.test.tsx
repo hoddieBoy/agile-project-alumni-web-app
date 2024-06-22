@@ -1,7 +1,7 @@
 import React from "react";
 import Login from "components/pages/login/Login";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginAction from "components/pages/login/Login.action";
 import LoginLoader from "components/pages/login/Login.loader";
@@ -28,44 +28,36 @@ describe("The Login page functionality", () => {
     );
 
     describe("Render and basic elements", () => {
-        beforeEach(() => {
-            act(() => {
-                render(<RouterProvider router={router} />);
-            });
-        });
-
         test("The Login page renders without crashing", () => {
-            const tree = render(<RouterProvider router={router} />);
-            expect(tree).toMatchSnapshot();
+            const { container } = render(<RouterProvider router={router} />);
+            expect(container).toMatchSnapshot();
         });
 
         test("The Login page contains a header with the correct text", () => {
+            render(<RouterProvider router={router} />);
             expect(screen.getByText('Welcome to Alumni FIL')).toBeInTheDocument();
             expect(screen.getByText('Login to access administrative features')).toBeInTheDocument();
         });
 
         test("The Login page contains a form with the correct fields", () => {
+            render(<RouterProvider router={router} />);
             expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
             expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
         });
 
         test("The Login page contains a submit button", () => {
+            render(<RouterProvider router={router} />);
             expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
         });
     });
 
     describe("Given a non-authenticated user on the Login page", () => {
-        beforeEach(() => {
-            act(() => {
-                render(<RouterProvider router={router} />);
-            });
-        });
-
         afterEach(() => {
             jest.restoreAllMocks();
         });
 
         test("When the user submits the form without entering any data, then an error message is displayed", async () => {
+            render(<RouterProvider router={router} />);
             const loginButton = screen.getByRole('button', { name: /login/i });
 
             userEvent.click(loginButton);
@@ -74,6 +66,7 @@ describe("The Login page functionality", () => {
         });
 
         test("When the user submits the form with invalid data, then an error message is displayed", async () => {
+            render(<RouterProvider router={router} />);
             const usernameInput = screen.getByLabelText(/username/i);
             const passwordInput = screen.getByLabelText(/password/i);
             const loginButton = screen.getByRole('button', { name: /login/i });
