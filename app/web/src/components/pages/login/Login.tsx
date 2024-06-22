@@ -11,30 +11,41 @@ interface LoaderData {
     username: string;
 }
 
+/**
+ * Renders a login page with a form, loading spinner, and error messages as needed.
+ */
 function Login() {
+    // State variables
     const loaderData = useLoaderData() as LoaderData;
     const [username, setUsername] = useState(loaderData.username);
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const error = useActionData() as ErrorMessages;
 
+    // Reset loading state on error change
     useEffect(() => {
         setLoading(false);
     }, [error]);
+
+    // Form submission handler
+    const handleSubmit = () => {
+        setLoading(true);
+    };
 
     return (
         <>
             <header className="login-header">
                 <img
                     src="https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png"
-                    alt="IMT Atlantique Logo"/>
+                    alt="IMT Atlantique Logo"
+                />
                 <h3>Welcome to Alumni FIL</h3>
                 <p>Login to access administrative features</p>
             </header>
 
             <div className="main-content">
                 <div className="login-container">
-                    <Form method="post" id="login-form" action="/login" onSubmit={() => setLoading(true)}>
+                    <Form method="post" id="login-form" action="/login" onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
                             <input
@@ -61,7 +72,7 @@ function Login() {
                         </div>
                         {error?.message && <small className="danger">{error.message}</small>}
                         {loading ? (
-                            <Spin data-testid="loading"/>
+                            <Spin data-testid="loading" />
                         ) : (
                             <button
                                 type="submit"

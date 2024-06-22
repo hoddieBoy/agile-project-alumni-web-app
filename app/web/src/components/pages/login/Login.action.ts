@@ -30,13 +30,10 @@ export default async function action({ request }: ActionFunctionArgs<'post'>) {
         sessionStorage.setItem('user_id', user_id);
     } catch (error: any) {
         if (error.response?.status === 401) {
-            console.debug('<<Login.action.ts>>', 'Invalid username or password.');
             return { message: 'Invalid username or password.' };
         } else {
-            console.debug('<<Login.action.ts>>', error);
             return json({ message: 'An error occurred. Please try again later.' }, { status: 500 });
         }
     }
-    console.debug('<<Login.action.ts>>', 'User authenticated successfully.');
     return redirect('/');
 }
