@@ -1,0 +1,149 @@
+body {
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002855;
+    padding: 10px;
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-left .navbar-brand,
+.header-right .nav-link,
+.header-right .btn {
+    color: #ffffff;
+}
+
+.header-right .btn {
+    background-color: #ffffff;
+    color: #002855;
+}
+
+.header-left .navbar-brand img {
+    max-height: 120px;
+    margin: -15px 0;
+}
+
+.header-left .navbar-search {
+    width: 300px;
+    margin-left: 15px;
+    color: #002855;
+}
+
+.main {
+    flex: 1;
+}
+
+.title,
+.under-title {
+    text-align: center;
+    color: #002855;
+}
+
+.title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.under-title {
+    margin: 0 0 20px;
+}
+
+.search-section {
+    border: 1px solid #002855;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 40px 0 20px;
+    text-align: center;
+}
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-control {
+    color: #002855;
+}
+
+label {
+    color: #002855;
+}
+
+.btn-custom {
+    width: 150px;
+    margin-right: 10px;
+}
+
+
+.profile-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-card {
+    border: 1px solid #002855;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+    background-color: #f8f9fa;
+    color: #002855;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-info img {
+    border-radius: 50%;
+    margin-right: 15px;
+    height: 100px;
+}
+
+.profile-actions {
+    text-align: right;
+}
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.footer a {
+    color: #ffffff;
+}
+
+.btn-outline-primary {
+    border-color: #002855;
+    color: #002855;
+}
+
+.btn-outline-primary:hover {
+    background-color: #002855;
+    color: #ffffff;
+}
