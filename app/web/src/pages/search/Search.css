@@ -6,42 +6,6 @@ body {
     margin: 0;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #002855;
-    padding: 10px;
-}
-
-.header-left,
-.header-right {
-    display: flex;
-    align-items: center;
-}
-
-.header-left .navbar-brand,
-.header-right .nav-link,
-.header-right .btn {
-    color: #ffffff;
-}
-
-.header-right .btn {
-    background-color: #ffffff;
-    color: #002855;
-}
-
-.header-left .navbar-brand img {
-    max-height: 120px;
-    margin: -15px 0;
-}
-
-.header-left .navbar-search {
-    width: 300px;
-    margin-left: 15px;
-    color: #002855;
-}
-
 .main {
     flex: 1;
 }
@@ -126,16 +90,6 @@ label {
 
 .profile-actions {
     text-align: right;
-}
-
-.footer {
-    margin-top: 20px;
-    text-align: center;
-    color: #ffffff;
-}
-
-.footer a {
-    color: #ffffff;
 }
 
 .btn-outline-primary {

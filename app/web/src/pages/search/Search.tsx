@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import './Search.css';
+import 'pages/search/Search.css';
 import {AlumniData} from "payload/response/AlumniData";
 import axiosConfig from "config/axiosConfig";
 import {SearchResponse} from "payload/response/SearchResponse";
 import {getAccessToken} from "utils/Token";
+import Header from "components/Header";
+import Footer from "components/Footer";
 
 type SearchCriteria = {
     name: string;
@@ -55,23 +57,7 @@ function Search() {
 
     return (
         <>
-            <header className="header">
-                <div className="header-left">
-                    <a href="#" className="navbar-brand">
-                        <img
-                            src="https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png"
-                            alt="IMT Atlantique Logo"
-                        />
-                    </a>
-                    <input type="text" className="form-control navbar-search" placeholder="Search"/>
-                </div>
-                <nav className="header-right">
-                    <a href="#" className="nav-link">Search</a>
-                    <a href="#" className="nav-link">Import/Export</a>
-                    <a href="#" className="nav-link">Gestion Utilisateurs</a>
-                    <button className="btn">Log out</button>
-                </nav>
-            </header>
+            <Header/>
 
             <main>
                 <h2 className="title">Find Alumni</h2>
@@ -160,12 +146,7 @@ function Search() {
                 </section>
             </main>
 
-            <footer className="footer">
-                <p>
-                    <a href="#">Contact Us</a> |
-                    <a href="#">Privacy Policy</a>
-                </p>
-            </footer>
+            <Footer/>
         </>
     );
 }
