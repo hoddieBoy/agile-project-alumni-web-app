@@ -51,6 +51,14 @@
   "jest": {
     "moduleNameMapper": {
       "^axios$": "axios/dist/node/axios.cjs"
-    }
+    },
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/App.tsx",
+      "/src/index.tsx",
+      "/src/serviceWorker.ts",
+      "/src/react-app-env.d.ts",
+      "/src/setupTests.ts"
+    ]
   }
 }
