@@ -1,10 +1,10 @@
 import React from "react";
-import Login from "components/pages/login/Login";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import Login from "pages/login/Login";
+import {createMemoryRouter, RouterProvider} from "react-router-dom";
 import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import LoginAction from "components/pages/login/Login.action";
-import LoginLoader from "components/pages/login/Login.loader";
+import LoginAction from "pages/login/Login.action";
+import LoginLoader from "pages/login/Login.loader";
 import axiosConfig from "config/axiosConfig";
 
 // Mock axios configuration

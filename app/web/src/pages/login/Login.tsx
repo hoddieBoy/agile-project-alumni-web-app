@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import 'components/pages/login/Login.css';
+import 'pages/login/Login.css';
 import {Spin} from 'antd';
 import {Form, useActionData, useLoaderData} from 'react-router-dom';
+import Footer from "components/Footer";
 
 interface ErrorMessages {
     message: string;
@@ -86,9 +87,7 @@ function Login() {
                 </div>
             </div>
 
-            <footer className="login-footer">
-                <p>© 2024 Alumni FIL</p>
-            </footer>
+            <Footer/>
         </>
     );
 }

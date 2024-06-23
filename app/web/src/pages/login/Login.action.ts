@@ -1,7 +1,7 @@
-import { ActionFunctionArgs, json, redirect } from "react-router-dom";
+import {ActionFunctionArgs, json, redirect} from "react-router-dom";
 import axiosConfig from "config/axiosConfig";
 import AuthenticateResponse from "payload/response/AuthenticateResponse";
-import { setCookie } from "utils/Cookie";
+import {setCookie} from "utils/Cookie";
 
 /**
  * Handles form submission for user authentication.

@@ -2,10 +2,10 @@ import React from 'react';
 import {createBrowserRouter, redirect} from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import {getAccessToken} from 'utils/Token';
-import ErrorPage from 'components/pages/ErrorPage';
-import LoginAction from 'components/pages/login/Login.action';
-import LoginLoader from 'components/pages/login/Login.loader';
-import Login from 'components/pages/login/Login';
+import ErrorPage from 'pages/ErrorPage';
+import LoginAction from 'pages/login/Login.action';
+import LoginLoader from 'pages/login/Login.loader';
+import Login from 'pages/login/Login';
 
 // Function to check if the user is authenticated
 export const isAuthenticated = (): boolean => !!getAccessToken();

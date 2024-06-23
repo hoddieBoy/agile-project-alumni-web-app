@@ -1,8 +1,8 @@
-import { ActionFunctionArgs, json, redirect } from "react-router-dom";
+import {ActionFunctionArgs, json, redirect} from "react-router-dom";
 import axiosConfig from "config/axiosConfig";
 import AuthenticateResponse from "payload/response/AuthenticateResponse";
-import { setCookie } from "utils/Cookie";
-import action from "components/pages/login/Login.action"; // Adjust the import path as needed
+import {setCookie} from "utils/Cookie";
+import action from "pages/login/Login.action"; // Adjust the import path as needed
 
 jest.mock('config/axiosConfig');
 jest.mock('utils/Cookie');
