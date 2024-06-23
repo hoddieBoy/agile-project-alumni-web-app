@@ -24,7 +24,7 @@ export default function Header() {
                 <a href="#" className="nav-link">Search</a>
                 <a href="#" className="nav-link">Import/Export</a>
                 <a href="#" className="nav-link">Gestion Utilisateurs</a>
-                <button className="btn">Log out</button>
+                <button className="btn" onClick={handleLogout}>Log out</button>
             </nav>
         </header>
     );
