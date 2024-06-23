@@ -70,12 +70,16 @@ exports[`The Login page functionality Render and basic elements The Login page r
       </form>
     </div>
   </div>
-  <footer
-    class="login-footer"
-  >
-    <p>
-      © 2024 Alumni FIL
-    </p>
+  <footer>
+    <div
+      class="container"
+    >
+      <span
+        class="text-muted"
+      >
+        © 2024 Alumni FIL
+      </span>
+    </div>
   </footer>
 </div>
 `;
