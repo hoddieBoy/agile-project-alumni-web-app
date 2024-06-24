@@ -1,3 +1,10 @@
+body {
+  background-color: #f8f9fa;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .danger {
   color: red;
 }
@@ -15,6 +22,14 @@
   border: 1px solid #002855;
 }
 
-.danger {
-  color: red;
+header {
+  justify-content: flex-start;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  justify-content: flex-end;
 }

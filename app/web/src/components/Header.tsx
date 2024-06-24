@@ -22,9 +22,9 @@ export default function Header() {
                 <input type="text" className="form-control navbar-search" placeholder="Search"/>
             </div>
             <nav className="header-right gap-3">
-                <a href="#" className="nav-item nav-link">Search</a>
-                <a href="#" className="nav-item nav-link">Import/Export</a>
-                <a href="#" className="nav-item nav-link">Gestion Utilisateurs</a>
+                <a href="/search" className="nav-item nav-link">Search</a>
+                <a href="/import-export" className="nav-item nav-link">Import/Export</a>
+                <a href="/user-management" className="nav-item nav-link">Gestion Utilisateurs</a>
                 <button type="button" className="btn btn-primary" onClick={handleLogout}>Log out</button>
             </nav>
         </header>

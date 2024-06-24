@@ -1,6 +1,7 @@
 body {
     background-color: #f8f9fa;
     margin: 0;
+    display: flex;
 }
 
 main {
@@ -56,4 +57,10 @@ label,
 .btn-custom-primary {
     background-color: #002855 !important;
     border-color: #002855 !important;
+}
+
+.scrollable-container {
+    max-height: 500px; /* adjust based on your layout needs */
+    overflow-y: scroll;
+    padding-right: 15px; /* adjust to avoid scrollbar overlay */
 }

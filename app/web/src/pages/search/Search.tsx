@@ -67,64 +67,64 @@ function Search() {
 
                 <form onSubmit={handleSearch} className="text-center border p-4 rounded my-4">
                     <div className="row mb-4">
-                            <div className="form-group col-md-3">
-                                <label htmlFor="name" className="form-label">Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="name"
-                                    placeholder="Enter name"
-                                    value={searchCriteria.name}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className="form-group col-md-3">
-                                <label htmlFor="graduationYear" className="form-label">Graduation Year</label>
-                                <select
-                                    id="graduationYear"
-                                    className="form-control"
-                                    value={searchCriteria.graduationYear}
-                                    onChange={handleInputChange}
-                                >
-                                    <option value="">Select Year</option>
-                                    {Array.from({length: 10}, (_, i) => {
-                                        const year = new Date().getFullYear() - i;
-                                        return <option key={year} value={year}>{year}</option>;
-                                    })}
-                                </select>
-                            </div>
-                            <div className="form-group col-md-3">
-                                <label htmlFor="currentCompany" className="form-label">Current Company</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="currentCompany"
-                                    placeholder="Enter company name"
-                                    value={searchCriteria.currentCompany}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className="form-group col-md-3">
-                                <label htmlFor="city" className="form-label">City</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="city"
-                                    placeholder="Enter city"
-                                    value={searchCriteria.city}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="name" className="form-label">Name</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="name"
+                                placeholder="Enter name"
+                                value={searchCriteria.name}
+                                onChange={handleInputChange}
+                            />
                         </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="graduationYear" className="form-label">Graduation Year</label>
+                            <select
+                                id="graduationYear"
+                                className="form-control"
+                                value={searchCriteria.graduationYear}
+                                onChange={handleInputChange}
+                            >
+                                <option value="">Select Year</option>
+                                {Array.from({length: 10}, (_, i) => {
+                                    const year = new Date().getFullYear() - i;
+                                    return <option key={year} value={year}>{year}</option>;
+                                })}
+                            </select>
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="currentCompany" className="form-label">Current Company</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="currentCompany"
+                                placeholder="Enter company name"
+                                value={searchCriteria.currentCompany}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="city" className="form-label">City</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="city"
+                                placeholder="Enter city"
+                                value={searchCriteria.city}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                    </div>
                     <div className="row justify-content-center gap-3">
                         <button type="reset" className="btn btn-outline-secondary form-group col-md-2">Reset</button>
                         <button type="submit"
                                 className="custom-primary-color btn btn-primary btn-custom-primary form-group col-md-2">Search
                         </button>
-                        </div>
-                    </form>
+                    </div>
+                </form>
 
-                <section>
+                <section className="scrollable-container">
                     {isLoading ? (
                         <div className="d-flex justify-content-center my-4">
                             <Spin size="large"/>
