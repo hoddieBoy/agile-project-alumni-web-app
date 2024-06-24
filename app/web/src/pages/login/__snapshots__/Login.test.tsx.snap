@@ -74,9 +74,7 @@ exports[`The Login page functionality Render and basic elements The Login page r
     <div
       class="container"
     >
-      <span
-        class="text-muted"
-      >
+      <span>
         © 2024 Alumni FIL
       </span>
     </div>
