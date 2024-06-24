@@ -14,7 +14,7 @@ type SearchCriteria = {
     city: string;
 };
 
-function Search() {
+function Search(): React.ReactElement {
     const [alumniData, setAlumniData] = useState<AlumniData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -40,8 +40,6 @@ function Search() {
             .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
             .join('&');
 
-        console.log(query);
-
         try {
             const response = await axiosConfig.get<SearchResponse>(`/search?${query}`, {
                 headers: {
@@ -56,6 +54,15 @@ function Search() {
             setIsLoading(false);
         }
     };
+
+    const handleReset = () => {
+        setSearchCriteria({
+            name: '',
+            graduationYear: '',
+            currentCompany: '',
+            city: ''
+        });
+    }
 
     return (
         <>
@@ -72,7 +79,7 @@ function Search() {
                             <input
                                 type="text"
                                 className="form-control"
-                                id="name"
+                                name="name"
                                 placeholder="Enter name"
                                 value={searchCriteria.name}
                                 onChange={handleInputChange}
@@ -81,7 +88,7 @@ function Search() {
                         <div className="form-group col-md-3">
                             <label htmlFor="graduationYear" className="form-label">Graduation Year</label>
                             <select
-                                id="graduationYear"
+                                name="graduationYear"
                                 className="form-control"
                                 value={searchCriteria.graduationYear}
                                 onChange={handleInputChange}
@@ -98,7 +105,7 @@ function Search() {
                             <input
                                 type="text"
                                 className="form-control"
-                                id="currentCompany"
+                                name="currentCompany"
                                 placeholder="Enter company name"
                                 value={searchCriteria.currentCompany}
                                 onChange={handleInputChange}
@@ -109,7 +116,7 @@ function Search() {
                             <input
                                 type="text"
                                 className="form-control"
-                                id="city"
+                                name="city"
                                 placeholder="Enter city"
                                 value={searchCriteria.city}
                                 onChange={handleInputChange}
