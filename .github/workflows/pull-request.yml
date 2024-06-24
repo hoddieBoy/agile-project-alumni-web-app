@@ -1,0 +1,43 @@
+name: Analyze Pull Request for Code Quality
+
+on:
+  pull_request:
+    branches:
+      - main
+
+    
+concurrency:
+  group: ${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: true
+
+jobs:
+  check-paths-backend:
+    uses: ./.github/workflows/path-checker.yml
+    with:
+      base_ref: ${{ github.event.pull_request.base.sha }}
+      head_ref: ${{ github.event.pull_request.head.sha }}
+      paths: "app/api/"
+
+  sonar-analyze-backend:
+    needs:
+      - check-paths-backend
+    if: ${{ needs.check-paths-backend.outputs.changes_detected == 'true' }}
+    uses: ./.github/workflows/sonar-backend.yml
+    secrets:
+      PRIVATE_SECRET_PEM: ${{ secrets.PRIVATE_SECRET_PEM }}
+      SONAR_TOKEN_BACKEND: ${{ secrets.SONAR_TOKEN_BACKEND }}
+
+  check-paths-frontend:
+    uses: ./.github/workflows/path-checker.yml
+    with:
+      base_ref: ${{ github.event.pull_request.base.sha }}
+      head_ref: ${{ github.event.pull_request.head.sha }}
+      paths: "app/web/"
+
+  sonar-analyze-frontend:
+    needs:
+      - check-paths-frontend
+    if: ${{ needs.check-paths-frontend.outputs.changes_detected == 'true' }}
+    uses: ./.github/workflows/sonar-frontend.yml
+    secrets:
+      SONAR_TOKEN_FRONTEND: ${{ secrets.SONAR_TOKEN_FRONTEND }}

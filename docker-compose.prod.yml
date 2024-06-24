@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: ${REGISTRY_URL}/alumni-fil-api:${TAG}
+    platform: linux/amd64
+    build:
+      context: ./app/api
+      target: ${BUILD_TARGET}
+    restart: always
+    ports:
+      - "${API_PORT}:8080"
+    depends_on:
+      - postgres
+    env_file: .env
+    environment:
+      DB_HOST: postgres
+    volumes:
+      - ./app/api/src:/app/src
+      - ./app/api/pom.xml:/app/pom.xml
+      - ./app/api/target:/app/target
+      - ./app/api/.m2:/root/.m2
+
+  web:
+    image: ${REGISTRY_URL}/alumni-fil-web:${TAG}
+    platform: linux/amd64
+    build:
+      context: ./app/web
+      target: ${BUILD_TARGET}
+    restart: always
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    env_file: .env
+    volumes:
+      - ./app/web/src:/app/src
+      - ./app/web/public:/app/public
+      - ./app/web/node_modules:/app/node_modules
+
+volumes:
+  db-data:
