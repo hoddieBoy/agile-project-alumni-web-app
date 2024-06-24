@@ -20,11 +20,11 @@ export default function Header() {
                 </a>
                 <input type="text" className="form-control navbar-search" placeholder="Search"/>
             </div>
-            <nav className="header-right">
-                <a href="#" className="nav-link">Search</a>
-                <a href="#" className="nav-link">Import/Export</a>
-                <a href="#" className="nav-link">Gestion Utilisateurs</a>
-                <button className="btn" onClick={handleLogout}>Log out</button>
+            <nav className="header-right gap-3">
+                <a href="#" className="nav-item nav-link">Search</a>
+                <a href="#" className="nav-item nav-link">Import/Export</a>
+                <a href="#" className="nav-item nav-link">Gestion Utilisateurs</a>
+                <button type="button" className="btn btn-primary" onClick={handleLogout}>Log out</button>
             </nav>
         </header>
     );

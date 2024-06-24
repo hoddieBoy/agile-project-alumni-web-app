@@ -6,30 +6,29 @@
     padding: 10px;
 }
 
-.header-left,
-.header-right {
+.header-right,
+.header-left {
     display: flex;
     align-items: center;
 }
 
-.header-left .navbar-brand,
-.header-right .nav-link,
-.header-right .btn {
+.header .navbar-brand,
+.header .nav-link,
+.header .btn {
     color: #ffffff;
 }
 
-.header-right .btn {
+.header .btn {
     background-color: #ffffff;
     color: #002855;
 }
 
-.header-left .navbar-brand img {
+.header .navbar-brand img {
     max-height: 120px;
-    margin: -15px 0;
+    margin-top: -15px;
+    margin-bottom: -15px;
 }
 
-.header-left .navbar-search {
-    width: 300px;
-    margin-left: 15px;
-    color: #002855;
+.header .navbar-brand {
+    margin-right: 20px;
 }
