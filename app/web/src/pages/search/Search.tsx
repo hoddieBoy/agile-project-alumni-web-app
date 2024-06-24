@@ -153,7 +153,7 @@ function Search(): React.ReactElement {
                                         />
                                         <div>
                                             <h5 className="card-title">{alumni.fullName}</h5>
-                                            <p className="card-text">{`Graduated in 2024, ${alumni.currentCompany}, ${alumni.city}`}</p>
+                                            <p className="card-text">{`Graduated in ${alumni.graduationYear}, ${alumni.currentCompany}, ${alumni.city}`}</p>
                                         </div>
                                     </div>
                                     <a href="#" className="btn btn-outline-primary">View Profile</a>
