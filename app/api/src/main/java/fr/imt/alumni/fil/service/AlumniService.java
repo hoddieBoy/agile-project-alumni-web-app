@@ -17,14 +17,18 @@ public class AlumniService {
     }
 
 
-    public List<Alumnus> searchAlumni(String name, String city, String country, String currentCompany) {
+    public List<Alumnus> searchAlumni(
+            String name, String city, String country,
+            String currentCompany, String graduationYear) {
         name = Optional.ofNullable(name).map(String::trim).orElse("");
         city = Optional.ofNullable(city).map(String::trim).orElse("");
         country = Optional.ofNullable(country).map(String::trim).orElse("");
         currentCompany = Optional.ofNullable(currentCompany).map(String::trim).orElse("");
-        return (!name.isBlank()|| !city.isBlank() || !country.isBlank() || !currentCompany.isBlank())
-                ? alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCase(name, name, city, country, currentCompany)
-                : List.of();
+        graduationYear = Optional.ofNullable(graduationYear).map(String::trim).orElse("");
+        return (!name.isBlank()|| !city.isBlank() || !country.isBlank() ||
+                !currentCompany.isBlank() || !graduationYear.isBlank())
+                ? alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(name, name, city, country, currentCompany, graduationYear)
+                : alumniDAO.findAll();
 
     }
 }
