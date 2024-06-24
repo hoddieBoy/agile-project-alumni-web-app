@@ -86,6 +86,23 @@ public class SearchEndPointTest {
     @AfterEach
     void tearDown() {
         alumniDAO.deleteAll();
+        Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN,"john.doe@gmail.com "
+                ," Grey Sloan Memorial", "RHMC "," https://john-doe.fr",
+                "France "," Lyon",false);
+        Alumnus johnathan = new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN,
+                " johnathan.doe@yahoo.com","NMC", " BMC ",
+                " https://johnathan-doe.fr", "France "," Bordeaux",false);
+        Alumnus jane = new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN
+                ," jane.jossman@gmail.com"," Grey Sloan Memorial", "RHMC ",
+                " https://jane-jossman.fr", "France "," Lyon",false);
+        Alumnus jenny = new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
+                " "," "," "," "," "," ",false);
+
+        alumniDAO.save(john);
+        alumniDAO.save(johnathan);
+        alumniDAO.save(jane);
+        alumniDAO.save(jenny);
+
         userDAO.deleteAll();
     }
 

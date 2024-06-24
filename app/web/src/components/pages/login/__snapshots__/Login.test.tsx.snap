@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Login page functionality Render and basic elements The Login page renders without crashing 1`] = `
+<div>
+  <header
+    class="login-header"
+  >
+    <img
+      alt="IMT Atlantique Logo"
+      src="https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png"
+    />
+    <h3>
+      Welcome to Alumni FIL
+    </h3>
+    <p>
+      Login to access administrative features
+    </p>
+  </header>
+  <div
+    class="main-content"
+  >
+    <div
+      class="login-container"
+    >
+      <form
+        action="/login"
+        id="login-form"
+        method="post"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            for="username"
+          >
+            Username
+          </label>
+          <input
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            for="password"
+          >
+            Password
+          </label>
+          <input
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            type="password"
+            value=""
+          />
+        </div>
+        <button
+          class="btn btn-custom btn-block"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+  <footer
+    class="login-footer"
+  >
+    <p>
+      © 2024 Alumni FIL
+    </p>
+  </footer>
+</div>
+`;
