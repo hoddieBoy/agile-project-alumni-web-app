@@ -1,4 +1,4 @@
-package fr.imt.alumni.fil.request;
+package fr.imt.alumni.fil.payload.request;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

@@ -1,4 +1,4 @@
-package fr.imt.alumni.fil.request;
+package fr.imt.alumni.fil.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

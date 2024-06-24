@@ -1,16 +1,19 @@
 package fr.imt.alumni.fil.domain.bo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import fr.imt.alumni.fil.domain.enums.Role;
+import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     private UUID id;
@@ -18,15 +21,24 @@ public class User {
     @Column(name = "username", unique = true)
     private String username;
 
-    private String passwordHash;
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User(UUID id, String username, String passwordHash) {
+        this(id, username, passwordHash, Role.USER);
+    }
+
+    public User(UUID id, String username, String passwordHash, Role role) {
         Objects.requireNonNull(id, "id must not be null");
         Objects.requireNonNull(username, "username must not be null");
         Objects.requireNonNull(passwordHash, "passwordHash must not be null");
+        Objects.requireNonNull(role, "role must not be null");
         this.id = id;
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = passwordHash;
+        this.role = role;
     }
 
     protected User() {
@@ -36,19 +48,30 @@ public class User {
         return id;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
     public String getUsername() {
         return username;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public void updateUsername(String username) {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
     public void updatePasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+        this.password = passwordHash;
     }
 }

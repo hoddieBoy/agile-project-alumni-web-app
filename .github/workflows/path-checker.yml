@@ -38,7 +38,7 @@ jobs:
           CHANGES_DETECTED=false
           for path in "${paths_array[@]}"
           do
-            if git diff --name-only ${{ inputs.base_ref }}...${{ inputs.head_ref }} | grep -E "^(${path})"
+            if git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} | grep -E "^(${path})"
             then
               CHANGES_DETECTED=true
               break

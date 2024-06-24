@@ -1,5 +1,6 @@
 package fr.imt.alumni.fil.domain.bo;
 
+import fr.imt.alumni.fil.domain.enums.Sex;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
