@@ -5,7 +5,7 @@ export default function Footer() {
     return (
         <footer>
             <div className="container">
-                <span className="text-muted">© 2024 Alumni FIL</span>
+                <span>© 2024 Alumni FIL</span>
             </div>
         </footer>
     );
