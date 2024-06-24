@@ -1,103 +1,59 @@
 body {
     background-color: #f8f9fa;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
     margin: 0;
 }
 
-.main {
+main {
     flex: 1;
 }
 
-.title,
-.under-title {
-    text-align: center;
-    color: #002855;
+.text-custom-primary {
+    color: #002855 !important;
 }
 
-.title {
-    margin-top: 20px;
-    margin-bottom: 10px;
+.text-custom-secondary {
+    color: #6c757d !important;
 }
 
-.under-title {
-    margin: 0 0 20px;
-}
-
-.search-section {
+.card {
     border: 1px solid #002855;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 40px 0 20px;
-    text-align: center;
 }
 
-.form-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.form-group {
-    flex: 1;
-}
-
-.form-control {
-    color: #002855;
-}
-
-label {
-    color: #002855;
-}
-
-.btn-custom {
-    width: 150px;
-    margin-right: 10px;
-}
-
-
-.profile-cards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.profile-card {
-    border: 1px solid #002855;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 10px;
+.card-body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 60%;
-    background-color: #f8f9fa;
-    color: #002855;
 }
 
-.profile-info {
-    display: flex;
-    align-items: center;
+.card-title {
+    margin: 0;
 }
 
-.profile-info img {
-    border-radius: 50%;
-    margin-right: 15px;
-    height: 100px;
+.card-text {
+    margin: 0;
 }
 
-.profile-actions {
-    text-align: right;
+.btn-primary {
+    background-color: #002855 !important;
+    border-color: #002855 !important;
 }
 
 .btn-outline-primary {
-    border-color: #002855;
-    color: #002855;
+    border-color: #002855 !important;
+    color: #002855 !important;
 }
 
 .btn-outline-primary:hover {
-    background-color: #002855;
-    color: #ffffff;
+    background-color: #002855 !important;
+    color: #ffffff !important;
+}
+
+label,
+.form-control {
+    color: #002855 !important;
+}
+
+.btn-custom-primary {
+    background-color: #002855 !important;
+    border-color: #002855 !important;
 }
