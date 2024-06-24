@@ -79,7 +79,7 @@ function Search(): React.ReactElement {
                             <input
                                 type="text"
                                 className="form-control"
-                                name="name"
+                                id="name"
                                 placeholder="Enter name"
                                 value={searchCriteria.name}
                                 onChange={handleInputChange}
@@ -88,7 +88,7 @@ function Search(): React.ReactElement {
                         <div className="form-group col-md-3">
                             <label htmlFor="graduationYear" className="form-label">Graduation Year</label>
                             <select
-                                name="graduationYear"
+                                id="graduationYear"
                                 className="form-control"
                                 value={searchCriteria.graduationYear}
                                 onChange={handleInputChange}
@@ -105,7 +105,7 @@ function Search(): React.ReactElement {
                             <input
                                 type="text"
                                 className="form-control"
-                                name="currentCompany"
+                                id="currentCompany"
                                 placeholder="Enter company name"
                                 value={searchCriteria.currentCompany}
                                 onChange={handleInputChange}
@@ -116,7 +116,7 @@ function Search(): React.ReactElement {
                             <input
                                 type="text"
                                 className="form-control"
-                                name="city"
+                                id="city"
                                 placeholder="Enter city"
                                 value={searchCriteria.city}
                                 onChange={handleInputChange}
