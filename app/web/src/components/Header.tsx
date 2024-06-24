@@ -1,12 +1,13 @@
 import React from "react";
-import {deleteCookie} from "utils/Cookie";
-import {redirect} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import "components/Header.css";
+import {logout} from "routing/Router";
 
 export default function Header() {
+    const navigate = useNavigate();
     const handleLogout = () => {
-        deleteCookie('token');
-        redirect('/login');
+        logout()
+        navigate('/login');
     }
 
     return (

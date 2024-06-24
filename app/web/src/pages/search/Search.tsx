@@ -40,6 +40,8 @@ function Search() {
             .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
             .join('&');
 
+        console.log(query);
+
         try {
             const response = await axiosConfig.get<SearchResponse>(`/search?${query}`, {
                 headers: {
@@ -85,8 +87,8 @@ function Search() {
                                     onChange={handleInputChange}
                                 >
                                     <option value="">Select Year</option>
-                                    {Array.from({length: 7}, (_, i) => {
-                                        const year = 2023 - i;
+                                    {Array.from({length: 10}, (_, i) => {
+                                        const year = new Date().getFullYear() - i;
                                         return <option key={year} value={year}>{year}</option>;
                                     })}
                                 </select>

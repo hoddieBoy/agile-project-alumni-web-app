@@ -7,9 +7,15 @@ import LoginAction from 'pages/login/Login.action';
 import LoginLoader from 'pages/login/Login.loader';
 import Login from 'pages/login/Login';
 import Search from 'pages/search/Search';
+import {deleteCookie} from "../utils/Cookie";
 
 // Function to check if the user is authenticated
 export const isAuthenticated = (): boolean => !!getAccessToken();
+
+export const logout = () => {
+    deleteCookie('access_token');
+    deleteCookie('refresh_token');
+}
 
 const router = createBrowserRouter([
     {
