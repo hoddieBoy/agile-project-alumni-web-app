@@ -16,7 +16,7 @@ describe("The Login page functionality", () => {
         [
             {
                 path: '/login',
-                element: <Login />,
+                element: <Login/>,
                 loader: LoginLoader,
                 action: LoginAction,
                 children: []
@@ -29,25 +29,25 @@ describe("The Login page functionality", () => {
 
     describe("Render and basic elements", () => {
         test("The Login page renders without crashing", () => {
-            const { container } = render(<RouterProvider router={router} />);
+            const {container} = render(<RouterProvider router={router}/>);
             expect(container).toMatchSnapshot();
         });
 
         test("The Login page contains a header with the correct text", () => {
-            render(<RouterProvider router={router} />);
+            render(<RouterProvider router={router}/>);
             expect(screen.getByText('Welcome to Alumni FIL')).toBeInTheDocument();
             expect(screen.getByText('Login to access administrative features')).toBeInTheDocument();
         });
 
         test("The Login page contains a form with the correct fields", () => {
-            render(<RouterProvider router={router} />);
+            render(<RouterProvider router={router}/>);
             expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
             expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
         });
 
         test("The Login page contains a submit button", () => {
-            render(<RouterProvider router={router} />);
-            expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+            render(<RouterProvider router={router}/>);
+            expect(screen.getByRole('button', {name: /login/i})).toBeInTheDocument();
         });
     });
 
@@ -57,8 +57,8 @@ describe("The Login page functionality", () => {
         });
 
         test("When the user submits the form without entering any data, then an error message is displayed", async () => {
-            render(<RouterProvider router={router} />);
-            const loginButton = screen.getByRole('button', { name: /login/i });
+            render(<RouterProvider router={router}/>);
+            const loginButton = screen.getByRole('button', {name: /login/i});
 
             userEvent.click(loginButton);
 
@@ -66,13 +66,13 @@ describe("The Login page functionality", () => {
         });
 
         test("When the user submits the form with invalid data, then an error message is displayed", async () => {
-            render(<RouterProvider router={router} />);
+            render(<RouterProvider router={router}/>);
             const usernameInput = screen.getByLabelText(/username/i);
             const passwordInput = screen.getByLabelText(/password/i);
-            const loginButton = screen.getByRole('button', { name: /login/i });
+            const loginButton = screen.getByRole('button', {name: /login/i});
 
             // Mock axiosConfig.post to return an error
-            axiosConfigMock.post.mockRejectedValue({ response: { status: 401 } });
+            axiosConfigMock.post.mockRejectedValue({response: {status: 401}});
 
             userEvent.type(usernameInput, 'testuser');
             userEvent.type(passwordInput, 'password');

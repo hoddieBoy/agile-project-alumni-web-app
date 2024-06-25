@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import 'pages/login/Login.css';
-import { Spin } from 'antd';
-import { Form, useActionData, useLoaderData, useNavigate } from 'react-router-dom'; // Ajouter useNavigate
+import {Spin} from 'antd';
+import {Form, Navigate, useActionData, useLoaderData} from 'react-router-dom';
 import Footer from "components/Footer";
+import {AuthContext} from 'context/AuthContext'; // Adjust the import path as necessary
 
-interface ErrorMessages {
+interface LoginResponse {
     message: string;
+    isAuthenticated: boolean;
 }
 
 interface LoaderData {
@@ -17,16 +19,23 @@ function Login() {
     const [username, setUsername] = useState(loaderData.username);
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const error = useActionData() as ErrorMessages;
-    
+    const response = useActionData() as LoginResponse;
+    const {login} = useContext(AuthContext);
 
     useEffect(() => {
         setLoading(false);
-    }, [error]);
+        if (response?.isAuthenticated) {
+            login();
+        }
+    }, [response, login]);
 
     const handleSubmit = () => {
         setLoading(true);
     };
+
+    if (response?.isAuthenticated) {
+        return <Navigate replace to="/search"/>;
+    }
 
     return (
         <>
@@ -66,9 +75,9 @@ function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
-                        {error?.message && <small className="danger">{error.message}</small>}
+                        {response?.message && <small className="danger">{response.message}</small>}
                         {loading ? (
-                            <Spin data-testid="loading" />
+                            <Spin data-testid="loading"/>
                         ) : (
                             <button
                                 type="submit"
