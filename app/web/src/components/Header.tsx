@@ -7,7 +7,7 @@ import {logout} from "utils/Auth";
  * Includes a logo, search input, navigation links, and a logout button.
  */
 const Header: React.FC = () => {
-    const links = ['Search', 'Import/Export', 'Gestion Utilisateurs', 'Stat'];
+    const links = ['Search', 'Import/Export', 'Gestion Utilisateurs'];
 
     return (
         <header className="header">

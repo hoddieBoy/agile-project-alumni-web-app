@@ -1,4 +1,4 @@
-import {ActionFunctionArgs, json, redirect, useNavigate} from "react-router-dom";
+import {ActionFunctionArgs, json, redirect} from "react-router-dom";
 import axiosConfig from "config/axiosConfig";
 import AuthenticateResponse from "payload/response/AuthenticateResponse";
 import {setCookie} from "utils/Cookie";
@@ -35,5 +35,5 @@ export default async function action({ request }: ActionFunctionArgs<'post'>) {
             return json({ message: 'An error occurred. Please try again later.' }, { status: 500 });
         }
     }
-    window.location.href = "/search"
+    return redirect('/');
 }
