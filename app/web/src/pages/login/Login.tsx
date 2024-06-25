@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import 'pages/login/Login.css';
-import {Spin} from 'antd';
-import {Form, useActionData, useLoaderData} from 'react-router-dom';
+import { Spin } from 'antd';
+import { Form, useActionData, useLoaderData, useNavigate } from 'react-router-dom'; // Ajouter useNavigate
 import Footer from "components/Footer";
 
 interface ErrorMessages {
@@ -12,25 +12,21 @@ interface LoaderData {
     username: string;
 }
 
-/**
- * Renders a login page with a form, loading spinner, and error messages as needed.
- */
 function Login() {
-    // State variables
     const loaderData = useLoaderData() as LoaderData;
     const [username, setUsername] = useState(loaderData.username);
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const error = useActionData() as ErrorMessages;
+    const navigate = useNavigate(); 
 
-    // Reset loading state on error change
     useEffect(() => {
         setLoading(false);
     }, [error]);
 
-    // Form submission handler
     const handleSubmit = () => {
         setLoading(true);
+        navigate('/search'); 
     };
 
     return (

@@ -7,6 +7,7 @@ import LoginAction from 'pages/login/Login.action';
 import LoginLoader from 'pages/login/Login.loader';
 import Login from 'pages/login/Login';
 import Search from 'pages/search/Search';
+import Stat from 'pages/stat/Stat'
 import {deleteCookie} from "utils/Cookie";
 
 // Function to check if the user is authenticated
@@ -35,6 +36,13 @@ const router = createBrowserRouter([
                         // Search page route
                         path: '/search',
                         element: <Search/>,
+                        
+                    },
+                    {
+                        // Search page route
+                        path: '/stat',
+                        element: <Stat/>,
+                        
                     }
                 ]
             },
