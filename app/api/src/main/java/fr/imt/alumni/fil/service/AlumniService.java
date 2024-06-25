@@ -1,11 +1,14 @@
 package fr.imt.alumni.fil.service;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
+import fr.imt.alumni.fil.domain.enums.Sex;
+import fr.imt.alumni.fil.payload.request.AlumnusDTO;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AlumniService {
@@ -29,6 +32,28 @@ public class AlumniService {
                 !currentCompany.isBlank() || !graduationYear.isBlank())
                 ? alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(name, name, city, country, currentCompany, graduationYear)
                 : List.of();
+
+    }
+
+    public void addAlumni(List<AlumnusDTO> alumni) {
+
+        for (AlumnusDTO alumnusDTO : alumni) {
+            Alumnus alumnus = new Alumnus(
+                    UUID.randomUUID(),
+                    alumnusDTO.firstName(),
+                    alumnusDTO.lastName(),
+                    Sex.values()[alumnusDTO.sex()],
+                    alumnusDTO.mail(),
+                    alumnusDTO.coopCompany(),
+                    alumnusDTO.currentCompany(),
+                    alumnusDTO.website(),
+                    alumnusDTO.country(),
+                    alumnusDTO.city(),
+                    alumnusDTO.isStayed(),
+                    alumnusDTO.graduationYear()
+            );
+            alumniDAO.save(alumnus);
+        }
 
     }
 }
