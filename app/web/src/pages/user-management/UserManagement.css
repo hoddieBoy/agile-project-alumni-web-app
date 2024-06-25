@@ -1,0 +1,37 @@
+main {
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.user-management-title {
+    color: #002855;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.user-management-table .ant-table {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-management-table .ant-table-thead > tr > th {
+    background-color: #002855;
+    color: white;
+}
+
+.user-management-table .ant-table-tbody > tr > td {
+    background-color: #fff;
+}
+
+.create-user-button {
+    margin-top: 16px;
+    background-color: #002855;
+    border-color: #002855;
+}
+
+.create-user-button:hover, .create-user-button:focus {
+    background-color: #003f88;
+    border-color: #003f88;
+}
