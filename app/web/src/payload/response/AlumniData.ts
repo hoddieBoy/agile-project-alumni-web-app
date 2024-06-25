@@ -4,5 +4,5 @@ export interface AlumniData {
     currentCompany: string;
     city: string;
     country: string;
-    graduationYear: number;
+    graduationYear: string;
 }

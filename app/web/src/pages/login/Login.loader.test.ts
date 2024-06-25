@@ -1,5 +1,5 @@
 import {redirect} from 'react-router-dom';
-import {isAuthenticated} from 'routing/Router';
+import {isAuthenticated} from 'utils/Auth';
 import loader from 'pages/login/Login.loader';
 
 // Mock the dependencies
@@ -7,7 +7,7 @@ jest.mock('react-router-dom', () => ({
     redirect: jest.fn(),
 }));
 
-jest.mock('routing/Router', () => ({
+jest.mock('utils/Auth', () => ({
     isAuthenticated: jest.fn(),
 }));
 

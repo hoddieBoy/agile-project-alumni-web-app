@@ -47,6 +47,30 @@ describe('getAccessToken', () => {
     });
 });
 
+describe('getRefreshToken', () => {
+    it('returns the token if it is valid', () => {
+        const validToken = createTokenWithExpiration(Date.now() / 1000 + 60);
+        (getCookie as jest.Mock).mockReturnValue(validToken);
+        expect(getAccessToken()).toBe(validToken);
+    });
+
+    it('returns an empty string if the token is not present', () => {
+        (getCookie as jest.Mock).mockReturnValue('');
+        expect(getAccessToken()).toBe('');
+    });
+
+    it('returns an empty string if the token is invalid', () => {
+        const invalidToken = createTokenWithExpiration(Date.now() / 1000 - 60);
+        (getCookie as jest.Mock).mockReturnValue(invalidToken);
+        expect(getAccessToken()).toBe('');
+    });
+
+    it('returns an empty string if the token is malformed', () => {
+        (getCookie as jest.Mock).mockReturnValue('malformed.token');
+        expect(getAccessToken()).toBe('');
+    });
+});
+
 // Helper function to create a JWT token with a specific expiration time
 function createTokenWithExpiration(expiration: number): string {
     const payload = {
