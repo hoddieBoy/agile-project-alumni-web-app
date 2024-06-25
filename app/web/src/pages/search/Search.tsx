@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AlumniData} from 'payload/response/AlumniData';
-import axiosConfig from 'config/axiosConfig';
-import {SearchResponse} from 'payload/response/SearchResponse';
-import {getAccessToken} from 'utils/Token';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import {Spin} from 'antd';
+import {Form, useActionData} from "react-router-dom";
 
 type SearchCriteria = {
     name: string;
@@ -14,10 +12,12 @@ type SearchCriteria = {
     city: string;
 };
 
+type ErrorMessage = {
+    message: string;
+};
+
 function Search(): React.ReactElement {
-    const [alumniData, setAlumniData] = useState<AlumniData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
     const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
         name: '',
         graduationYear: '',
@@ -25,34 +25,15 @@ function Search(): React.ReactElement {
         city: ''
     });
 
+    const data = useActionData() as AlumniData[] | ErrorMessage;
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, [data]);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {id, value} = e.target;
         setSearchCriteria((prev) => ({...prev, [id]: value}));
-    };
-
-    const handleSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError('');
-
-        const query = Object.entries(searchCriteria)
-            .filter(([_, value]) => value)
-            .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-            .join('&');
-
-        try {
-            const response = await axiosConfig.get<SearchResponse>(`/search?${query}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getAccessToken()}`
-                }
-            });
-            setAlumniData(response.data?.results || []);
-        } catch (error) {
-            setError('Failed to fetch data');
-        } finally {
-            setIsLoading(false);
-        }
     };
 
     const handleReset = () => {
@@ -64,15 +45,25 @@ function Search(): React.ReactElement {
         });
     }
 
+    const handleSearch = async () => {
+        setIsLoading(true);
+    }
+
     return (
         <>
             <Header/>
             <main className="container my-4">
                 <h2 className="text-center text-custom-primary">Find Alumni</h2>
-                <p className="text-center text-custom-secondary">Search for specific alumni based on various
-                    criteria</p>
+                <p className="text-center text-custom-secondary">
+                    Search for specific alumni based on various criteria
+                </p>
 
-                <form onSubmit={handleSearch} className="text-center border p-4 rounded my-4">
+                <Form
+                    className="text-center border p-4 rounded my-4"
+                    action="/search"
+                    method="post"
+                    onSubmit={handleSearch}
+                >
                     <div className="row mb-4">
                         <div className="form-group col-md-3">
                             <label htmlFor="name" className="form-label">Name</label>
@@ -80,6 +71,7 @@ function Search(): React.ReactElement {
                                 type="text"
                                 className="form-control"
                                 id="name"
+                                name="name"
                                 placeholder="Enter name"
                                 value={searchCriteria.name}
                                 onChange={handleInputChange}
@@ -89,6 +81,7 @@ function Search(): React.ReactElement {
                             <label htmlFor="graduationYear" className="form-label">Graduation Year</label>
                             <select
                                 id="graduationYear"
+                                name="graduationYear"
                                 className="form-control"
                                 value={searchCriteria.graduationYear}
                                 onChange={handleInputChange}
@@ -106,6 +99,7 @@ function Search(): React.ReactElement {
                                 type="text"
                                 className="form-control"
                                 id="currentCompany"
+                                name="currentCompany"
                                 placeholder="Enter company name"
                                 value={searchCriteria.currentCompany}
                                 onChange={handleInputChange}
@@ -117,6 +111,7 @@ function Search(): React.ReactElement {
                                 type="text"
                                 className="form-control"
                                 id="city"
+                                name="city"
                                 placeholder="Enter city"
                                 value={searchCriteria.city}
                                 onChange={handleInputChange}
@@ -124,24 +119,31 @@ function Search(): React.ReactElement {
                         </div>
                     </div>
                     <div className="row justify-content-center gap-3">
-                        <button type="reset" className="btn btn-outline-secondary form-group col-md-2">Reset</button>
-                        <button type="submit"
-                                className="custom-primary-color btn btn-primary btn-custom-primary form-group col-md-2">Search
+                        <button
+                            type="reset"
+                            className="btn btn-outline-secondary form-group col-md-2"
+                            onClick={handleReset}
+                        >
+                            Reset
+                        </button>
+                        <button
+                            type="submit"
+                            className="custom-primary-color btn btn-primary btn-custom-primary form-group col-md-2"
+                        >
+                            Search
                         </button>
                     </div>
-                </form>
+                </Form>
 
                 <section className="scrollable-container">
                     {isLoading ? (
                         <div className="d-flex justify-content-center my-4">
                             <Spin size="large"/>
                         </div>
-                    ) : error ? (
-                        <p className="text-danger text-center">{error}</p>
-                    ) : alumniData.length === 0 ? (
-                        <p className="text-center">No Alumni found based on your search criteria.</p>
+                    ) : (!data || 'message' in data) ? (
+                        <p className="text-center text-danger">{data?.message}</p>
                     ) : (
-                        alumniData.map((alumni) => (
+                        data.map((alumni) => (
                             <div className="card mb-3" key={alumni.id}>
                                 <div className="card-body d-flex align-items-center justify-content-between">
                                     <div className="d-flex align-items-center">
@@ -153,7 +155,7 @@ function Search(): React.ReactElement {
                                         />
                                         <div>
                                             <h5 className="card-title">{alumni.fullName}</h5>
-                                            <p className="card-text">{`Graduated in 2024, ${alumni.currentCompany}, ${alumni.city}`}</p>
+                                            <p className="card-text">{`Graduated in ${alumni.graduationYear}, ${alumni.currentCompany}, ${alumni.city}`}</p>
                                         </div>
                                     </div>
                                     <a href="#" className="btn btn-outline-primary">View Profile</a>

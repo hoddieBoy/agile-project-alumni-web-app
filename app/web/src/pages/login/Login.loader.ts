@@ -1,5 +1,5 @@
 import {redirect} from "react-router-dom";
-import {isAuthenticated} from "routing/Router";
+import {isAuthenticated} from "utils/Auth";
 
 export default function loader() {
     if (isAuthenticated()) {
