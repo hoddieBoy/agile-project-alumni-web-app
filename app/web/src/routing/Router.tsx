@@ -13,12 +13,7 @@ import Stat from 'pages/stat/Stat'
 import {deleteCookie} from "utils/Cookie";
 
 // Function to check if the user is authenticated
-export const isAuthenticated = (): boolean => !!getAccessToken();
 
-export const logout = () => {
-    deleteCookie('access_token');
-    deleteCookie('refresh_token');
-}
 
 const router = createBrowserRouter([
     {

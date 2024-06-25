@@ -18,7 +18,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const error = useActionData() as ErrorMessages;
-    const navigate = useNavigate(); 
+    
 
     useEffect(() => {
         setLoading(false);
@@ -26,7 +26,6 @@ function Login() {
 
     const handleSubmit = () => {
         setLoading(true);
-        navigate('/search'); 
     };
 
     return (
