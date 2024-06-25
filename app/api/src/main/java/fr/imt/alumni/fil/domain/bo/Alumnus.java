@@ -44,11 +44,11 @@ public class Alumnus {
     private String city;
 
     @Column(name = "is_stayed")
-    private boolean isStayed;
+    private Boolean isStayed;
 
     public Alumnus(UUID id, String firstName, String lastName, Sex sex, String mail,
                    String coopCompany, String currentCompany, String website,
-                   String country, String city, boolean isStayed) {
+                   String country, String city, Boolean isStayed) {
         this.id = id;
         this.firstName = firstName.trim();
         this.lastName = lastName.trim();
@@ -141,11 +141,11 @@ public class Alumnus {
         this.city = city;
     }
 
-    public boolean getIsStayed() {
+    public Boolean getIsStayed() {
         return isStayed;
     }
 
-    public void setIsStayed(boolean is_stayed) {
+    public void setIsStayed(Boolean is_stayed) {
         this.isStayed = is_stayed;
     }
 
