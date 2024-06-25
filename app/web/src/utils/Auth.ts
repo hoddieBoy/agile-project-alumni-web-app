@@ -1,7 +1,6 @@
 import {getAccessToken, getRefreshToken} from "./Token";
 import axiosConfig from "config/axiosConfig";
 import {deleteCookie, setCookie} from "./Cookie";
-import {createContext} from "react";
 
 /**
  * Checks if a user is authenticated by verifying the access token.
@@ -34,12 +33,3 @@ export const logout = (): void => {
     deleteCookie('refresh_token');
     window.location.reload();
 }
-
-// Create an AuthContext to manage authentication status
-const AuthContext = createContext<{ isAuthenticated: boolean, login: () => void, logout: () => void }>({
-    isAuthenticated: false,
-    login: () => {
-    },
-    logout: () => {
-    }
-});
