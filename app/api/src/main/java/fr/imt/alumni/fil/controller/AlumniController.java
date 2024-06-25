@@ -1,18 +1,19 @@
 package fr.imt.alumni.fil.controller;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
+import fr.imt.alumni.fil.payload.request.AlumnusDTO;
 import fr.imt.alumni.fil.payload.response.AlumniData;
+import fr.imt.alumni.fil.payload.response.MessageResponse;
 import fr.imt.alumni.fil.payload.response.SearchResponse;
 import fr.imt.alumni.fil.service.AlumniService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -59,6 +60,28 @@ public class AlumniController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/add-alumni",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Add an alumni",
+            description = "Add an alumni to the database",
+            tags = {"alumni"},
+            responses = {
+                @ApiResponse(
+                        responseCode = "201",
+                        description = "Alumni added"
+                )
+        }
+    )
+    public ResponseEntity<MessageResponse> addAlumni(@RequestBody @Valid List<AlumnusDTO> alumni){
+        alumniService.addAlumni(alumni);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new MessageResponse("The alumni were added successfully"));
     }
 
 }
