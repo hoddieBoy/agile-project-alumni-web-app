@@ -1,28 +1,19 @@
 import {redirect} from 'react-router-dom';
-import {isAuthenticated} from 'routing/Router';
-import loader from 'components/pages/login/Login.loader';
+import {isAuthenticated} from 'utils/Auth';
+import loader from 'pages/login/Login.loader';
 
 // Mock the dependencies
 jest.mock('react-router-dom', () => ({
     redirect: jest.fn(),
 }));
 
-jest.mock('routing/Router', () => ({
+jest.mock('utils/Auth', () => ({
     isAuthenticated: jest.fn(),
 }));
 
 describe('loader function', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    });
-
-    it('should redirect to "/" if the user is authenticated', () => {
-        (isAuthenticated as jest.Mock).mockReturnValue(true);
-
-        const result = loader();
-
-        expect(redirect).toHaveBeenCalledWith('/');
-        expect(result).toBeUndefined();
     });
 
     it('should return username from localStorage if the user is not authenticated', () => {

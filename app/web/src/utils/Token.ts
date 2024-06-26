@@ -43,3 +43,12 @@ export function getAccessToken(): string {
     }
     return '';
 }
+
+export function getRefreshToken(): string {
+    // Get the refresh token from the cookie named 'refresh_token'.
+    const refreshToken = getCookie('refresh_token');
+    if (refreshToken && isTokenValid(refreshToken)) {
+        return refreshToken;
+    }
+    return '';
+}
