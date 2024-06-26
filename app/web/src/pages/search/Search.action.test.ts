@@ -44,19 +44,19 @@ describe("Search Action", () => {
             results: [
                 {
                     id: "1",
-                    fullName: "John Doe",
-                    currentCompany: "Company A",
+                    full_name: "John Doe",
+                    current_company: "Company A",
                     city: "Paris",
                     country: "France",
-                    graduationYear: "2020"
+                    graduation_year: "2020"
                 },
                 {
                     id: "2",
-                    fullName: "John Smith",
-                    currentCompany: "Company B",
+                    full_name: "John Smith",
+                    current_company: "Company B",
                     city: "Paris",
                     country: "France",
-                    graduationYear: "2021"
+                    graduation_year: "2021"
                 }
             ]
         };
