@@ -1,7 +1,7 @@
 package fr.imt.alumni.fil.service;
 
-import org.springframework.stereotype.Service;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -52,6 +52,10 @@ public class StatisticService {
 
     public long getTotalAlumniInEspagne() {
         return repository.getTotalAlumniInEspagne();
+    }
+
+    public long getTotalAlumniInSuisse() {
+        return repository.getTotalAlumniInSuisse();
     }
 
     public List<Object[]> getCompaniesByAlumniCount() {
