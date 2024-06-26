@@ -35,7 +35,7 @@ const router = createBrowserRouter([
             },
             {
                 // Search page route
-                path: '/import',
+                path: '/import-export',
                 element: <AlumniImportExport/>,
 
             }

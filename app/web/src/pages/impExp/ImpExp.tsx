@@ -2,30 +2,39 @@ import React, { useState } from 'react';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getAccessToken } from 'utils/Token';
 
 const AlumniImportExport: React.FC = () => {
-    const [selectedFile, setSelectedFile] = useState<string>('CSV2014');
+    const [selectedYear, setSelectedYear] = useState<number>(2014);
 
     const handleDownload = () => {
-        const fileMap: { [key: string]: string } = {
-            CSV2014: 'http://192.168.32.1:8082/FIL2014.csv',
-            CSV2015: 'http://192.168.32.1:8082/FIL2015.csv'
-        };
-
-        const filePath = fileMap[selectedFile];
-        if (filePath) {
-            const link = document.createElement('a');
-            link.href = filePath;
-            const fileName = filePath.split('/').pop();
-            if (fileName) {
-                link.download = fileName;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+        fetch(`http://192.168.32.1:8081/api/v1/alumni-fil/generate-csv?year=${selectedYear}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getAccessToken()}`
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Network response was not ok.');
             }
-        } else {
-            console.error('Selected file is not available in the file map.');
-        }
+        })
+        .then(blob => {
+            const link = document.createElement('a');
+            const url = window.URL.createObjectURL(blob);
+            link.href = url;
+            link.setAttribute('download', `alumni_${selectedYear}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode?.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
     };
 
     return (
@@ -36,15 +45,14 @@ const AlumniImportExport: React.FC = () => {
                 <div className="row justify-content-center">
                     <div className="col-md-6">
                         <div className="form-group">
-                            <label htmlFor="fileSelect">Select a file: </label>
-                            <select 
-                                id="fileSelect" 
-                                className="form-control d-inline-block w-auto mx-2"
-                                value={selectedFile} 
-                                onChange={(e) => setSelectedFile(e.target.value)}                            >
-                                <option value="CSV2014">CSV2014</option>
-                                <option value="CSV2015">CSV2015</option>
-                            </select>
+                            <label htmlFor="yearSelect">Select a year: </label>
+                            <input 
+                                type="number" 
+                                id="yearSelect" 
+                                className="form-control d-inline-block w-auto mx-2" 
+                                value={selectedYear} 
+                                onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))} 
+                            />
                             <button 
                                 onClick={handleDownload} 
                                 className="btn btn-primary"
