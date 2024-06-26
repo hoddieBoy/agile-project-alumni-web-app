@@ -1,5 +1,5 @@
 import React from 'react';
-import {createBrowserRouter} from 'react-router-dom';
+import {createBrowserRouter, Outlet} from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage';
 import LoginAction from 'pages/login/Login.action';
 import LoginLoader from 'pages/login/Login.loader';
@@ -12,7 +12,7 @@ import Stat from 'pages/stat/Stat'
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <ProtectedRoute element={<Search/>}/>,
+        element: <ProtectedRoute element={<Outlet/>}/>,
         children: [
             {
                 path: 'search',
