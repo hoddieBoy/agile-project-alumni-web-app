@@ -2,7 +2,6 @@ package fr.imt.alumni.fil.service;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
 import fr.imt.alumni.fil.domain.enums.Sex;
-import fr.imt.alumni.fil.exception.NotFoundException;
 import fr.imt.alumni.fil.payload.request.AlumnusDTO;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
 import org.springframework.stereotype.Service;
