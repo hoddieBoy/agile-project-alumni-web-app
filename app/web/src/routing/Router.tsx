@@ -9,6 +9,7 @@ import SearchAction from 'pages/search/Search.action';
 import ProtectedRoute from './ProtectedRoute'; // Adjust the import path as necessary
 import Stat from 'pages/stat/Stat'
 import AlumniImportExport from 'pages/impExp/ImpExp';
+import UserManagementPage from "../pages/user-management/UserManagement";
 
 const router = createBrowserRouter([
     {
@@ -31,13 +32,16 @@ const router = createBrowserRouter([
                 // Search page route
                 path: '/stat',
                 element: <Stat/>,
-
             },
             {
                 // Search page route
                 path: '/import-export',
                 element: <AlumniImportExport/>,
-
+            },
+            {
+                // User management page route
+                path: '/gestion-utilisateurs',
+                element: <UserManagementPage/>,
             }
         ],
         errorElement: <ErrorPage/>

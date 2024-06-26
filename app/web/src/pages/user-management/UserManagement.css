@@ -1,13 +1,15 @@
+/* Basic styles */
 main {
     padding: 20px;
     background-color: #f5f5f5;
-    min-height: 100vh;
+    min-height: 80vh;
 }
 
 .user-management-title {
     color: #002855;
     font-size: 2em;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .user-management-table .ant-table {
@@ -32,6 +34,48 @@ main {
 }
 
 .create-user-button:hover, .create-user-button:focus {
-    background-color: #003f88;
+    background-color: white;
     border-color: #003f88;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .user-management-title {
+        font-size: 1.5em;
+    }
+
+    .user-management-table .ant-table {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .create-user-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Adjust table for smaller screens */
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    main {
+        padding: 10px;
+    }
+
+    .user-management-title {
+        font-size: 1.2em;
+    }
+
+    .user-management-table .ant-table {
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    .create-user-button {
+        font-size: 0.9em;
+    }
 }

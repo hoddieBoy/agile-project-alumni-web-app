@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Button, message, Popconfirm, Table} from 'antd';
+import {Button, message, Popconfirm, Table, Tag} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "components/Footer";
+import Header from "components/Header";
+import 'pages/user-management/UserManagement.css';
 
 interface User {
     key: string;
@@ -25,7 +26,6 @@ const UserManagementPage: React.FC = () => {
     };
 
     const handleCreateUser = () => {
-        // Logic for creating a new user
         const newUser: User = {key: `${users.length + 1}`, username: `user${users.length + 1}`, roles: ['viewer']};
         setUsers([...users, newUser]);
         message.success('New user created successfully');
@@ -36,12 +36,29 @@ const UserManagementPage: React.FC = () => {
             title: 'Username',
             dataIndex: 'username',
             key: 'username',
+            // No need to hide; we keep this column visible
         },
         {
             title: 'Roles',
             dataIndex: 'roles',
             key: 'roles',
-            render: (roles: string[]) => roles.join(', '),
+            render: (roles: string[]) => (
+                <>
+                    {roles.map(role => {
+                        let color = 'green';
+                        if (role === 'editor') {
+                            color = 'blue';
+                        } else if (role === 'admin') {
+                            color = 'red';
+                        }
+                        return (
+                            <Tag color={color} key={role}>
+                                {role.toUpperCase()}
+                            </Tag>
+                        );
+                    })}
+                </>
+            ),
         },
         {
             title: 'Action',
@@ -57,9 +74,17 @@ const UserManagementPage: React.FC = () => {
     return (
         <>
             <Header/>
-            <main>
-                <h1 className="user-management-title">User Management</h1>
-                <Table dataSource={users} columns={columns} pagination={false} className="user-management-table"/>
+            <main className="user-management-main">
+                <h1 className="user-management-title">Gestion des Utilisateurs</h1>
+                <div className="table-responsive">
+                    <Table
+                        dataSource={users}
+                        columns={columns}
+                        bordered={true}
+                        className="user-management-table"
+                        scroll={{x: 600}} // Allow horizontal scroll on small screens
+                    />
+                </div>
                 <Button
                     type="primary"
                     icon={<PlusOutlined/>}
