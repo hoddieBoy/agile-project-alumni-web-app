@@ -15,7 +15,7 @@ class AlumnusTest {
         UUID id = UUID.randomUUID();
         Alumnus alumnus = new Alumnus(id, "jay", "z", Sex.WOMAN, "jay.z@gmail.com",
                 "DGFiP", "DGFiP", "https://www.jayz.com",
-                "France", "Paris", true);
+                "France", "Paris", true, "2026");
 
         assertEquals(alumnus.getId(), id);
         assertEquals("jay", alumnus.getFirstName());
@@ -28,6 +28,7 @@ class AlumnusTest {
         assertEquals("France", alumnus.getCountry());
         assertEquals("Paris", alumnus.getCity());
         assertTrue(alumnus.getIsStayed());
+        assertEquals("2026", alumnus.getGraduationYear());
 
     }
 
