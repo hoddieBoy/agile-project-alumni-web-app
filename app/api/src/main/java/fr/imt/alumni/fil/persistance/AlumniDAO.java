@@ -48,4 +48,7 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
     List<Alumnus> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(String name, String name1, String city, String country, String currentCompany, String graduationYear);
 
     Set<Alumnus> findByGraduationYear(String graduationYear);
+
+    @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Suisse'", nativeQuery = true)
+    long getTotalAlumniInSuisse();
 }

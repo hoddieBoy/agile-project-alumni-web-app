@@ -1,5 +1,5 @@
 import React from 'react';
-import {Outlet, createBrowserRouter} from 'react-router-dom';
+import {createBrowserRouter, Outlet} from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage';
 import LoginAction from 'pages/login/Login.action';
 import LoginLoader from 'pages/login/Login.loader';
@@ -12,12 +12,19 @@ import AlumniImportExport from 'pages/impExp/ImpExp';
 
 const router = createBrowserRouter([
     {
+        path: '/login',
+        element: <Login/>,
+        loader: LoginLoader,
+        action: LoginAction,
+        errorElement: <ErrorPage/>
+    },
+    {
         path: '/',
         element: <ProtectedRoute element={<Outlet/>}/>,
         children: [
             {
-                path: 'search',
-                element: <ProtectedRoute element={<Search/>}/>,
+                path: '/search',
+                element: <Search/>,
                 action: SearchAction,
             },
             {
@@ -33,13 +40,6 @@ const router = createBrowserRouter([
 
             }
         ],
-        errorElement: <ErrorPage/>
-    },
-    {
-        path: '/login',
-        element: <Login/>,
-        loader: LoginLoader,
-        action: LoginAction,
         errorElement: <ErrorPage/>
     },
 ]);

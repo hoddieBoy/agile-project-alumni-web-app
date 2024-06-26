@@ -1,4 +1,4 @@
-import React, {createContext, ReactNode, useState} from 'react';
+import React, {createContext, ReactNode, useEffect, useState} from 'react';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -15,7 +15,14 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({children}) => {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+        const savedAuthState = localStorage.getItem('isAuthenticated');
+        return savedAuthState ? JSON.parse(savedAuthState) : false;
+    });
+
+    useEffect(() => {
+        localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
+    }, [isAuthenticated]);
 
     const login = () => setIsAuthenticated(true);
     const logout = () => setIsAuthenticated(false);

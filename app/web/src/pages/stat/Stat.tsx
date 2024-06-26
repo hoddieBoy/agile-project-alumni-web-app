@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Chart, registerables, ChartConfiguration } from 'chart.js';
+import React, {useEffect, useRef, useState} from 'react';
+import {Chart, ChartConfiguration, registerables} from 'chart.js';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import axiosConfig from 'config/axiosConfig';
-import { getAccessToken } from 'utils/Token';
+import {getAccessToken} from 'utils/Token';
 
 Chart.register(...registerables);
 
@@ -19,7 +19,7 @@ const AlumniOverview: React.FC = () => {
     const [companyAlumniData, setCompanyAlumniData] = useState<{ company: string, count: number }[]>([]);
     const graduationChartRef = useRef<Chart<'bar', number[], string> | null>(null);
     const genderChartRef = useRef<Chart<'pie', number[], string> | null>(null);
-    const employmentChartRef = useRef<Chart<'bar', number[], string> | null>(null);    
+    const employmentChartRef = useRef<Chart<'bar', number[], string> | null>(null);
 
     useEffect(() => {
         const fetchTotalAlumni = async () => {
@@ -90,7 +90,7 @@ const AlumniOverview: React.FC = () => {
                 console.error('Error fetching total alumni in Angleterre:', error);
             }
         };
-        
+
         const fetchTotalAlumniEspagne = async () => {
             try {
                 const response = await axiosConfig.get<number>('statistic/total-alumni-espagne', {
@@ -104,7 +104,7 @@ const AlumniOverview: React.FC = () => {
                 console.error('Error fetching total alumni in Espagne:', error);
             }
         };
-        
+
         const fetchTotalAlumniPortugal = async () => {
             try {
                 const response = await axiosConfig.get<number>('statistic/total-alumni-portugal', {
@@ -186,17 +186,17 @@ const AlumniOverview: React.FC = () => {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            stepSize: 1, 
+                            stepSize: 1,
                             callback: function(value) {
                                 if (Number.isInteger(value)) {
-                                    return value; 
+                                    return value;
                                 }
-                                return null; 
+                                return null;
                             }
                         }
                     }
                 }
-                
+
             }
         } as ChartConfiguration<'bar', number[], string>);
 
@@ -281,10 +281,13 @@ const AlumniOverview: React.FC = () => {
                             <div className="card-body">
                                 <h5 className="card-title">Répartition Internationale</h5>
                                 <p className="card-text">
-                                    <strong> Angleterre : {totalAlumniAngleterre !== null ? totalAlumniAngleterre : 'Chargement...'}</strong>  
-                                    <strong> Espagne : {totalAlumniEspagne !== null ? totalAlumniEspagne : 'Chargement...'}</strong><br></br>
+                                    <strong> Angleterre
+                                        : {totalAlumniAngleterre !== null ? totalAlumniAngleterre : 'Chargement...'}</strong>
+                                    <strong> Espagne
+                                        : {totalAlumniEspagne !== null ? totalAlumniEspagne : 'Chargement...'}</strong><br></br>
                                     <strong> Portugal : {totalAlumniPortugal !== null ? totalAlumniPortugal : 'Chargement...'}</strong>
-                                    <strong> Suisse : {totalAlumniSuisse !== null ? totalAlumniSuisse : 'Chargement...'}</strong>
+                                    <strong> Suisse
+                                        : {totalAlumniSuisse !== null ? totalAlumniSuisse : 'Chargement...'}</strong>
                                 </p>
                             </div>
                         </div>
@@ -324,10 +327,10 @@ const AlumniOverview: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
             <Footer/>
-           
+
         </>
     );
 };

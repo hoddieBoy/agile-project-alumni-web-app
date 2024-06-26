@@ -1,13 +1,14 @@
-import React from "react";
+import React, {useContext} from "react";
 import "components/Header.css";
-import {logout} from "utils/Auth";
+import {AuthContext} from "context/AuthContext";
 
 /**
  * Renders the header section for a webpage.
  * Includes a logo, search input, navigation links, and a logout button.
  */
 const Header: React.FC = () => {
-    const links = ['Search', 'Import-Export', 'Gestion Utilisateurs', 'Stat'];
+    const links = ['Search', 'Import/Export', 'Gestion Utilisateurs', 'Stat'];
+    const {logout} = useContext(AuthContext);
 
     return (
         <header className="header">
