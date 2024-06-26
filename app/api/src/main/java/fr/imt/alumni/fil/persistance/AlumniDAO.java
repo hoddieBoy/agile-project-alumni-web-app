@@ -1,12 +1,12 @@
 package fr.imt.alumni.fil.persistance;
 
-import java.util.List;
-import java.util.UUID;
-
+import fr.imt.alumni.fil.domain.bo.Alumnus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import fr.imt.alumni.fil.domain.bo.Alumnus;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {    
     @Query(value="SELECT COUNT(*) FROM alumni", nativeQuery=true)
@@ -29,4 +29,6 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
     long getTotalFemaleAlumni();
 
     List<Alumnus> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(String name, String name1, String city, String country, String currentCompany, String graduationYear);
+
+    Set<Alumnus> findByGraduationYear(String graduationYear);
 }
