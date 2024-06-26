@@ -7,6 +7,7 @@ import Login from 'pages/login/Login';
 import Search from 'pages/search/Search';
 import SearchAction from 'pages/search/Search.action';
 import ProtectedRoute from './ProtectedRoute'; // Adjust the import path as necessary
+import Stat from 'pages/stat/Stat'
 
 const router = createBrowserRouter([
     {
@@ -18,6 +19,12 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute element={<Search/>}/>,
                 action: SearchAction,
             },
+            {
+                // Search page route
+                path: '/stat',
+                element: <Stat/>,
+
+            }
         ],
         errorElement: <ErrorPage/>
     },
