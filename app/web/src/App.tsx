@@ -2,11 +2,14 @@ import React from 'react';
 import './App.css';
 import {RouterProvider} from "react-router-dom";
 import router from "routing/Router";
+import {AuthProvider} from "context/AuthContext";
 
 function App() {
-  return (
-      <RouterProvider router={router} />
-  );
+    return (
+        <AuthProvider>
+            <RouterProvider router={router}/>
+        </AuthProvider>
+    );
 }
 
 export default App;

@@ -56,13 +56,16 @@ public class SearchEndPointTest {
 
     private void saveAlumniData() {
         alumniDAO.save(new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN, "john.doe@gmail.com",
-                "Grey Sloan Memorial", "RHMC", "https://john-doe.fr", "France", "Lyon", false));
+                "Grey Sloan Memorial", "RHMC", "https://john-doe.fr", "France",
+                "Lyon", false, "2022"));
         alumniDAO.save(new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN,
-                "johnathan.doe@yahoo.com", "NMC", "BMC", "https://johnathan-doe.fr", "France", "Bordeaux", false));
+                "johnathan.doe@yahoo.com", "NMC", "BMC", "https://johnathan-doe.fr",
+                "France", "Bordeaux", false, "2024"));
         alumniDAO.save(new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN,
-                "jane.jossman@gmail.com", "Grey Sloan Memorial", "RHMC", "https://jane-jossman.fr", "France", "Lyon", false));
+                "jane.jossman@gmail.com", "Grey Sloan Memorial", "RHMC",
+                "https://jane-jossman.fr", "France", "Lyon", false, "2023"));
         alumniDAO.save(new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
-                "", "", "", "", "", "", false));
+                "", "", "", "", "", "", false, "2020"));
     }
 
     private void registerUserAndGenerateToken() {
@@ -80,29 +83,12 @@ public class SearchEndPointTest {
 
     private void validateSetup() {
         Assumptions.assumeTrue(token != null && !token.isEmpty(), "Token should not be null or empty");
-        Assumptions.assumeTrue(alumniDAO.count() == 4, "Alumni count should be 4");
+        Assumptions.assumeTrue(alumniDAO.count() == 4, "Alumni count should be 4 but got " + alumniDAO.count() );
     }
 
     @AfterEach
     void tearDown() {
         alumniDAO.deleteAll();
-        Alumnus john = new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN,"john.doe@gmail.com "
-                ," Grey Sloan Memorial", "RHMC "," https://john-doe.fr",
-                "France "," Lyon",false);
-        Alumnus johnathan = new Alumnus(UUID.randomUUID(), "Johnathan", "Doe", Sex.MAN,
-                " johnathan.doe@yahoo.com","NMC", " BMC ",
-                " https://johnathan-doe.fr", "France "," Bordeaux",false);
-        Alumnus jane = new Alumnus(UUID.randomUUID(), "Jane", "Jossman", Sex.WOMAN
-                ," jane.jossman@gmail.com"," Grey Sloan Memorial", "RHMC ",
-                " https://jane-jossman.fr", "France "," Lyon",false);
-        Alumnus jenny = new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
-                " "," "," "," "," "," ",false);
-
-        alumniDAO.save(john);
-        alumniDAO.save(johnathan);
-        alumniDAO.save(jane);
-        alumniDAO.save(jenny);
-
         userDAO.deleteAll();
     }
 
@@ -137,14 +123,16 @@ public class SearchEndPointTest {
                         .expectBody()
                         .jsonPath("$.results.length()").isEqualTo(2)
                         .jsonPath("$.search_name").isEqualTo(searchName)
-                        .jsonPath("$.results[0].fullName").isEqualTo("John Doe")
-                        .jsonPath("$.results[1].fullName").isEqualTo("Johnathan Doe")
-                        .jsonPath("$.results[0].currentCompany").isEqualTo("RHMC")
-                        .jsonPath("$.results[1].currentCompany").isEqualTo("BMC")
+                        .jsonPath("$.results[0].full_name").isEqualTo("John Doe")
+                        .jsonPath("$.results[1].full_name").isEqualTo("Johnathan Doe")
+                        .jsonPath("$.results[0].current_company").isEqualTo("RHMC")
+                        .jsonPath("$.results[1].current_company").isEqualTo("BMC")
                         .jsonPath("$.results[0].city").isEqualTo("Lyon")
                         .jsonPath("$.results[1].city").isEqualTo("Bordeaux")
                         .jsonPath("$.results[0].country").isEqualTo("France")
-                        .jsonPath("$.results[1].country").isEqualTo("France");
+                        .jsonPath("$.results[1].country").isEqualTo("France")
+                        .jsonPath("$.results[0].graduation_year").isEqualTo("2022")
+                        .jsonPath("$.results[1].graduation_year").isEqualTo("2024");
             }
         }
 

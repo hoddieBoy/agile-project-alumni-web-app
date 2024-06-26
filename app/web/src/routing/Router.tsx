@@ -1,54 +1,40 @@
 import React from 'react';
-import {createBrowserRouter, redirect} from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute';
+import {createBrowserRouter} from 'react-router-dom';
 import ErrorPage from 'pages/ErrorPage';
 import LoginAction from 'pages/login/Login.action';
 import LoginLoader from 'pages/login/Login.loader';
 import Login from 'pages/login/Login';
 import Search from 'pages/search/Search';
 import SearchAction from 'pages/search/Search.action';
-import {isAuthenticated} from "utils/Auth";
-
+import ProtectedRoute from './ProtectedRoute'; // Adjust the import path as necessary
 import Stat from 'pages/stat/Stat'
 
 const router = createBrowserRouter([
     {
-        // Error page for unmatched routes or errors
-        errorElement: <ErrorPage/>,
+        path: '/',
+        element: <ProtectedRoute element={<Search/>}/>,
         children: [
             {
-                // Protected routes
-                element: <ProtectedRoute isAuthenticated={isAuthenticated()}/>,
-                children: [
-                    {
-                        // Default route redirects to /search
-                        path: '/',
-                        loader: () => redirect('/search')
-                    },
-                    {
-                        // Search page route
-                        path: '/search',
-                        element: <Search/>,
-                        action: SearchAction,
-                        
-                    },
-                    {
-                        // Search page route
-                        path: '/stat',
-                        element: <Stat/>,
-                        
-                    }
-                ]
+                path: 'search',
+                element: <ProtectedRoute element={<Search/>}/>,
+                action: SearchAction,
             },
             {
-                // Login route
-                path: '/login',
-                element: <Login/>,
-                action: LoginAction,
-                loader: LoginLoader
+                // Search page route
+                path: '/stat',
+                element: <Stat/>,
+
             }
-        ]
-    }
+        ],
+        errorElement: <ErrorPage/>
+    },
+    {
+        path: '/login',
+        element: <Login/>,
+        loader: LoginLoader,
+        action: LoginAction,
+        errorElement: <ErrorPage/>
+    },
 ]);
 
 export default router;

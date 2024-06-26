@@ -1,13 +1,22 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import PropTypes from "prop-types";
+import React, {useContext, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {AuthContext} from 'context/AuthContext'; // Adjust the import path as necessary
 
-function ProtectedRoute({ isAuthenticated } : { isAuthenticated: boolean }) {
-    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+interface ProtectedRouteProps {
+    element: React.ReactNode;
 }
 
-ProtectedRoute.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({element}) => {
+    const {isAuthenticated} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/login');
+        }
+    }, [isAuthenticated, navigate]);
+
+    return isAuthenticated ? <>{element}</> : null;
 };
 
 export default ProtectedRoute;

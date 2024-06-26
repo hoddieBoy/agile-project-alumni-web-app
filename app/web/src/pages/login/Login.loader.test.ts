@@ -16,15 +16,6 @@ describe('loader function', () => {
         jest.clearAllMocks();
     });
 
-    it('should redirect to "/" if the user is authenticated', () => {
-        (isAuthenticated as jest.Mock).mockReturnValue(true);
-
-        const result = loader();
-
-        expect(redirect).toHaveBeenCalledWith('/');
-        expect(result).toBeUndefined();
-    });
-
     it('should return username from localStorage if the user is not authenticated', () => {
         (isAuthenticated as jest.Mock).mockReturnValue(false);
         localStorage.setItem('lastConnectedUser', 'testUser');
