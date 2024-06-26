@@ -22,8 +22,8 @@ import java.util.UUID;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DeleteUserEndPointTest {
 
-    private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil/users";
-    private static final String DELETE_URL = "/delete-user";
+    private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil";
+    private static final String DELETE_URL = "/users/delete-user";
     private static final String REGISTER_URL = "/auth/register";
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER = "Bearer ";
@@ -51,7 +51,6 @@ public class DeleteUserEndPointTest {
     }
 
     private void saveUserData() {
-        //userDAO.save(new User(UUID.randomUUID(), "john", "Password1", Role.ADMIN));
         userDAO.save(new User(UUID.randomUUID(), "Jay", "Pass23word10", Role.USER));
     }
 
