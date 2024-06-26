@@ -8,6 +8,7 @@ import Search from 'pages/search/Search';
 import SearchAction from 'pages/search/Search.action';
 import ProtectedRoute from './ProtectedRoute'; // Adjust the import path as necessary
 import Stat from 'pages/stat/Stat'
+import AlumniImportExport from 'pages/impExp/ImpExp';
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,12 @@ const router = createBrowserRouter([
                 // Search page route
                 path: '/stat',
                 element: <Stat/>,
+
+            },
+            {
+                // Search page route
+                path: '/import-export',
+                element: <AlumniImportExport/>,
 
             }
         ],

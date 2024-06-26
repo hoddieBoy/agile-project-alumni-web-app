@@ -39,13 +39,13 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
     @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Espagne'", nativeQuery = true)
     long getTotalAlumniInEspagne();
 
+    @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Suisse'", nativeQuery = true)
+    long getTotalAlumniInSuisse();
+
     @Query(value = "SELECT coop_company, COUNT(*) AS alternant_count FROM alumni GROUP BY coop_company ORDER BY alternant_count DESC", nativeQuery = true)
     List<Object[]> getCompaniesByAlumniCount();
 
     List<Alumnus> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(String name, String name1, String city, String country, String currentCompany, String graduationYear);
 
     Set<Alumnus> findByGraduationYear(String graduationYear);
-
-    @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Suisse'", nativeQuery = true)
-    long getTotalAlumniInSuisse();
 }
