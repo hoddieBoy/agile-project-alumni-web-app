@@ -11,12 +11,19 @@ import Stat from 'pages/stat/Stat'
 
 const router = createBrowserRouter([
     {
+        path: '/login',
+        element: <Login/>,
+        loader: LoginLoader,
+        action: LoginAction,
+        errorElement: <ErrorPage/>
+    },
+    {
         path: '/',
         element: <ProtectedRoute element={<Outlet/>}/>,
         children: [
             {
-                path: 'search',
-                element: <ProtectedRoute element={<Search/>}/>,
+                path: '/search',
+                element: <Search/>,
                 action: SearchAction,
             },
             {
@@ -26,13 +33,6 @@ const router = createBrowserRouter([
 
             }
         ],
-        errorElement: <ErrorPage/>
-    },
-    {
-        path: '/login',
-        element: <Login/>,
-        loader: LoginLoader,
-        action: LoginAction,
         errorElement: <ErrorPage/>
     },
 ]);

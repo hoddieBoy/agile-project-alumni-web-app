@@ -31,5 +31,4 @@ export const isAuthenticated = (): boolean => {
 export const logout = (): void => {
     deleteCookie('access_token');
     deleteCookie('refresh_token');
-    window.location.reload();
 }
