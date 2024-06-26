@@ -1,36 +1,54 @@
 import React from 'react';
-import {render} from '@testing-library/react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import '@testing-library/jest-dom/extend-expect';
-import ProtectedRoute from './ProtectedRoute';
+import {render, screen} from '@testing-library/react';
+import {MemoryRouter, Route, Routes} from 'react-router-dom';
+import ProtectedRoute from 'routing/ProtectedRoute';
+import {AuthContext} from 'context/AuthContext'; // Adjust the import path as necessary
+
 
 describe('ProtectedRoute', () => {
     it('renders the outlet when authenticated', () => {
-        const {getByText} = render(
-            <BrowserRouter>
-                <Routes>
-                    <Route element={<ProtectedRoute isAuthenticated={true}/>}>
-                        <Route path="/" element={<div>Protected Content</div>}/>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+        const mockAuthContext = {
+            isAuthenticated: true,
+            login: jest.fn(),
+            logout: jest.fn(),
+        };
+
+        render(
+            <AuthContext.Provider value={mockAuthContext}>
+                <MemoryRouter initialEntries={['/']}>
+                    <Routes>
+                        <Route element={<ProtectedRoute element={<div>Protected Content</div>}/>}>
+                            <Route path="/" element={<div>Protected Content</div>}/>
+                        </Route>
+                    </Routes>
+                </MemoryRouter>
+            </AuthContext.Provider>
         );
 
-        expect(getByText('Protected Content')).toBeInTheDocument();
+        expect(screen.getByText('Protected Content')).toBeInTheDocument();
     });
 
     it('redirects to login when not authenticated', () => {
-        const {container} = render(
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<ProtectedRoute isAuthenticated={false}/>}>
-                        <Route path="protected" element={<div>Protected Content</div>}/>
-                    </Route>
-                    <Route path="/login" element={<div>Login Page</div>}/>
-                </Routes>
-            </BrowserRouter>
+        const mockAuthContext = {
+            isAuthenticated: false,
+            login: jest.fn(),
+            logout: jest.fn(),
+        };
+
+        render(
+            <AuthContext.Provider value={mockAuthContext}>
+                <MemoryRouter initialEntries={['/protected']}>
+                    <Routes>
+                        <Route path="/" element={<ProtectedRoute element={<div>Protected Content</div>}/>}>
+                            <Route path="protected" element={<div>Protected Content</div>}/>
+                        </Route>
+                        <Route path="/login" element={<div>Login Page</div>}/>
+                    </Routes>
+                </MemoryRouter>
+            </AuthContext.Provider>
         );
 
-        expect(container.innerHTML).toMatch('Login Page');
+        // Assert that we are redirected to the login page
+        expect(screen.getByText('Login Page')).toBeInTheDocument();
     });
 });

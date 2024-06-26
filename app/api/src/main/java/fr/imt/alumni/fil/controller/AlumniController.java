@@ -7,9 +7,11 @@ import fr.imt.alumni.fil.payload.response.MessageResponse;
 import fr.imt.alumni.fil.payload.response.SearchResponse;
 import fr.imt.alumni.fil.service.AlumniService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -85,6 +87,33 @@ public class AlumniController {
                 .body(new MessageResponse("The alumni were added successfully"));
     }
 
+    @DeleteMapping(path = "/delete-alumnus/{alumnus_id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Delete an alumnus",
+            description = "Delete an alumnus from the database",
+            tags = {"alumnus"},
+            responses = {
+                @ApiResponse(
+                        responseCode = "204",
+                        description = "Alumnus deleted"
+                ),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad request",
+                        content = @Content
+                )
+        }
+    )
+    public ResponseEntity<Object> deleteAlumnus(
+            @PathVariable("alumnus_id")
+            @Pattern(regexp = "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")
+                String id) {
+        alumniService.deleteAlumnus(id);
+
+        return ResponseEntity.noContent().build();
+
+    }
     @GetMapping(path = "/generate-csv", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(
             summary = "Generate a CSV file",

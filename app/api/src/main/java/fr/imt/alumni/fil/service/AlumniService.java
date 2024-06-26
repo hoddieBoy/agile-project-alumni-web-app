@@ -21,7 +21,6 @@ public class AlumniService {
         this.alumniDAO = alumniDAO;
     }
 
-
     public List<Alumnus> searchAlumni(
             String name, String city, String country,
             String currentCompany, String graduationYear) {
@@ -89,5 +88,10 @@ public class AlumniService {
         }
 
         return csv.toString();
+    }
+
+    public void deleteAlumnus(String id) {
+        id = Optional.ofNullable(id).map(String::trim).orElse("");
+        alumniDAO.deleteById(UUID.fromString(id));
     }
 }

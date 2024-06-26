@@ -1,36 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import 'components/pages/login/Login.css';
+import React, {useContext, useEffect, useState} from 'react';
+import 'pages/login/Login.css';
 import {Spin} from 'antd';
-import {Form, useActionData, useLoaderData} from 'react-router-dom';
+import {Form, Navigate, useActionData, useLoaderData} from 'react-router-dom';
+import Footer from "components/Footer";
+import {AuthContext} from 'context/AuthContext'; // Adjust the import path as necessary
 
-interface ErrorMessages {
+interface LoginResponse {
     message: string;
+    isAuthenticated: boolean;
 }
 
 interface LoaderData {
     username: string;
 }
 
-/**
- * Renders a login page with a form, loading spinner, and error messages as needed.
- */
 function Login() {
-    // State variables
     const loaderData = useLoaderData() as LoaderData;
     const [username, setUsername] = useState(loaderData.username);
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const error = useActionData() as ErrorMessages;
+    const response = useActionData() as LoginResponse;
+    const {login} = useContext(AuthContext);
 
-    // Reset loading state on error change
     useEffect(() => {
         setLoading(false);
-    }, [error]);
+        if (response?.isAuthenticated) {
+            login();
+        }
+    }, [response, login]);
 
-    // Form submission handler
     const handleSubmit = () => {
         setLoading(true);
     };
+
+    if (response?.isAuthenticated) {
+        return <Navigate replace to="/search"/>;
+    }
 
     return (
         <>
@@ -70,9 +75,9 @@ function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
-                        {error?.message && <small className="danger">{error.message}</small>}
+                        {response?.message && <small className="danger">{response.message}</small>}
                         {loading ? (
-                            <Spin data-testid="loading" />
+                            <Spin data-testid="loading"/>
                         ) : (
                             <button
                                 type="submit"
@@ -86,9 +91,7 @@ function Login() {
                 </div>
             </div>
 
-            <footer className="login-footer">
-                <p>© 2024 Alumni FIL</p>
-            </footer>
+            <Footer/>
         </>
     );
 }
