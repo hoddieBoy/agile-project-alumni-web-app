@@ -6,31 +6,40 @@ import LoginLoader from 'pages/login/Login.loader';
 import Login from 'pages/login/Login';
 import Search from 'pages/search/Search';
 import SearchAction from 'pages/search/Search.action';
-import ProtectedRoute from 'routing/ProtectedRoute';
-import UserManagement from 'pages/user-management/UserManagement';
+import ProtectedRoute from './ProtectedRoute'; // Adjust the import path as necessary
+import Stat from 'pages/stat/Stat'
+import AlumniImportExport from 'pages/impExp/ImpExp';
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <ProtectedRoute element={<Outlet/>}/>,
-        children: [
-            {
-                path: 'search',
-                element: <Search/>,
-                action: SearchAction,
-            },
-            {
-                path: 'gestion-utilisateurs',
-                element: <UserManagement/>
-            }
-        ],
-        errorElement: <ErrorPage/>
-    },
     {
         path: '/login',
         element: <Login/>,
         loader: LoginLoader,
         action: LoginAction,
+        errorElement: <ErrorPage/>
+    },
+    {
+        path: '/',
+        element: <ProtectedRoute element={<Outlet/>}/>,
+        children: [
+            {
+                path: '/search',
+                element: <Search/>,
+                action: SearchAction,
+            },
+            {
+                // Search page route
+                path: '/stat',
+                element: <Stat/>,
+
+            },
+            {
+                // Search page route
+                path: '/import-export',
+                element: <AlumniImportExport/>,
+
+            }
+        ],
         errorElement: <ErrorPage/>
     },
 ]);
