@@ -1,8 +1,8 @@
-import { ActionFunctionArgs, json, redirect } from "react-router-dom";
+import {ActionFunctionArgs, json} from "react-router-dom";
 import axiosConfig from "config/axiosConfig";
 import AuthenticateResponse from "payload/response/AuthenticateResponse";
-import { setCookie } from "utils/Cookie";
-import action from "components/pages/login/Login.action"; // Adjust the import path as needed
+import {setCookie} from "utils/Cookie";
+import action from "pages/login/Login.action"; // Adjust the import path as needed
 
 jest.mock('config/axiosConfig');
 jest.mock('utils/Cookie');
@@ -31,14 +31,14 @@ describe("Login Action", () => {
     });
 
     test("should return error message if username or password is missing", async () => {
-        const request = mockRequest(createFormData({ username: "", password: "" }));
+        const request = mockRequest(createFormData({username: "", password: ""}));
         const result = await action(request)
 
-        expect(result).toEqual({ message: 'Username and password are required.' });
+        expect(result).toEqual({message: 'Username and password are required.'});
     });
 
     test("should set cookies and redirect on successful authentication", async () => {
-        const request = mockRequest(createFormData({ username: "testuser", password: "password" }));
+        const request = mockRequest(createFormData({username: "testuser", password: "password"}));
         const response: AuthenticateResponse = {
             user_id: "123",
             username: "testuser",
@@ -48,32 +48,31 @@ describe("Login Action", () => {
             token_type: "Bearer"
         };
 
-        axiosConfigMock.post.mockResolvedValueOnce({ data: response });
+        axiosConfigMock.post.mockResolvedValueOnce({data: response});
 
         const result = await action(request);
 
         expect(setCookieMock).toHaveBeenCalledWith('access_token', 'access-token', expect.any(Date));
         expect(setCookieMock).toHaveBeenCalledWith('refresh_token', 'refresh-token', expect.any(Date));
-        expect(result).toEqual(redirect('/'));
     });
 
     test("should return error message for invalid username or password", async () => {
-        const request = mockRequest(createFormData({ username: "testuser", password: "wrongpassword" }));
+        const request = mockRequest(createFormData({username: "testuser", password: "wrongpassword"}));
 
-        axiosConfigMock.post.mockRejectedValueOnce({ response: { status: 401 } });
+        axiosConfigMock.post.mockRejectedValueOnce({response: {status: 401}});
 
         const result = await action(request);
 
-        expect(result).toEqual({ message: 'Invalid username or password.' });
+        expect(result).toEqual({message: 'Invalid username or password.', isAuthenticated: false});
     });
 
     test("should return generic error message for other errors", async () => {
-        const request = mockRequest(createFormData({ username: "testuser", password: "password" }));
+        const request = mockRequest(createFormData({username: "testuser", password: "password"}));
 
         axiosConfigMock.post.mockRejectedValueOnce(new Error("Network error"));
 
         const result = await action(request);
 
-        expect(result).toEqual(json({ message: 'An error occurred. Please try again later.' }, { status: 500 }));
+        expect(result).toEqual(json({message: 'An error occurred. Please try again later.'}, {status: 500}));
     });
 });

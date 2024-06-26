@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Footer component renders without crashing 1`] = `
+<div>
+  <footer>
+    <div
+      class="container"
+    >
+      <span>
+        © 2024 Alumni FIL
+      </span>
+    </div>
+  </footer>
+</div>
+`;
