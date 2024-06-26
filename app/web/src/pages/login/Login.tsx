@@ -31,7 +31,6 @@ function Login() {
 
     const handleSubmit = () => {
         setLoading(true);
-        navigate('/search'); 
     };
 
     if (response?.isAuthenticated) {
