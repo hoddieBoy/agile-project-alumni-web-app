@@ -154,8 +154,8 @@ function Search(): React.ReactElement {
                                             style={{height: '100px', width: '100px', objectFit: 'cover'}}
                                         />
                                         <div>
-                                            <h5 className="card-title">{alumni.fullName}</h5>
-                                            <p className="card-text">{`Graduated in ${alumni.graduationYear}, ${alumni.currentCompany}, ${alumni.city}`}</p>
+                                            <h5 className="card-title">{alumni.full_name}</h5>
+                                            <p className="card-text">{`Graduated in ${alumni.graduation_year}, ${alumni.current_company}, ${alumni.city}`}</p>
                                         </div>
                                     </div>
                                     <a href="#" className="btn btn-outline-primary">View Profile</a>

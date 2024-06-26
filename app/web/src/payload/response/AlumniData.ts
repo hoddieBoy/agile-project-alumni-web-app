@@ -1,8 +1,8 @@
 export interface AlumniData {
     id: string;
-    fullName: string;
-    currentCompany: string;
+    full_name: string;
+    current_company: string;
     city: string;
     country: string;
-    graduationYear: string;
+    graduation_year: string;
 }
