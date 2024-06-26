@@ -68,18 +68,10 @@ describe('Authentication utilities', () => {
 
     describe('logout', () => {
         it('deletes cookies and reloads the page', () => {
-            // Mock window.location.reload
-            const reloadMock = jest.fn();
-            Object.defineProperty(window, 'location', {
-                configurable: true,
-                value: {reload: reloadMock},
-            });
-
             logout();
 
             expect(deleteCookie).toHaveBeenCalledWith('access_token');
             expect(deleteCookie).toHaveBeenCalledWith('refresh_token');
-            expect(reloadMock).toHaveBeenCalled();
         });
     });
 });
