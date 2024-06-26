@@ -17,7 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/alumni-fil")
@@ -112,5 +113,25 @@ public class AlumniController {
 
         return ResponseEntity.noContent().build();
 
+    }
+    @GetMapping(path = "/generate-csv", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(
+            summary = "Generate a CSV file",
+            description = "Generate a CSV file with alumni data",
+            tags = {"alumni"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "CSV file generated"
+                    )
+            }
+    )
+    public ResponseEntity<byte[]> generateCsv(@RequestParam int year) {
+        String csv = alumniService.generateCsv(year);
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=alumni.csv")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(csv.getBytes());
     }
 }

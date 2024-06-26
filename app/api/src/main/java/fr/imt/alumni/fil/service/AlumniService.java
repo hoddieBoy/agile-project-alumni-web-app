@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -54,7 +55,39 @@ public class AlumniService {
             );
             alumniDAO.save(alumnus);
         }
+    }
 
+    public String generateCsv(int year) {
+        Set<Alumnus> alumni = alumniDAO.findByGraduationYear(String.valueOf(year));
+
+        if (alumni.isEmpty()) {
+            throw new NotFoundException("No alumni found for year " + year);
+        }
+        String CSV_SEPARATOR = ",";
+        StringBuilder csv = new StringBuilder();
+
+        String header = String.format(
+                "First Name%sLast Name%sSex%sMail%sCoop Company%sCurrent Company%sWebsite%sCountry%sCity%sIs Stayed%sGraduation Year",
+                CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR, CSV_SEPARATOR
+        );
+
+        csv.append(header).append("\n");
+
+        for (Alumnus alumnus : alumni) {
+            csv.append(alumnus.getFirstName()).append(CSV_SEPARATOR)
+                    .append(alumnus.getLastName()).append(CSV_SEPARATOR)
+                    .append(alumnus.getSex()).append(CSV_SEPARATOR)
+                    .append(alumnus.getMail()).append(CSV_SEPARATOR)
+                    .append(alumnus.getCoopCompany()).append(CSV_SEPARATOR)
+                    .append(alumnus.getCurrentCompany()).append(CSV_SEPARATOR)
+                    .append(alumnus.getWebsite()).append(CSV_SEPARATOR)
+                    .append(alumnus.getCountry()).append(CSV_SEPARATOR)
+                    .append(alumnus.getCity()).append(CSV_SEPARATOR)
+                    .append(alumnus.getIsStayed()).append(CSV_SEPARATOR)
+                    .append(alumnus.getGraduationYear()).append("\n");
+        }
+
+        return csv.toString();
     }
 
     public void deleteAlumnus(String id) {
