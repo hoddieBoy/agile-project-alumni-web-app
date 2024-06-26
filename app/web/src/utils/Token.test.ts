@@ -1,8 +1,8 @@
-import {getAccessToken, isTokenValid} from 'utils/Token';
-import {getCookie} from './Cookie';
+import {getAccessToken, getRefreshToken, isTokenValid} from 'utils/Token';
+import {getCookie} from 'utils/Cookie';
 
 // Mock the getCookie function
-jest.mock('./Cookie', () => ({
+jest.mock('utils/Cookie', () => ({
     getCookie: jest.fn(),
 }));
 
@@ -51,23 +51,23 @@ describe('getRefreshToken', () => {
     it('returns the token if it is valid', () => {
         const validToken = createTokenWithExpiration(Date.now() / 1000 + 60);
         (getCookie as jest.Mock).mockReturnValue(validToken);
-        expect(getAccessToken()).toBe(validToken);
+        expect(getRefreshToken()).toBe(validToken);
     });
 
     it('returns an empty string if the token is not present', () => {
         (getCookie as jest.Mock).mockReturnValue('');
-        expect(getAccessToken()).toBe('');
+        expect(getRefreshToken()).toBe('');
     });
 
     it('returns an empty string if the token is invalid', () => {
         const invalidToken = createTokenWithExpiration(Date.now() / 1000 - 60);
         (getCookie as jest.Mock).mockReturnValue(invalidToken);
-        expect(getAccessToken()).toBe('');
+        expect(getRefreshToken()).toBe('');
     });
 
     it('returns an empty string if the token is malformed', () => {
         (getCookie as jest.Mock).mockReturnValue('malformed.token');
-        expect(getAccessToken()).toBe('');
+        expect(getRefreshToken()).toBe('');
     });
 });
 
