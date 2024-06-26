@@ -5,26 +5,16 @@ body {
     padding: 0;
 }
 
-
-.import-title {
-    color: #003366; 
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-
 .container {
     padding: 20px;
     text-align: center;
 }
 
-
 .form-group {
     display: inline-block;
     text-align: left;
+    margin-bottom: 20px; /* Ajout d'espace entre les éléments */
 }
-
 
 .form-group label {
     display: block;
@@ -32,7 +22,6 @@ body {
     font-size: 16px;
     color: #333;
 }
-
 
 .form-control {
     display: inline-block;
@@ -42,19 +31,33 @@ body {
 
 .custom-btn {
     background-color: #003366; 
-    color: white;
+    color: #ffffff; /* Texte en blanc */
     border: none;
-    border-radius: 4px;
+    border-radius: 8px; /* Coins arrondis */
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
 .custom-btn:hover {
-    background-color: #002244; 
+    background-color: #002244; /* Teinte plus foncée au survol */
 }
 
+.custom-btn:focus {
+    outline: none; /* Supprime le focus par défaut */
+}
+
+.custom-file-input {
+    display: none; /* Masque le champ de fichier par défaut */
+}
+
+.import-export-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
 
 header, footer {
     background-color: #003366;
