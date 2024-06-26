@@ -1,21 +1,21 @@
 package fr.imt.alumni.fil.controller;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
+import fr.imt.alumni.fil.payload.request.AlumnusDTO;
+import fr.imt.alumni.fil.payload.response.AlumniData;
+import fr.imt.alumni.fil.payload.response.MessageResponse;
+import fr.imt.alumni.fil.payload.response.SearchResponse;
 import fr.imt.alumni.fil.service.AlumniService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/alumni-fil")
@@ -40,44 +40,48 @@ public class AlumniController {
                 )
         }
     )
-    public ResponseEntity<Map<String, Object>> searchAlumni(
+    public ResponseEntity<SearchResponse> searchAlumni(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String country,
-            @RequestParam(required = false) String currentCompany) {
-        List<Map<String, String>> results = new ArrayList<>();
-        for (Alumnus alumnus : alumniService.searchAlumni(name, city, country, currentCompany)) {
-            results.add(
-                    Map.of("id", alumnus.getId().toString(),
-                            "fullName", alumnus.getFullName(),
-                            "currentCompany", alumnus.getCurrentCompany(),
-                            "city", alumnus.getCity(),
-                            "country", alumnus.getCountry()
-                    )
+            @RequestParam(required = false) String currentCompany,
+            @RequestParam(required = false) String graduationYear ){
+        List<AlumniData> results = new ArrayList<>();
+        for (Alumnus alumnus : alumniService.searchAlumni(name, city, country, currentCompany, graduationYear)) {
+            results.add(new AlumniData(alumnus.getId().toString(),
+                    alumnus.getFullName(),
+                    alumnus.getCurrentCompany(),
+                    alumnus.getCity(), alumnus.getCountry(), alumnus.getGraduationYear())
             );
         }
 
-        Map<String, Object> response = new HashMap<>();
-
-        if (name != null && !name.isBlank()) {
-            response.put("search_name", name);
-        }
-
-        if (city != null && !city.isBlank()) {
-            response.put("search_city", city);
-        }
-
-        if (country != null && !country.isBlank()) {
-            response.put("search_country", country);
-        }
-
-        if (currentCompany != null && !currentCompany.isBlank()) {
-            response.put("search_current_company", currentCompany);
-        }
-
-        response.put("results", results);
+        SearchResponse response = new SearchResponse(
+                name, city, country, currentCompany, graduationYear, results
+        );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/add-alumni",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Add an alumni",
+            description = "Add an alumni to the database",
+            tags = {"alumni"},
+            responses = {
+                @ApiResponse(
+                        responseCode = "201",
+                        description = "Alumni added"
+                )
+        }
+    )
+    public ResponseEntity<MessageResponse> addAlumni(@RequestBody @Valid List<AlumnusDTO> alumni){
+        alumniService.addAlumni(alumni);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new MessageResponse("The alumni were added successfully"));
     }
 
 }

@@ -46,9 +46,12 @@ public class Alumnus {
     @Column(name = "is_stayed")
     private Boolean isStayed;
 
+    @Column(name = "graduation_year")
+    private String graduationYear;
+
     public Alumnus(UUID id, String firstName, String lastName, Sex sex, String mail,
                    String coopCompany, String currentCompany, String website,
-                   String country, String city, Boolean isStayed) {
+                   String country, String city, Boolean isStayed, String graduationYear) {
         this.id = id;
         this.firstName = firstName.trim();
         this.lastName = lastName.trim();
@@ -60,6 +63,7 @@ public class Alumnus {
         this.country = country.trim();
         this.city = city.trim();
         this.isStayed = isStayed;
+        this.graduationYear = graduationYear.trim();
     }
 
     protected Alumnus() {
@@ -143,6 +147,14 @@ public class Alumnus {
 
     public Boolean getIsStayed() {
         return isStayed;
+    }
+
+    public String getGraduationYear() {
+        return graduationYear;
+    }
+
+    public void setGraduationYear(String graduationYear) {
+        this.graduationYear = graduationYear;
     }
 
     public void setIsStayed(Boolean is_stayed) {
