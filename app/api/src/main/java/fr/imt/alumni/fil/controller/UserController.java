@@ -42,12 +42,12 @@ public class UserController {
                     )
             }
     )
-    public ResponseEntity<Object> deleteAlumnus(
+    public ResponseEntity<Object> deleteUser(
             @PathVariable("user_id")
             @Pattern(regexp = "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")
             String id) {
 
-        userService.deleteUSer(id);
+        userService.deleteUser(id);
 
         return ResponseEntity.noContent().build();
     }

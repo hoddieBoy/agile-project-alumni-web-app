@@ -3,6 +3,7 @@ package fr.imt.alumni.fil.persistance;
 import fr.imt.alumni.fil.domain.bo.Alumnus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -45,7 +46,17 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
     @Query(value = "SELECT coop_company, COUNT(*) AS alternant_count FROM alumni GROUP BY coop_company ORDER BY alternant_count DESC", nativeQuery = true)
     List<Object[]> getCompaniesByAlumniCount();
 
-    List<Alumnus> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(String name, String name1, String city, String country, String currentCompany, String graduationYear);
-
     Set<Alumnus> findByGraduationYear(String graduationYear);
+
+    @Query(value = "SELECT * FROM alumni a WHERE " +
+            "(LOWER(CONCAT(a.first_name, ' ', a.last_name)) LIKE LOWER(CONCAT('%', :fullName, '%')) ) AND " +
+            "(a.current_company LIKE CONCAT('%', :currentCompany, '%')) AND " +
+            "a.graduation_year = :graduationYear AND " +
+            "(a.country LIKE CONCAT('%', :country, '%')) AND " +
+            "(a.city LIKE CONCAT('%', :city, '%'))", nativeQuery = true)
+    List<Alumnus> search(@Param("fullName") String name,
+                         @Param("currentCompany") String currentCompany,
+                         @Param("graduationYear") String graduationYear,
+                         @Param("country") String country,
+                         @Param("city") String city);
 }
