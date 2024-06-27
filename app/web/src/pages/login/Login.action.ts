@@ -1,7 +1,6 @@
 import {ActionFunctionArgs, json} from "react-router-dom";
 import axiosConfig from "config/axiosConfig";
 import AuthenticateResponse from "payload/response/AuthenticateResponse";
-import {setCookie} from "utils/Cookie";
 
 /**
  * Handles form submission for user authentication.
@@ -21,18 +20,12 @@ export default async function action({request}: ActionFunctionArgs<'post'>) {
 
     try {
         const response = await axiosConfig.post<AuthenticateResponse>('/auth/authenticate', payload);
-        const {user_id, access_token, refresh_token} = response.data;
-        const accessTokenExpiry = new Date(Date.now() + 1000 * 60 * 60); // 1 hour
-        const refreshTokenExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hours
+        const {access_token, refresh_token} = response.data;
 
-        setCookie('access_token', access_token, accessTokenExpiry);
-        setCookie('refresh_token', refresh_token, refreshTokenExpiry);
-        sessionStorage.setItem('user_id', user_id);
-
-        return {message: 'Successfully authenticated.', isAuthenticated: true}
+        return {message: 'Successfully authenticated.', accessToken: access_token, refreshToken: refresh_token};
     } catch (error: any) {
         if (error.response?.status === 401) {
-            return {message: 'Invalid username or password.', isAuthenticated: false}
+            return {message: 'Invalid username or password.'};
         } else {
             return json({message: 'An error occurred. Please try again later.'}, {status: 500});
         }

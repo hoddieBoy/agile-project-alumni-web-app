@@ -54,11 +54,11 @@ describe('ErrorPage', () => {
 
         expect(screen.getByText('403')).toBeInTheDocument();
         expect(screen.getByText('Sorry, you are not authorized to access this page.')).toBeInTheDocument();
-        const loginButton = screen.getByText('Login');
-        expect(loginButton).toBeInTheDocument();
+        const goBackButton = screen.getByText('Go Back');
+        expect(goBackButton).toBeInTheDocument();
 
-        fireEvent.click(loginButton);
-        expect(mockNavigate).toHaveBeenCalledWith('/login');
+        fireEvent.click(goBackButton);
+        expect(mockNavigate).toHaveBeenCalledWith(-1);
     });
 
     it('renders 500 error correctly', () => {

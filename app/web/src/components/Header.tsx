@@ -7,8 +7,12 @@ import {AuthContext} from "context/AuthContext";
  * Includes a logo, search input, navigation links, and a logout button.
  */
 const Header: React.FC = () => {
-    const links = ['Search', 'Import-Export', 'Gestion Utilisateurs', 'Stat'];
-    const {logout} = useContext(AuthContext);
+    const links = ['Search', 'Import-Export', 'Stat'];
+    const {user, logout} = useContext(AuthContext);
+
+    if (user && user.roles.includes('ROLE_ADMIN')) {
+        links.push('Gestion Utilisateurs');
+    }
 
     return (
         <header className="header">

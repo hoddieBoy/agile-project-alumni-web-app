@@ -1,34 +1,41 @@
-import {getAccessToken, getRefreshToken} from "./Token";
-import axiosConfig from "config/axiosConfig";
-import {deleteCookie, setCookie} from "./Cookie";
+import {getAccessToken, getRefreshToken, refreshAccessToken} from 'utils/Token';
+import axiosConfig from "../config/axiosConfig";
 
 /**
- * Checks if a user is authenticated by verifying the access token.
- * If the access token is invalid, attempts to refresh it using a refresh token.
- * @returns true if the user is authenticated, false otherwise.
+ * Checks if a user is currently authenticated synchronously by verifying the access token.
+ * This check is immediate and does not attempt to refresh the token.
+ * @returns true if the user has a valid access token, false otherwise.
  */
-export const isAuthenticated = (): boolean => {
+export const isAuthenticatedSync = (): boolean => {
     const accessToken = getAccessToken();
+    return !!accessToken;
+};
+
+/**
+ * Attempts to authenticate the user asynchronously by checking the access token
+ * and, if necessary, refreshing it using the refresh token.
+ * @returns A promise that resolves to true if the user is authenticated, false otherwise.
+ */
+export const isAuthenticatedAsync = async (): Promise<boolean> => {
+    let accessToken = getAccessToken();
     if (!accessToken) {
         const refreshToken = getRefreshToken();
         if (refreshToken) {
-            axiosConfig.post('/auth/refresh-token', {refreshToken})
-                .then((response) => {
-                    setCookie('access_token', response.data.access_token, new Date(60 * 60 * 1000));
-                })
-                .catch(() => {
-                    deleteCookie('refresh_token');
-                });
+            try {
+                const accessToken = await refreshAccessToken(refreshToken);
+                return !!accessToken;
+            } catch {
+                return false;
+            }
         }
+        return false;
     }
-
-    return !!getAccessToken();
-}
+    return true;
+};
 
 /**
- * Deletes the user's authentication cookies and reloads the current webpage to effectively log the user out.
+ * Logs the user out by deleting the authentication cookies and reloading the page.
  */
 export const logout = (): void => {
-    deleteCookie('access_token');
-    deleteCookie('refresh_token');
-}
+    axiosConfig.post('/auth/logout').then();
+};
