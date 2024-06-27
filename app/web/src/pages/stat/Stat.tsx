@@ -270,16 +270,16 @@ const AlumniOverview: React.FC = () => {
             <Header />
             <div className="container mt-5">
                 <div className="text-center">
-                    <h1>Vue d'Ensemble des Alumni</h1>
-                    <p>Représentations visuelles et résumés pour analyser les tendances et les distributions</p>
-                    <h2>Metrics Clés</h2>
+                    <h1>Vue d'Ensemble des Alumnis</h1>
+                    <p>Représentations visuelles et résumés pour analyser les tendances et les distributions.</p>
+                    <h2>Indicateurs Clés</h2>
                 </div>
 
                 <div className="row text-center mt-4">
                     <div className="col-md-4">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Total Alumni</h5>
+                                <h5 className="card-title">Total Alumnis</h5>
                                 <strong><p className="card-text">{totalAlumni !== null ? totalAlumni : 'Chargement...'}</p></strong>
                             </div>
                         </div>
@@ -307,7 +307,7 @@ const AlumniOverview: React.FC = () => {
                     <div className="col-md-4">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Total Alumni en France</h5>
+                                <h5 className="card-title">Total Alumnis en France</h5>
                                 <strong><p className="card-text">{totalAlumniFrance !== null ? totalAlumniFrance : 'Chargement...'}</p></strong>
                             </div>
                         </div>
@@ -315,7 +315,7 @@ const AlumniOverview: React.FC = () => {
                 </div>
 
                 <div className="text-center mt-5">
-                    <h2>Visualisation des Données des Alumni</h2>
+                    <h2>Visualisation des Données des Alumnis</h2>
                 </div>
 
                 <div className="row mt-4">
@@ -332,7 +332,7 @@ const AlumniOverview: React.FC = () => {
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Répartition des Entreprises avec le Plus d'Alumni</h5>
+                                <h5 className="card-title">Répartition des Entreprises avec le Plus d'Alumnis</h5>
                                 <div className="chart-container full-width-chart">
                                     <canvas id="graduationChart"></canvas>
                                 </div>
