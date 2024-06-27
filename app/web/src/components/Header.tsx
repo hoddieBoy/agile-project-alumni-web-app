@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     const links = ['Search', 'Import-Export', 'Stat'];
     const {user, logout} = useContext(AuthContext);
 
-    if (user && user.roles.includes('ROLE_ADMIN')) {
+    if (user && user.roles.includes('ADMIN')) {
         links.push('Gestion Utilisateurs');
     }
 
