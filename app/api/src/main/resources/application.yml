@@ -45,3 +45,15 @@ application:
       expiration: ${JWT_EXPIRATION:3600}
       refresh-token:
         expiration: ${JWT_REFRESH_EXPIRATION:86400}
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              basicBinder: TRACE

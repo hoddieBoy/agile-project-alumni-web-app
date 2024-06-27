@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import 'pages/login/Login.css';
 import { Spin } from 'antd';
-import { Form, Navigate, useActionData, useLoaderData } from 'react-router-dom';
+import { Form, Navigate, useActionData } from 'react-router-dom';
 import Footer from "components/Footer";
-import { AuthContext } from 'context/AuthContext'; 
+import { AuthContext } from 'context/AuthContext';
 
 interface LoginResponse {
     message: string;
-    isAuthenticated: boolean;
+    accessToken?: string;
+    refreshToken?: string;
 }
 
 interface LoaderData {
@@ -15,17 +16,16 @@ interface LoaderData {
 }
 
 function Login() {
-    const loaderData = useLoaderData() as LoaderData;
-    const [username, setUsername] = useState(loaderData.username);
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const response = useActionData() as LoginResponse;
-    const { login } = useContext(AuthContext);
+    const { isAuthenticated,login } = useContext(AuthContext);
 
     useEffect(() => {
         setLoading(false);
-        if (response?.isAuthenticated) {
-            login();
+        if (response?.accessToken && response?.refreshToken) {
+            login(response.accessToken, response.refreshToken);
         }
     }, [response, login]);
 
@@ -33,7 +33,7 @@ function Login() {
         setLoading(true);
     };
 
-    if (response?.isAuthenticated) {
+    if (isAuthenticated) {
         return <Navigate replace to="/search"/>;
     }
 

@@ -3,6 +3,7 @@ package fr.imt.alumni.fil.persistance;
 import fr.imt.alumni.fil.domain.bo.Alumnus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -51,7 +52,6 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
     @Query(value = "SELECT coop_company, COUNT(*) AS alternant_count FROM alumni GROUP BY coop_company HAVING COUNT(*) >= 2 ORDER BY alternant_count DESC", nativeQuery = true)
     List<Object[]> getCompaniesByAlumniCount();
 
-    List<Alumnus> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(String name, String name1, String city, String country, String currentCompany, String graduationYear);
-
     Set<Alumnus> findByGraduationYear(String graduationYear);
+
 }

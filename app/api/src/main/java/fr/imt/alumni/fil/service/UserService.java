@@ -1,10 +1,12 @@
 package fr.imt.alumni.fil.service;
 
+import fr.imt.alumni.fil.payload.response.UserResponse;
 import fr.imt.alumni.fil.persistance.RefreshTokenDAO;
 import fr.imt.alumni.fil.persistance.UserDAO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,12 +22,18 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUSer(String id) {
-        String idTrimed = Optional.ofNullable(id).map(String::trim).orElse("");
-        UUID uuid = UUID.fromString(idTrimed);
+    public void deleteUser(String id) {
+        String idTrimmed = Optional.ofNullable(id).map(String::trim).orElse("");
+        UUID uuid = UUID.fromString(idTrimmed);
         userDAO.findById(uuid).ifPresent(user -> {
             refreshTokenDAO.deleteAllByUser(user);
             userDAO.delete(user);
         });
+    }
+
+    public List<UserResponse> getAllUsers() {
+        return userDAO.findAll().stream()
+                .map(user -> new UserResponse(user.getId().toString(), user.getUsername(), user.getRole()))
+                .toList();
     }
 }

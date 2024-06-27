@@ -1,14 +1,11 @@
 import {ActionFunctionArgs, json} from "react-router-dom";
 import axiosConfig from "config/axiosConfig";
 import AuthenticateResponse from "payload/response/AuthenticateResponse";
-import {setCookie} from "utils/Cookie";
 import action from "pages/login/Login.action"; // Adjust the import path as needed
 
 jest.mock('config/axiosConfig');
-jest.mock('utils/Cookie');
 
 const axiosConfigMock = axiosConfig as jest.Mocked<typeof axiosConfig>;
-const setCookieMock = setCookie as jest.MockedFunction<typeof setCookie>;
 
 describe("Login Action", () => {
     const createFormData = (data: { [key: string]: string }) => {
@@ -22,7 +19,7 @@ describe("Login Action", () => {
     const mockRequest = (formData: FormData): ActionFunctionArgs<'post'> => ({
         request: {
             formData: () => Promise.resolve(formData),
-        } as Request,
+        } as unknown as Request,
         params: {}
     });
 
@@ -32,12 +29,12 @@ describe("Login Action", () => {
 
     test("should return error message if username or password is missing", async () => {
         const request = mockRequest(createFormData({username: "", password: ""}));
-        const result = await action(request)
+        const result = await action(request);
 
         expect(result).toEqual({message: 'Username and password are required.'});
     });
 
-    test("should set cookies and redirect on successful authentication", async () => {
+    test("should return success message for valid username and password", async () => {
         const request = mockRequest(createFormData({username: "testuser", password: "password"}));
         const response: AuthenticateResponse = {
             user_id: "123",
@@ -52,8 +49,11 @@ describe("Login Action", () => {
 
         const result = await action(request);
 
-        expect(setCookieMock).toHaveBeenCalledWith('access_token', 'access-token', expect.any(Date));
-        expect(setCookieMock).toHaveBeenCalledWith('refresh_token', 'refresh-token', expect.any(Date));
+        expect(result).toEqual({
+            message: 'Successfully authenticated.',
+            accessToken: 'access-token',
+            refreshToken: 'refresh-token'
+        });
     });
 
     test("should return error message for invalid username or password", async () => {
@@ -63,7 +63,7 @@ describe("Login Action", () => {
 
         const result = await action(request);
 
-        expect(result).toEqual({message: 'Invalid username or password.', isAuthenticated: false});
+        expect(result).toEqual({message: 'Invalid username or password.'});
     });
 
     test("should return generic error message for other errors", async () => {

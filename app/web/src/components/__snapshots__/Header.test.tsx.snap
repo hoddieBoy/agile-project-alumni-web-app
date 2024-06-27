@@ -42,15 +42,15 @@ exports[`Header component renders without crashing 1`] = `
       </a>
       <a
         class="nav-item nav-link"
-        href="/gestion-utilisateurs"
-      >
-        Gestion Utilisateurs
-      </a>
-      <a
-        class="nav-item nav-link"
         href="/stat"
       >
         Stat
+      </a>
+      <a
+        class="nav-item nav-link"
+        href="/gestion-utilisateurs"
+      >
+        Gestion Utilisateurs
       </a>
       <button
         class="btn btn-primary"
