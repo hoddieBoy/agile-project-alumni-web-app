@@ -46,7 +46,8 @@ public class RegisterService {
         User user = new User(
                 UUID.randomUUID(),
                 requestBody.username(),
-                passwordEncoder.encode(requestBody.password())
+                passwordEncoder.encode(requestBody.password()),
+                requestBody.role() == null ? User.DEFAULT_ROLE : requestBody.role()
         );
 
         userDAO.save(user);
