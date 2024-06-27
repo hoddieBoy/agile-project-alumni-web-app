@@ -4,13 +4,16 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
+
 
 @Service
 public class JWTService {
@@ -32,8 +35,13 @@ public class JWTService {
 
     public String generateToken(UserDetails userDetails) {
 
+        List<String> authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(userDetails.getUsername())
+                .claim("authorities", authorities)
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(expiration))
                 .build();

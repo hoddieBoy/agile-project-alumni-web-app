@@ -39,7 +39,7 @@ public class RegistrerEndPointTest {
 
     @DisplayName("When: we provide a valid username and password")
     @Nested
-    class ValidRequest {
+    class ValidRequestWithUsernameAndPassword {
 
         @BeforeEach
         void setUp() {
@@ -77,6 +77,77 @@ public class RegistrerEndPointTest {
         void testUserSaved() {
             User user = userDAO.findAll().getFirst();
             assertEquals(response.userId(), user.getId());
+        }
+    }
+
+    @DisplayName("When: we provide a valid username, password and role")
+    @Nested
+    class ValidRequestWithUsernamePasswordAndRole {
+
+        @BeforeEach
+        void setUp() {
+            response = webTestClient.post()
+                    .uri(getBaseUrl())
+                    .bodyValue(Map.of("username", "john", "password", "Password1", "role", "ADMIN"))
+                    .exchange()
+                    .expectStatus().isCreated()
+                    .expectBody(AuthenticationResponse.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            Assumptions.assumeTrue(response != null);
+        }
+
+        @AfterEach
+        void tearDown() {
+            userDAO.deleteAll();
+        }
+
+        @DisplayName("Then: The response should be a JSON with an uuid of the new user")
+        @Test
+        void testJsonResponse() {
+            assertNotNull(response.userId());
+            assertEquals("john", response.username());
+            assertNotNull(response.accessToken());
+            assertFalse(response.accessToken().isEmpty());
+            assertNotNull(response.refreshToken());
+            assertFalse(response.refreshToken().isEmpty());
+            assertEquals(TokenType.BEARER, response.tokenType());
+        }
+
+        @DisplayName("Then: The user should be saved in the database")
+        @Test
+        void testUserSaved() {
+            User user = userDAO.findAll().getFirst();
+            assertEquals(response.userId(), user.getId());
+            assertEquals("ADMIN", user.getRole().name());
+        }
+    }
+
+    @DisplayName("When: we provide a valid username, password and an invalid role")
+    @Nested
+    class ValidRequestWithUsernamePasswordAndInvalidRole {
+
+        WebTestClient.ResponseSpec response;
+
+        @BeforeEach
+        void setUp() {
+            response = webTestClient.post()
+                    .uri(getBaseUrl())
+                    .bodyValue(Map.of("username", "john", "password", "Password1", "role", "INVALID_ROLE"))
+                    .exchange();
+        }
+
+        @DisplayName("Then: The response should be a bad request")
+        @Test
+        void testBadRequest() {
+            response.expectStatus().isBadRequest();
+        }
+
+        @DisplayName("Then: The user should not be saved in the database")
+        @Test
+        void testUserNotSaved() {
+            assertTrue(userDAO.findAll().isEmpty());
         }
     }
 
