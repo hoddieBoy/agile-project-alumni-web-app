@@ -27,54 +27,49 @@ public class AlumniService {
     }
 
     public List<Alumnus> searchAlumni(String fullName, String city, String country, String currentCompany, String graduationYear) {
-        String sqlQuery = "SELECT * FROM alumni a WHERE ";
-        String and = "";
-        if (fullName != null) {
-            sqlQuery += "(LOWER(CONCAT(a.first_name, ' ', a.last_name)) LIKE LOWER(CONCAT('%', :fullName, '%')) )";
-            and = " AND ";
+        String sqlQuery = "SELECT * FROM alumni a WHERE 1=1"; // Toujours vrai pour simplifier l'ajout de conditions
+        if (fullName != null && !fullName.isEmpty()) {
+            sqlQuery += " AND LOWER(CONCAT(a.first_name, ' ', a.last_name)) LIKE LOWER(CONCAT('%', :fullName, '%'))";
         }
-
-        if (currentCompany != null) {
-            sqlQuery += and + "(a.current_company LIKE CONCAT('%', :currentCompany, '%'))";
-            and = " AND ";
+    
+        if (currentCompany != null && !currentCompany.isEmpty()) {
+            sqlQuery += " AND a.current_company LIKE CONCAT('%', :currentCompany, '%')";
         }
-
-        if (graduationYear != null) {
-            sqlQuery += and + "(a.graduation_year = :graduationYear)";
-            and = " AND ";
+    
+        if (graduationYear != null && !graduationYear.isEmpty()) {
+            sqlQuery += " AND a.graduation_year = :graduationYear";
         }
-
-        if (country != null) {
-            sqlQuery += and + "(a.country LIKE CONCAT('%', :country, '%'))";
-            and = " AND ";
+    
+        if (country != null && !country.isEmpty()) {
+            sqlQuery += " AND a.country LIKE CONCAT('%', :country, '%')";
         }
-
-        if (city != null) {
-            sqlQuery += and + "(a.city LIKE CONCAT('%', :city, '%'))";
+    
+        if (city != null && !city.isEmpty()) {
+            sqlQuery += " AND a.city LIKE CONCAT('%', :city, '%')";
         }
-
+    
         Query alumniquery = entityManager.createNativeQuery(sqlQuery, Alumnus.class);
-
-        if (fullName != null) {
+    
+        if (fullName != null && !fullName.isEmpty()) {
             alumniquery.setParameter("fullName", fullName);
         }
-
-        if (currentCompany != null) {
+    
+        if (currentCompany != null && !currentCompany.isEmpty()) {
             alumniquery.setParameter("currentCompany", currentCompany);
         }
-
-        if (graduationYear != null) {
+    
+        if (graduationYear != null && !graduationYear.isEmpty()) {
             alumniquery.setParameter("graduationYear", graduationYear);
         }
-
-        if (country != null) {
+    
+        if (country != null && !country.isEmpty()) {
             alumniquery.setParameter("country", country);
         }
-
-        if (city != null) {
+    
+        if (city != null && !city.isEmpty()) {
             alumniquery.setParameter("city", city);
         }
-
+    
         return (List<Alumnus>) alumniquery.getResultList();
     }
 
