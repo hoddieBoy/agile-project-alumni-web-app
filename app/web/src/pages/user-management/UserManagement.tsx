@@ -164,7 +164,11 @@ const UserManagementPage: React.FC = () => {
                     <Form.Item
                         name="username"
                         label="Username"
-                        rules={[{required: true, message: 'Veuillez entrer le nom d\'utilisateur!'}]}
+                        rules={[
+                            {required: true, message: 'Veuillez entrer le nom d\'utilisateur!'},
+                            {min: 3, message: 'Le nom d\'utilisateur doit contenir au moins 3 caractères!'},
+                            {max: 20, message: 'Le nom d\'utilisateur doit contenir au plus 20 caractères!'}
+                        ]}
                     >
                         <Input/>
                     </Form.Item>
@@ -179,6 +183,24 @@ const UserManagementPage: React.FC = () => {
                                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,20}$/,
                                 message: 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, et un chiffre!'
                             }
+                        ]}
+                    >
+                        <Input.Password/>
+                    </Form.Item>
+                    <Form.Item
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        dependencies={['password']}
+                        rules={[
+                            {required: true, message: 'Veuillez confirmer le mot de passe!'},
+                            ({getFieldValue}) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject('Les deux mots de passe ne correspondent pas!');
+                                },
+                            }),
                         ]}
                     >
                         <Input.Password/>
