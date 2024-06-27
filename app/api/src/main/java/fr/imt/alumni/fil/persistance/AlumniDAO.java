@@ -48,15 +48,4 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
 
     Set<Alumnus> findByGraduationYear(String graduationYear);
 
-    @Query(value = "SELECT * FROM alumni a WHERE " +
-            "(LOWER(CONCAT(a.first_name, ' ', a.last_name)) LIKE LOWER(CONCAT('%', :fullName, '%')) ) AND " +
-            "(a.current_company LIKE CONCAT('%', :currentCompany, '%')) AND " +
-            "a.graduation_year = :graduationYear AND " +
-            "(a.country LIKE CONCAT('%', :country, '%')) AND " +
-            "(a.city LIKE CONCAT('%', :city, '%'))", nativeQuery = true)
-    List<Alumnus> search(@Param("fullName") String name,
-                         @Param("currentCompany") String currentCompany,
-                         @Param("graduationYear") String graduationYear,
-                         @Param("country") String country,
-                         @Param("city") String city);
 }
