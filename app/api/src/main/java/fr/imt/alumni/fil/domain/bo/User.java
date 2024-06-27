@@ -24,8 +24,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public static final Role DEFAULT_ROLE = Role.USER;
+
     public User(UUID id, String username, String passwordHash) {
-        this(id, username, passwordHash, Role.USER);
+        this(id, username, passwordHash, DEFAULT_ROLE);
     }
 
     public User(UUID id, String username, String passwordHash, Role role) {
