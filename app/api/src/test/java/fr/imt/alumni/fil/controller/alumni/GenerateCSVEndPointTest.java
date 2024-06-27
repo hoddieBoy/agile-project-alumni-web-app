@@ -1,6 +1,8 @@
 package fr.imt.alumni.fil.controller.alumni;
 
 import fr.imt.alumni.fil.domain.bo.Alumnus;
+import fr.imt.alumni.fil.domain.bo.User;
+import fr.imt.alumni.fil.domain.enums.Role;
 import fr.imt.alumni.fil.domain.enums.Sex;
 import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -22,7 +25,7 @@ import java.util.UUID;
 public class GenerateCSVEndPointTest {
     private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil";
     private static final String GENERATE_URL = "/generate-csv";
-    private static final String REGISTER_URL = "/auth/register";
+    private static final String AUTH_URL = "/auth/authenticate";
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER = "Bearer ";
 
@@ -38,6 +41,9 @@ public class GenerateCSVEndPointTest {
     @Autowired
     private UserDAO userDAO;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private String token;
 
     private String getBaseUrl() {
@@ -46,9 +52,29 @@ public class GenerateCSVEndPointTest {
 
     @BeforeEach
     void setUp() {
-        registerUserAndGenerateToken();
+        registerUser();
+        authenticateUserAndGenerateToken();
+        saveAlumniData();
         validateSetup();
     }
+
+    private void registerUser() {
+        userDAO.save(new User(UUID.randomUUID(), "john", passwordEncoder.encode("Password1"), Role.ADMIN));
+    }
+
+    private void authenticateUserAndGenerateToken() {
+        EntityExchangeResult<AuthenticationResponse> response = webTestClient.post()
+                .uri(getBaseUrl() + AUTH_URL)
+                .header("Content-Type", "application/json")
+                .bodyValue("{\"username\":\"john\",\"password\":\"Password1\"}")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(AuthenticationResponse.class)
+                .returnResult();
+
+        token = Objects.requireNonNull(response.getResponseBody()).accessToken();
+    }
+
 
     private void saveAlumniData() {
         alumniDAO.save(new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN, "john.doe@gmail.com",
@@ -62,19 +88,6 @@ public class GenerateCSVEndPointTest {
                 "https://jane-jossman.fr", "France", "Lyon", false, "2023"));
         alumniDAO.save(new Alumnus(UUID.randomUUID(), "Jenny", "Peter", Sex.WOMAN,
                 "", "", "", "", "", "", false, "2020"));
-    }
-
-    private void registerUserAndGenerateToken() {
-        EntityExchangeResult<AuthenticationResponse> response = webTestClient.post()
-                .uri(getBaseUrl() + REGISTER_URL)
-                .header("Content-Type", "application/json")
-                .bodyValue("{\"username\":\"john\",\"password\":\"Password1\"}")
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBody(AuthenticationResponse.class)
-                .returnResult();
-
-        token = Objects.requireNonNull(response.getResponseBody()).accessToken();
     }
 
     private void validateSetup() {

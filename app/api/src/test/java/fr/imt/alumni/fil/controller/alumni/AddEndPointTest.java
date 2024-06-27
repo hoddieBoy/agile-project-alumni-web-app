@@ -1,5 +1,7 @@
 package fr.imt.alumni.fil.controller.alumni;
 
+import fr.imt.alumni.fil.domain.bo.User;
+import fr.imt.alumni.fil.domain.enums.Role;
 import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
 import fr.imt.alumni.fil.persistance.UserDAO;
@@ -7,11 +9,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @DisplayName("Given: A request to add alumni")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -20,7 +24,7 @@ public class AddEndPointTest {
 
     private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil";
     private static final String ADD_URL = "/add-alumni";
-    private static final String REGISTER_URL = "/auth/register";
+    private static final String AUTH_URL = "/auth/authenticate";
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER = "Bearer ";
 
@@ -36,6 +40,9 @@ public class AddEndPointTest {
     @Autowired
     private UserDAO userDAO;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private String token;
 
     private String getBaseUrl() {
@@ -44,17 +51,22 @@ public class AddEndPointTest {
 
     @BeforeEach
     void setUp() {
-        registerUserAndGenerateToken();
+        registerUser();
+        authenticateUserAndGenerateToken();
         validateSetup();
     }
 
-    private void registerUserAndGenerateToken() {
+    private void registerUser() {
+        userDAO.save(new User(UUID.randomUUID(), "john", passwordEncoder.encode("Password1"), Role.ADMIN));
+    }
+
+    private void authenticateUserAndGenerateToken() {
         EntityExchangeResult<AuthenticationResponse> response = webTestClient.post()
-                .uri(getBaseUrl() + REGISTER_URL)
+                .uri(getBaseUrl() + AUTH_URL)
                 .header("Content-Type", "application/json")
                 .bodyValue("{\"username\":\"john\",\"password\":\"Password1\"}")
                 .exchange()
-                .expectStatus().isCreated()
+                .expectStatus().isOk()
                 .expectBody(AuthenticationResponse.class)
                 .returnResult();
 

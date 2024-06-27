@@ -1,19 +1,20 @@
 package fr.imt.alumni.fil.controller.auth;
 
+import fr.imt.alumni.fil.domain.bo.User;
+import fr.imt.alumni.fil.domain.enums.Role;
 import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
 import fr.imt.alumni.fil.persistance.UserDAO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 @DisplayName("Given: A request to logout a new user")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -21,6 +22,12 @@ import java.util.Map;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class LogoutEndPointTest {
+    private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil";
+    private static final String LOGOUT_URL = "/auth/logout";
+    private static final String AUTH_URL = "/auth/authenticate";
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String BEARER = "Bearer ";
+
     @LocalServerPort
     private int port;
 
@@ -30,23 +37,47 @@ public class LogoutEndPointTest {
     @Autowired
     private UserDAO userDAO;
 
-    private AuthenticationResponse authenticationResponse;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private String token;
 
     private String getBaseUrl() {
-        return "http://localhost:" + port + "/api/v1/alumni-fil/auth/register";
+        return String.format(BASE_URL_TEMPLATE, port);
     }
 
     @BeforeEach
     void setUp() {
-        EntityExchangeResult<AuthenticationResponse> result = webTestClient.post()
-                .uri(getBaseUrl())
-                .bodyValue(Map.of("username", "john", "password", "Password1"))
+        registerUser();
+        authenticateUserAndGenerateToken();
+        validateSetup();
+    }
+
+    private void registerUser() {
+        userDAO.save(new User(UUID.randomUUID(), "john", passwordEncoder.encode("Password1"), Role.ADMIN));
+    }
+
+    private void validateSetup() {
+        Assumptions.assumeTrue(token != null && !token.isEmpty(),
+                "Token should not be null or empty");
+    }
+
+    private void authenticateUserAndGenerateToken() {
+        EntityExchangeResult<AuthenticationResponse> response = webTestClient.post()
+                .uri(getBaseUrl() + AUTH_URL)
+                .header("Content-Type", "application/json")
+                .bodyValue("{\"username\":\"john\",\"password\":\"Password1\"}")
                 .exchange()
-                .expectStatus().isCreated()
+                .expectStatus().isOk()
                 .expectBody(AuthenticationResponse.class)
                 .returnResult();
 
-        authenticationResponse = result.getResponseBody();
+        token = Objects.requireNonNull(response.getResponseBody()).accessToken();
+    }
+
+    @AfterEach
+    void tearDown() {
+        userDAO.deleteAll();
     }
 
     @DisplayName("When: an user is logged out")
@@ -56,14 +87,12 @@ public class LogoutEndPointTest {
         @Test
         void testJsonResponse() {
             webTestClient.post()
-                    .uri("http://localhost:" + port + "/api/v1/alumni-fil/auth/logout")
-                    .header("Authorization", "Bearer " + authenticationResponse.accessToken())
+                    .uri(getBaseUrl() + LOGOUT_URL)
+                    .header(AUTH_HEADER, BEARER + token)
                     .exchange()
                     .expectStatus().isOk()
                     .expectBody()
                     .jsonPath("$.message").isEqualTo("Logout successful");
         }
     }
-
-
 }
