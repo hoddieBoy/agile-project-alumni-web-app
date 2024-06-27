@@ -15,6 +15,8 @@ const AlumniOverview: React.FC = () => {
     const [totalAlumniAngleterre, setTotalAlumniAngleterre] = useState<number | null>(null);
     const [totalAlumniEspagne, setTotalAlumniEspagne] = useState<number | null>(null);
     const [totalAlumniPortugal, setTotalAlumniPortugal] = useState<number | null>(null);
+    const [totalAlumniCanada, setTotalAlumniCanada] = useState<number | null>(null);
+    const [totalAlumniPaysBas, setTotalAlumniPaysBas] = useState<number | null>(null);
     const [totalAlumniSuisse, setTotalAlumniSuisse] = useState<number | null>(null);
     const [companyAlumniData, setCompanyAlumniData] = useState<{ company: string, count: number }[]>([]);
     const graduationChartRef = useRef<Chart<'bar', number[], string> | null>(null);
@@ -119,6 +121,34 @@ const AlumniOverview: React.FC = () => {
             }
         };
 
+        const fetchTotalAlumniCanada = async () => {
+            try {
+                const response = await axiosConfig.get<number>('statistic/total-alumni-canada', {
+                    headers: {
+                        'content-type': 'application/json',
+                        'Authorization': `Bearer ${getAccessToken()}`
+                    }
+                });
+                setTotalAlumniCanada(response.data);
+            } catch (error) {
+                console.error('Error fetching total alumni in Portugal:', error);
+            }
+        };
+
+        const fetchTotalAlumniPaysBas = async () => {
+            try {
+                const response = await axiosConfig.get<number>('statistic/total-alumni-paysbas', {
+                    headers: {
+                        'content-type': 'application/json',
+                        'Authorization': `Bearer ${getAccessToken()}`
+                    }
+                });
+                setTotalAlumniPaysBas(response.data);
+            } catch (error) {
+                console.error('Error fetching total alumni in Portugal:', error);
+            }
+        };
+
         const fetchTotalAlumniSuisse = async () => {
             try {
                 const response = await axiosConfig.get<number>('statistic/total-alumni-suisse', {
@@ -161,6 +191,8 @@ const AlumniOverview: React.FC = () => {
         fetchTotalAlumniPortugal();
         fetchCompaniesByAlumniCount();
         fetchTotalAlumniSuisse();
+        fetchTotalAlumniCanada();
+        fetchTotalAlumniPaysBas();
 
         const graduationCtx = document.getElementById('graduationChart') as HTMLCanvasElement;
         const genderCtx = document.getElementById('genderChart') as HTMLCanvasElement;
@@ -206,7 +238,7 @@ const AlumniOverview: React.FC = () => {
         genderChartRef.current = new Chart(genderCtx, {
             type: 'pie',
             data: {
-                labels: ['Hommes', 'Femmes'],
+                labels: [`Hommes en %`, `Femmes en %`],
                 datasets: [{
                     data: [totalMaleAlumni || 0, totalFemaleAlumni || 0],
                     backgroundColor: ['rgba(0, 30, 66, 1)', 'rgba(128, 128, 128, 0.5)'],
@@ -222,37 +254,13 @@ const AlumniOverview: React.FC = () => {
 
         if (employmentChartRef.current) {
             employmentChartRef.current.destroy();
-        }
-        employmentChartRef.current = new Chart(employmentCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Tech', 'Finance', 'Santé', 'Éducation', 'Autre'],
-                datasets: [{
-                    label: 'Nombre d\'Alumni',
-                    data: [120, 80, 60, 90, 50],
-                    backgroundColor: 'rgba(0, 30, 66, 1)',
-                    borderColor: 'rgba(0, 30, 66, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        } as ChartConfiguration<'bar', number[], string>);
-
+        }        
         return () => {
             if (graduationChartRef.current) {
                 graduationChartRef.current.destroy();
             }
             if (genderChartRef.current) {
                 genderChartRef.current.destroy();
-            }
-            if (employmentChartRef.current) {
-                employmentChartRef.current.destroy();
             }
         };
     }, [totalFemaleAlumni, totalMaleAlumni]);
@@ -279,7 +287,7 @@ const AlumniOverview: React.FC = () => {
                     <div className="col-md-4">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Répartition Internationale</h5>
+                                <h5 className="card-title">Répartition Internationale Actuelle</h5>
                                 <p className="card-text">
                                     <strong> Angleterre
                                         : {totalAlumniAngleterre !== null ? totalAlumniAngleterre : 'Chargement...'}</strong>
@@ -287,7 +295,11 @@ const AlumniOverview: React.FC = () => {
                                         : {totalAlumniEspagne !== null ? totalAlumniEspagne : 'Chargement...'}</strong><br></br>
                                     <strong> Portugal : {totalAlumniPortugal !== null ? totalAlumniPortugal : 'Chargement...'}</strong>
                                     <strong> Suisse
-                                        : {totalAlumniSuisse !== null ? totalAlumniSuisse : 'Chargement...'}</strong>
+                                        : {totalAlumniSuisse !== null ? totalAlumniSuisse : 'Chargement...'}</strong><br></br>
+                                        <strong> Canada
+                                        : {totalAlumniCanada !== null ? totalAlumniCanada : 'Chargement...'}</strong>
+                                        <strong> Pays-Bas
+                                        : {totalAlumniPaysBas !== null ? totalAlumniPaysBas : 'Chargement...'}</strong>
                                 </p>
                             </div>
                         </div>
@@ -310,16 +322,6 @@ const AlumniOverview: React.FC = () => {
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Répartition des Alumnis dans les Entreprises</h5>
-                                <div className="chart-container">
-                                    <canvas id="graduationChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="card">
-                            <div className="card-body">
                                 <h5 className="card-title">Ratio Hommes/Femmes</h5>
                                 <div className="chart-container">
                                     <canvas id="genderChart"></canvas>
@@ -327,10 +329,19 @@ const AlumniOverview: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="col-md-6">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Répartition des Entreprises avec le Plus d'Alumni</h5>
+                                <div className="chart-container full-width-chart">
+                                    <canvas id="graduationChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <Footer/>
-
         </>
     );
 };

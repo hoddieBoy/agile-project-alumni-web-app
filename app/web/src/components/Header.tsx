@@ -7,8 +7,12 @@ import {AuthContext} from "context/AuthContext";
  * Includes a logo, search input, navigation links, and a logout button.
  */
 const Header: React.FC = () => {
-    const links = ['Search', 'Import-Export', 'Gestion Utilisateurs', 'Stat'];
-    const {logout} = useContext(AuthContext);
+    const links = ['Search', 'Import-Export', 'Stat'];
+    const {user, logout} = useContext(AuthContext);
+
+    if (user && user.roles.includes('ADMIN')) {
+        links.push('Gestion Utilisateurs');
+    }
 
     return (
         <header className="header">
@@ -18,13 +22,7 @@ const Header: React.FC = () => {
                         src="https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png"
                         alt="IMT Atlantique Logo"
                     />
-                </a>
-                <input
-                    type="text"
-                    className="form-control navbar-search"
-                    placeholder="Search"
-                    aria-label="Search"
-                />
+                </a>               
             </div>
             <nav className="header-right gap-3">
                 {links.map((link, index) => (
@@ -37,7 +35,7 @@ const Header: React.FC = () => {
                     className="btn btn-primary"
                     onClick={logout}
                 >
-                    Log out
+                    Déconnexion
                 </button>
             </nav>
         </header>
