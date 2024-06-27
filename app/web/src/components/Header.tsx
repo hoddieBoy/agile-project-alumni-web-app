@@ -18,13 +18,7 @@ const Header: React.FC = () => {
                         src="https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png"
                         alt="IMT Atlantique Logo"
                     />
-                </a>
-                <input
-                    type="text"
-                    className="form-control navbar-search"
-                    placeholder="Search"
-                    aria-label="Search"
-                />
+                </a>               
             </div>
             <nav className="header-right gap-3">
                 {links.map((link, index) => (
@@ -37,7 +31,7 @@ const Header: React.FC = () => {
                     className="btn btn-primary"
                     onClick={logout}
                 >
-                    Log out
+                    Déconnexion
                 </button>
             </nav>
         </header>

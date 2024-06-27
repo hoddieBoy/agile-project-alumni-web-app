@@ -74,8 +74,19 @@ public class PromotionController {
         return ResponseEntity.ok(statistic.getTotalAlumniInSuisse());
     }
 
+    @GetMapping("/total-alumni-canada")
+    public ResponseEntity<Long> getTotalAlumniInCanada() {
+        return ResponseEntity.ok(statistic.getTotalAlumniInCanada());
+    }
+
+    @GetMapping("/total-alumni-paysbas")
+    public ResponseEntity<Long> getTotalAlumniInPaysBas() {
+        return ResponseEntity.ok(statistic.getTotalAlumniInPaysBas());
+    }
+
     @GetMapping("/companies-by-alumni-count")
     public ResponseEntity<List<Object[]>> getCompaniesByAlumniCount() {
         return ResponseEntity.ok(statistic.getCompaniesByAlumniCount());
     }
+    
 }
