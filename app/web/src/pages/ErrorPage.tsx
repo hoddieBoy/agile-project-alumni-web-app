@@ -31,7 +31,7 @@ const ErrorPage = () => {
                     status="403"
                     title="403"
                     subTitle="Sorry, you are not authorized to access this page."
-                    extra={<Button type="primary" onClick={handleLogin}>Login</Button>}
+                    extra={<Button type="primary" onClick={handleGoBack}>Go Back</Button>}
                 />
             );
         default:
