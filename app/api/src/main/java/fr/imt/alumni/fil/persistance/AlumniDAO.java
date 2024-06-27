@@ -25,10 +25,10 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
     @Query(value = "SELECT COUNT(DISTINCT current_company) FROM alumni", nativeQuery = true)
     long getTotalCurrentCompanies();
 
-    @Query(value = "SELECT COUNT(*) FROM alumni WHERE sex = '0'", nativeQuery = true)
+    @Query(value = "SELECT (SELECT COUNT(*) FROM alumni WHERE sex = '0')::float / (SELECT COUNT(*) FROM alumni)::float * 100 AS percentage_female", nativeQuery = true)
     long getTotalFemaleAlumni();
 
-    @Query(value = "SELECT COUNT(*) FROM alumni WHERE sex = '1'", nativeQuery = true)
+    @Query(value = "SELECT (SELECT COUNT(*) FROM alumni WHERE sex = '1')::float / (SELECT COUNT(*) FROM alumni)::float * 100 AS percentage_male", nativeQuery = true)
     long getTotalHommeAlumni();
 
     @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Portugal'", nativeQuery = true)
@@ -43,7 +43,13 @@ public interface AlumniDAO extends JpaRepository<Alumnus, UUID> {
     @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Suisse'", nativeQuery = true)
     long getTotalAlumniInSuisse();
 
-    @Query(value = "SELECT coop_company, COUNT(*) AS alternant_count FROM alumni GROUP BY coop_company ORDER BY alternant_count DESC", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Canada'", nativeQuery = true)
+    long getTotalAlumniInCanada();
+
+    @Query(value = "SELECT COUNT(*) FROM alumni WHERE country = 'Pays-Bas'", nativeQuery = true)
+    long getTotalAlumniInPaysBas();
+
+    @Query(value = "SELECT coop_company, COUNT(*) AS alternant_count FROM alumni GROUP BY coop_company HAVING COUNT(*) >= 2 ORDER BY alternant_count DESC", nativeQuery = true)
     List<Object[]> getCompaniesByAlumniCount();
 
     Set<Alumnus> findByGraduationYear(String graduationYear);

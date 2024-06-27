@@ -1,74 +1,106 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa; 
-    margin: 0;
-    padding: 0;
-}
-
-
-.import-title {
-    color: #003366; 
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-
-.container {
+.alumni-import-export .container {
     padding: 20px;
     text-align: center;
 }
 
-
-.form-group {
-    display: inline-block;
-    text-align: left;
+.alumni-import-export .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
+.alumni-import-export .form-group-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
 
-.form-group label {
+.alumni-import-export .form-group label {
     display: block;
     margin-bottom: 5px;
     font-size: 16px;
     color: #333;
 }
 
-
-.form-control {
+.alumni-import-export .form-control {
     display: inline-block;
     width: auto;
     margin-right: 10px;
 }
 
-.custom-btn {
-    background-color: #003366; 
-    color: white;
+.alumni-import-export .custom-btn {
+    background-color: #003366;
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.custom-btn:hover {
-    background-color: #002244; 
-}
-
-
-header, footer {
-    background-color: #003366;
-    color: white;
-    padding: 10px 0;
+    width: 150px;
+    height: 50px;
     text-align: center;
+    margin-top: 10px;
 }
 
-header a, footer a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
+.alumni-import-export .custom-btn:focus {
+    outline: none;
 }
 
-header a:hover, footer a:hover {
-    text-decoration: underline;
+.alumni-import-export .custom-file-input {
+    display: none;
+}
+
+.alumni-import-export .custom-file-label {
+    background-color: #003366;
+    border: none;
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+}
+
+.alumni-import-export .file-name {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    margin-left: 10px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+.alumni-import-export .custom-btn-validate {
+    background-color: #ffffff;
+    color: #002855;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alumni-import-export .import-export-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }

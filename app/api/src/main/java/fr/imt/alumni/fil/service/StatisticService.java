@@ -58,7 +58,16 @@ public class StatisticService {
         return repository.getTotalAlumniInSuisse();
     }
 
+    public long getTotalAlumniInCanada() {
+        return repository.getTotalAlumniInCanada();
+    }
+
+    public long getTotalAlumniInPaysBas() {
+        return repository.getTotalAlumniInPaysBas();
+    }
+
     public List<Object[]> getCompaniesByAlumniCount() {
         return repository.getCompaniesByAlumniCount();
     }
+    
 }

@@ -66,53 +66,49 @@ function Search(): React.ReactElement {
                 >
                     <div className="row mb-4">
                         <div className="form-group col-md-3">
-                            <label htmlFor="name" className="form-label">Name</label>
+                            <label htmlFor="name" className="form-label">Nom</label>
                             <input
                                 type="text"
                                 className="form-control"
                                 id="name"
                                 name="name"
-                                placeholder="Enter name"
+                                placeholder="Entrez un nom"
                                 value={searchCriteria.name}
                                 onChange={handleInputChange}
                             />
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="graduationYear" className="form-label">Graduation Year</label>
-                            <select
+                            <label htmlFor="graduationYear" className="form-label">Année De Diplomation</label>
+                            <input
+                                type="text"
+                                className="form-control"
                                 id="graduationYear"
                                 name="graduationYear"
-                                className="form-control"
+                                placeholder="Entrez une année"
                                 value={searchCriteria.graduationYear}
                                 onChange={handleInputChange}
-                            >
-                                <option value="">Select Year</option>
-                                {Array.from({length: 10}, (_, i) => {
-                                    const year = new Date().getFullYear() - i;
-                                    return <option key={year} value={year}>{year}</option>;
-                                })}
-                            </select>
+                            />
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="currentCompany" className="form-label">Current Company</label>
+                            <label htmlFor="currentCompany" className="form-label">Entreprise Actuelle</label>
                             <input
                                 type="text"
                                 className="form-control"
                                 id="currentCompany"
                                 name="currentCompany"
-                                placeholder="Enter company name"
+                                placeholder="Entrez une entreprise"
                                 value={searchCriteria.currentCompany}
                                 onChange={handleInputChange}
                             />
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="city" className="form-label">City</label>
+                            <label htmlFor="city" className="form-label">Ville</label>
                             <input
                                 type="text"
                                 className="form-control"
                                 id="city"
                                 name="city"
-                                placeholder="Enter city"
+                                placeholder="Entrez une ville"
                                 value={searchCriteria.city}
                                 onChange={handleInputChange}
                             />
@@ -124,13 +120,13 @@ function Search(): React.ReactElement {
                             className="btn btn-outline-secondary form-group col-md-2"
                             onClick={handleReset}
                         >
-                            Reset
+                            Reinitialiser
                         </button>
                         <button
                             type="submit"
                             className="custom-primary-color btn btn-primary btn-custom-primary form-group col-md-2"
                         >
-                            Search
+                            Rechercher
                         </button>
                     </div>
                 </Form>

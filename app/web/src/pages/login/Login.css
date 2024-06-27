@@ -87,10 +87,9 @@ footer {
 
 .form-control {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
+    border: 1px solid #002855;
     border-radius: 4px;
-    box-sizing: border-box;
+    box-sizing: border-box; 
 }
 
 .form-control:focus {
