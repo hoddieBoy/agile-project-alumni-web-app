@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { getAccessToken } from 'utils/Token';
+import {getAccessToken} from 'utils/Token';
 
 const AlumniImportExport: React.FC = () => {
     const [selectedYear, setSelectedYear] = useState<number>(2014);
