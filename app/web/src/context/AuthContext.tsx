@@ -1,13 +1,11 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
 
-// Define the AuthContextType interface
-export interface AuthContextType {
+interface AuthContextType {
     isAuthenticated: boolean;
     login: () => void;
     logout: () => void;
 }
 
-// Create the AuthContext with default values
 const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
     login: () => {
