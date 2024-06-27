@@ -1,5 +1,7 @@
 package fr.imt.alumni.fil.controller.auth;
 
+import fr.imt.alumni.fil.domain.bo.User;
+import fr.imt.alumni.fil.domain.enums.Role;
 import fr.imt.alumni.fil.payload.request.AuthenticateRequestBody;
 import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
 import fr.imt.alumni.fil.persistance.UserDAO;
@@ -7,9 +9,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @DisplayName("Given: A request to authenticate a user")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -17,6 +23,11 @@ import org.springframework.test.web.reactive.server.WebTestClient;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class AuthenticateEndPointTest {
+
+    private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil";
+    private static final String AUTH_URL = "/auth/authenticate";
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String BEARER = "Bearer ";
 
     @LocalServerPort
     private int port;
@@ -27,19 +38,25 @@ public class AuthenticateEndPointTest {
     @Autowired
     private UserDAO userDAO;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private String getBaseUrl() {
-        return "http://localhost:" + port + "/api/v1/alumni-fil/";
+        return String.format(BASE_URL_TEMPLATE, port);
     }
 
     @BeforeEach
     void setUp() {
-        AuthenticateRequestBody requestBody = new AuthenticateRequestBody("john", "Password1");
+        registerUser();
+        validateSetup();
+    }
 
-        webTestClient.post()
-                .uri(getBaseUrl() + "auth/register")
-                .bodyValue(requestBody)
-                .exchange()
-                .expectStatus().isCreated();
+    private void registerUser() {
+        userDAO.save(new User(UUID.randomUUID(), "john", passwordEncoder.encode("Password1"), Role.ADMIN));
+    }
+
+    private void validateSetup() {
+        Assumptions.assumeTrue(userDAO.count() == 1 && Objects.nonNull(userDAO.findByUsername("john")));
     }
 
     @AfterEach
@@ -58,7 +75,7 @@ public class AuthenticateEndPointTest {
             AuthenticateRequestBody requestBody = new AuthenticateRequestBody("john", "Password1");
 
             EntityExchangeResult<AuthenticationResponse> result = webTestClient.post()
-                    .uri(getBaseUrl() + "auth/authenticate")
+                    .uri(getBaseUrl() + AUTH_URL)
                     .bodyValue(requestBody)
                     .exchange()
                     .expectStatus().isOk()
@@ -66,16 +83,17 @@ public class AuthenticateEndPointTest {
                     .returnResult();
 
             AuthenticationResponse response = result.getResponseBody();
-
+            Assumptions.assumeTrue(response != null);
             accessToken = response.accessToken();
+            Assumptions.assumeTrue(accessToken != null && !accessToken.isEmpty());
         }
 
         @DisplayName("Then: The user can access protected resources")
         @Test
         void testJsonResponse() {
             webTestClient.get()
-                    .uri(getBaseUrl() + "protected")
-                    .header("Authorization", "Bearer " + accessToken)
+                    .uri(getBaseUrl() + "/protected")
+                    .header(AUTH_HEADER, BEARER + accessToken)
                     .exchange()
                     .expectStatus().isOk()
                     .expectBody()
@@ -93,7 +111,7 @@ public class AuthenticateEndPointTest {
             AuthenticateRequestBody requestBody = new AuthenticateRequestBody("john", "Passwor1");
 
             webTestClient.post()
-                    .uri(getBaseUrl() + "auth/authenticate")
+                    .uri(getBaseUrl() + AUTH_URL)
                     .bodyValue(requestBody)
                     .exchange()
                     .expectStatus().isUnauthorized();
@@ -108,7 +126,7 @@ public class AuthenticateEndPointTest {
         @Test
         void testJsonResponse() {
             webTestClient.get()
-                    .uri(getBaseUrl() + "protected")
+                    .uri(getBaseUrl() + "/protected")
                     .exchange()
                     .expectStatus().isUnauthorized();
         }

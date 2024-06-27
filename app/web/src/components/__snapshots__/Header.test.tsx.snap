@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component renders without crashing 1`] = `
+<DocumentFragment>
+  <header
+    class="header"
+  >
+    <div
+      class="header-left"
+    >
+      <a
+        aria-label="IMT Atlantique"
+        class="navbar-brand"
+        href="/"
+      >
+        <img
+          alt="IMT Atlantique Logo"
+          src="https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png"
+        />
+      </a>
+      <input
+        aria-label="Search"
+        class="form-control navbar-search"
+        placeholder="Search"
+        type="text"
+      />
+    </div>
+    <nav
+      class="header-right gap-3"
+    >
+      <a
+        class="nav-item nav-link"
+        href="/search"
+      >
+        Search
+      </a>
+      <a
+        class="nav-item nav-link"
+        href="/import-export"
+      >
+        Import-Export
+      </a>
+      <a
+        class="nav-item nav-link"
+        href="/gestion-utilisateurs"
+      >
+        Gestion Utilisateurs
+      </a>
+      <a
+        class="nav-item nav-link"
+        href="/stat"
+      >
+        Stat
+      </a>
+      <button
+        class="btn btn-primary"
+        type="button"
+      >
+        Log out
+      </button>
+    </nav>
+  </header>
+</DocumentFragment>
+`;

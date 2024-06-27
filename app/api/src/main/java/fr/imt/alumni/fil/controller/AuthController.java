@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,7 @@ public class AuthController {
 
     @Operation(summary = "Register a new user", description = "Register a new user with a username and password")
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequestBody requestBody) {
         AuthenticationResponse response = registerService.execute(requestBody);
         ResponseCookie jwtCookie = jwtService.createAccessTokenCookie(response.accessToken());

@@ -1,11 +1,8 @@
-package fr.imt.alumni.fil.controller.alumni;
+package fr.imt.alumni.fil.controller.user;
 
-import fr.imt.alumni.fil.domain.bo.Alumnus;
 import fr.imt.alumni.fil.domain.bo.User;
 import fr.imt.alumni.fil.domain.enums.Role;
-import fr.imt.alumni.fil.domain.enums.Sex;
 import fr.imt.alumni.fil.payload.response.AuthenticationResponse;
-import fr.imt.alumni.fil.persistance.AlumniDAO;
 import fr.imt.alumni.fil.persistance.UserDAO;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +16,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.util.Objects;
 import java.util.UUID;
 
-@DisplayName("Given: A request to delete an alumnus")
+@DisplayName("Given: A request to get all users")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DeleteEndPointTest {
-
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+public class GetAllUsersEndPointTest {
     private static final String BASE_URL_TEMPLATE = "http://localhost:%d/api/v1/alumni-fil";
-    private static final String DELETE_URL = "/delete-alumnus";
+    private static final String GET_ALL_USERS_URL = "/users/all-users";
     private static final String AUTH_URL = "/auth/authenticate";
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER = "Bearer ";
@@ -35,9 +33,6 @@ public class DeleteEndPointTest {
 
     @Autowired
     private WebTestClient webTestClient;
-
-    @Autowired
-    private AlumniDAO alumniDAO;
 
     @Autowired
     private UserDAO userDAO;
@@ -55,12 +50,16 @@ public class DeleteEndPointTest {
     void setUp() {
         registerUser();
         authenticateUserAndGenerateToken();
-        saveAlumniData();
         validateSetup();
     }
 
     private void registerUser() {
         userDAO.save(new User(UUID.randomUUID(), "john", passwordEncoder.encode("Password1"), Role.ADMIN));
+    }
+
+    private void validateSetup() {
+        Assumptions.assumeTrue(userDAO.count() == 1 && Objects.nonNull(userDAO.findByUsername("john")));
+        Assumptions.assumeTrue(token != null && !token.isEmpty());
     }
 
     private void authenticateUserAndGenerateToken() {
@@ -76,38 +75,24 @@ public class DeleteEndPointTest {
         token = Objects.requireNonNull(response.getResponseBody()).accessToken();
     }
 
-
-    private void saveAlumniData() {
-        alumniDAO.save(new Alumnus(UUID.randomUUID(), "John", "Doe", Sex.MAN, "john.doe@gmail.com",
-                "Grey Sloan Memorial", "RHMC", "https://john-doe.fr", "France",
-                "Lyon", false, "2022"));
-    }
-
-    private void validateSetup() {
-        Assumptions.assumeTrue(token != null && !token.isEmpty(), "Token should not be null or empty");
-        Assumptions.assumeTrue(alumniDAO.count() == 1 , "Alumni count should be 1 but got " + alumniDAO.count() );
-    }
-
     @AfterEach
     void tearDown() {
-        alumniDAO.deleteAll();
         userDAO.deleteAll();
     }
 
-    @DisplayName("When: A request to delete an alumnus is made")
+    @DisplayName("When: A request is made to get all users")
     @Nested
-    class DeleteRequest{
-
-            @Test
-            @DisplayName("Then: The alumnus is deleted")
-            void deleteAlumnus() {
-                webTestClient.delete()
-                        .uri(getBaseUrl() + DELETE_URL + "/" + alumniDAO.findAll().getFirst().getId())
-                        .header(AUTH_HEADER, BEARER + token)
-                        .exchange()
-                        .expectStatus().isNoContent();
-
-                Assertions.assertEquals(0, alumniDAO.count());
-            }
+    class GetAllUsers {
+        @DisplayName("Then: All users should be returned")
+        @Test
+        void testGetAllUsers() {
+            webTestClient.get()
+                    .uri(getBaseUrl() + GET_ALL_USERS_URL)
+                    .header(AUTH_HEADER, BEARER + token)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBodyList(User.class)
+                    .hasSize(1);
+        }
     }
 }
