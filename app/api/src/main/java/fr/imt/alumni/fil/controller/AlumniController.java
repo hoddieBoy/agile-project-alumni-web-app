@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class AlumniController {
                 )
         }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> addAlumni(@RequestBody @Valid List<AlumnusDTO> alumni){
         alumniService.addAlumni(alumni);
 
@@ -105,6 +107,7 @@ public class AlumniController {
                 )
         }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deleteAlumnus(
             @PathVariable("alumnus_id")
             @Pattern(regexp = "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")
