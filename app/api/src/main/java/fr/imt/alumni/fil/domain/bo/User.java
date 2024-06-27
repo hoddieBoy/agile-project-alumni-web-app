@@ -3,11 +3,9 @@ package fr.imt.alumni.fil.domain.bo;
 import fr.imt.alumni.fil.domain.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -26,8 +24,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public static final Role DEFAULT_ROLE = Role.USER;
+
     public User(UUID id, String username, String passwordHash) {
-        this(id, username, passwordHash, Role.USER);
+        this(id, username, passwordHash, DEFAULT_ROLE);
     }
 
     public User(UUID id, String username, String passwordHash, Role role) {
@@ -50,7 +50,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
