@@ -5,6 +5,8 @@ import fr.imt.alumni.fil.domain.enums.Sex;
 import fr.imt.alumni.fil.exception.NotFoundException;
 import fr.imt.alumni.fil.payload.request.AlumnusDTO;
 import fr.imt.alumni.fil.persistance.AlumniDAO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,23 +19,63 @@ public class AlumniService {
 
     private final AlumniDAO alumniDAO;
 
-    public AlumniService(AlumniDAO alumniDAO) {
+    private final EntityManager entityManager;
+
+    public AlumniService(AlumniDAO alumniDAO, EntityManager entityManager) {
         this.alumniDAO = alumniDAO;
+        this.entityManager = entityManager;
     }
 
-    public List<Alumnus> searchAlumni(
-            String name, String city, String country,
-            String currentCompany, String graduationYear) {
-        name = Optional.ofNullable(name).map(String::trim).orElse("");
-        city = Optional.ofNullable(city).map(String::trim).orElse("");
-        country = Optional.ofNullable(country).map(String::trim).orElse("");
-        currentCompany = Optional.ofNullable(currentCompany).map(String::trim).orElse("");
-        graduationYear = Optional.ofNullable(graduationYear).map(String::trim).orElse("");
-        return (!name.isBlank()|| !city.isBlank() || !country.isBlank() ||
-                !currentCompany.isBlank() || !graduationYear.isBlank())
-                ? alumniDAO.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndCityContainingIgnoreCaseAndCountryContainingIgnoreCaseAndCurrentCompanyContainingIgnoreCaseAndGraduationYearContainingIgnoreCase(name, name, city, country, currentCompany, graduationYear)
-                : List.of();
+    public List<Alumnus> searchAlumni(String fullName, String city, String country, String currentCompany, String graduationYear) {
+        String sqlQuery = "SELECT * FROM alumni a WHERE ";
+        String and = "";
+        if (fullName != null) {
+            sqlQuery += "(LOWER(CONCAT(a.first_name, ' ', a.last_name)) LIKE LOWER(CONCAT('%', :fullName, '%')) )";
+            and = " AND ";
+        }
 
+        if (currentCompany != null) {
+            sqlQuery += and + "(a.current_company LIKE CONCAT('%', :currentCompany, '%'))";
+            and = " AND ";
+        }
+
+        if (graduationYear != null) {
+            sqlQuery += and + "(a.graduation_year = :graduationYear)";
+            and = " AND ";
+        }
+
+        if (country != null) {
+            sqlQuery += and + "(a.country LIKE CONCAT('%', :country, '%'))";
+            and = " AND ";
+        }
+
+        if (city != null) {
+            sqlQuery += and + "(a.city LIKE CONCAT('%', :city, '%'))";
+        }
+
+        Query alumniquery = entityManager.createNativeQuery(sqlQuery, Alumnus.class);
+
+        if (fullName != null) {
+            alumniquery.setParameter("fullName", fullName);
+        }
+
+        if (currentCompany != null) {
+            alumniquery.setParameter("currentCompany", currentCompany);
+        }
+
+        if (graduationYear != null) {
+            alumniquery.setParameter("graduationYear", graduationYear);
+        }
+
+        if (country != null) {
+            alumniquery.setParameter("country", country);
+        }
+
+        if (city != null) {
+            alumniquery.setParameter("city", city);
+        }
+
+        return (List<Alumnus>) alumniquery.getResultList();
     }
 
     public void addAlumni(List<AlumnusDTO> alumni) {
