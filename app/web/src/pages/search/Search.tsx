@@ -102,7 +102,7 @@ function Search(): React.ReactElement {
                             />
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="city" className="form-label">Pays</label>
+                            <label htmlFor="city" className="form-label">Ville</label>
                             <input
                                 type="text"
                                 className="form-control"

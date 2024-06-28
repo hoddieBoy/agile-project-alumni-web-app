@@ -216,10 +216,10 @@ const AlumniImportExport: React.FC = () => {
         <>
             <Header />
             <div className="alumni-import-export container text-center my-5">
-                <div className="mb-5">
-                    <h1 className="import-export-title" style={{ color: '#003366' }}>Export</h1>
-                    <div className="row justify-content-center">
-                        <div className="col-md-6">
+                <div className="row justify-content-center">
+                    <div className="col-md-6">
+                        <div className="export-section">
+                            <h1 className="import-export-title" style={{ color: '#003366' }}>Export</h1>
                             <div className="form-group">
                                 <label htmlFor="yearSelect" style={{ color: '#003366' }}>Promotion de l'année: </label>
                                 <input
@@ -247,11 +247,9 @@ const AlumniImportExport: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <h1 className="import-export-title" style={{ color: '#003366' }}>Import</h1>
-                    <div className="row justify-content-center">
-                        <div className="col-md-6">
+                    <div className="col-md-6">
+                        <div className="import-section">
+                            <h1 className="import-export-title" style={{ color: '#003366' }}>Import</h1>
                             <div className="form-group">
                                 <label htmlFor="promotionYear" style={{color: '#003366'}}>Promotion Year: </label>
                                 <input
