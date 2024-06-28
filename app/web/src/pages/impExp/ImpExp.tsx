@@ -120,7 +120,7 @@ const AlumniImportExport: React.FC = () => {
                 complete: (result) => {
                     const data = result.data.map((row: any) => ({
                         ...row,
-                        Sexe: 'M',
+                        Sexe: row.Sexe || 'M',
                         Pays: row.Pays || 'FRANCE',
                     }));
                     setCsvData(data);
