@@ -230,7 +230,7 @@ const AlumniImportExport: React.FC = () => {
                                     onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
                                 />
                                 <button onClick={handleDownload} className="custom-btn mr-2">
-                                    Exporter
+                                    Générer
                                 </button>
                                 {fileDownload && (
                                     <a
@@ -251,7 +251,7 @@ const AlumniImportExport: React.FC = () => {
                         <div className="import-section">
                             <h1 className="import-export-title" style={{ color: '#003366' }}>Import</h1>
                             <div className="form-group">
-                                <label htmlFor="promotionYear" style={{color: '#003366'}}>Promotion Year: </label>
+                                <label htmlFor="promotionYear" style={{color: '#003366'}}>Promotion de l'année: </label>
                                 <input
                                     type="number"
                                     id="promotionYear"
@@ -265,7 +265,7 @@ const AlumniImportExport: React.FC = () => {
                                     onChange={handleFileChange}
                                     maxCount={1}
                                 >
-                                    <Button icon={<UploadOutlined/>}>Select File</Button>
+                                    <Button icon={<UploadOutlined/>}>Choisir un fichier</Button>
                                 </Upload>
                                 <button onClick={handleUpload} className="custom-btn custom-btn-validate mt-3">
                                     Valider

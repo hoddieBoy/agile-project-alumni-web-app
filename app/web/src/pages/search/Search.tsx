@@ -55,7 +55,7 @@ function Search(): React.ReactElement {
             <main className="container my-4">
                 <h2 className="text-center text-custom-primary">Trouver un Alumni</h2>
                 <p className="text-center text-custom-secondary">
-                Recherche d'Alumnis spécifiques en fonction de divers critères.
+                Recherche d'Alumni spécifiques en fonction de divers critères.
                 </p>
 
                 <Form

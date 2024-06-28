@@ -36,6 +36,11 @@ h1, h2 {
     font-weight: normal;
 }
 
+.card-body{
+    border: 1px solid  #002855;
+    border-radius: 8px;
+}
+
 .chart-container {
     position: relative;
     width: 100%;
