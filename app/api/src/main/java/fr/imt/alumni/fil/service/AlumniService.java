@@ -40,7 +40,7 @@ public class AlumniService {
         }
     
         if (currentCompany != null && !currentCompany.isEmpty()) {
-            sqlQuery += " AND a.current_company LIKE CONCAT('%', :currentCompany, '%')";
+            sqlQuery += " AND LOWER(a.current_company) LIKE LOWER(CONCAT('%', :currentCompany, '%'))";
         }
     
         if (graduationYear != null && !graduationYear.isEmpty()) {
@@ -48,11 +48,11 @@ public class AlumniService {
         }
     
         if (country != null && !country.isEmpty()) {
-            sqlQuery += " AND a.country LIKE CONCAT('%', :country, '%')";
+            sqlQuery += " AND LOWER(a.country) LIKE LOWER(CONCAT('%', :country, '%'))";
         }
     
         if (city != null && !city.isEmpty()) {
-            sqlQuery += " AND a.city LIKE CONCAT('%', :city, '%')";
+            sqlQuery += " AND LOWER(a.city) LIKE LOWER(CONCAT('%', :city, '%'))";
         }
     
         Query alumniquery = entityManager.createNativeQuery(sqlQuery, Alumnus.class);
