@@ -154,7 +154,8 @@ function Search(): React.ReactElement {
                                             <p className="card-text">{`Graduated in ${alumni.graduation_year}, ${alumni.current_company}, ${alumni.city}`}</p>
                                         </div>
                                     </div>
-                                    <a href="#" className="btn btn-outline-primary">View Profile</a>
+                                    <a href={alumni?.website} target="_blank" rel="noreferrer"
+                                       className="btn btn-outline-primary">Visiter le profil</a>
                                 </div>
                             </div>
                         ))

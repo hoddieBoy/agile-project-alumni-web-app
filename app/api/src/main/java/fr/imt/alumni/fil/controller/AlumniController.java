@@ -56,7 +56,7 @@ public class AlumniController {
             results.add(new AlumniData(alumnus.getId().toString(),
                     alumnus.getFullName(),
                     alumnus.getCurrentCompany(),
-                    alumnus.getCity(), alumnus.getCountry(), alumnus.getGraduationYear())
+                    alumnus.getCity(), alumnus.getCountry(), alumnus.getGraduationYear(), alumnus.getWebsite())
             );
         }
 
