@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,5 +137,28 @@ public class AlumniController {
                 .header("Content-Disposition", "attachment; filename=alumni.csv")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(csv.getBytes());
+    }
+
+    @PostMapping(
+            path = "/upload-csv",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    @Operation(
+            summary = "Upload a CSV file",
+            description = "Upload a CSV file with alumni data",
+            tags = {"alumni"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "CSV file uploaded"
+                    )
+            }
+    )
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<MessageResponse> uploadCsv(@RequestParam("file") MultipartFile file, @RequestParam("promotion") int year) {
+        alumniService.uploadCsv(file, year);
+
+        return ResponseEntity.ok(new MessageResponse("The CSV file was uploaded successfully"));
     }
 }
