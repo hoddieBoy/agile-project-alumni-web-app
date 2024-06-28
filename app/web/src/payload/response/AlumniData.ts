@@ -5,4 +5,5 @@ export interface AlumniData {
     city: string;
     country: string;
     graduation_year: string;
+    website?: string;
 }

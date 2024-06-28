@@ -177,7 +177,7 @@ const UserManagementPage: React.FC = () => {
                         label="Password"
                         rules={[
                             {required: true, message: 'Veuillez entrer le mot de passe!'},
-                            {min: 6, message: 'Le mot de passe doit contenir au moins 6 caractères!'},
+                            {min: 8, message: 'Le mot de passe doit contenir au moins 8 caractères!'},
                             {max: 20, message: 'Le mot de passe doit contenir au plus 20 caractères!'},
                             {
                                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,20}$/,
