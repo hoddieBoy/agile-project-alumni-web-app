@@ -53,9 +53,9 @@ function Search(): React.ReactElement {
         <>
             <Header/>
             <main className="container my-4">
-                <h2 className="text-center text-custom-primary">Find Alumni</h2>
+                <h2 className="text-center text-custom-primary">Trouver un Alumni</h2>
                 <p className="text-center text-custom-secondary">
-                    Search for specific alumni based on various criteria
+                Recherche d'Alumnis spécifiques en fonction de divers critères.
                 </p>
 
                 <Form
@@ -102,7 +102,7 @@ function Search(): React.ReactElement {
                             />
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="city" className="form-label">Ville</label>
+                            <label htmlFor="city" className="form-label">Pays</label>
                             <input
                                 type="text"
                                 className="form-control"
