@@ -1,6 +1,20 @@
 .alumni-import-export .container {
     padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alumni-import-export .row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.alumni-import-export .col-md-6 {
+    flex: 1;
+    max-width: 45%;
 }
 
 .alumni-import-export .form-group {
@@ -28,6 +42,7 @@
     display: inline-block;
     width: auto;
     margin-right: 10px;
+    margin-top: 20px;
 }
 
 .alumni-import-export .custom-btn {
@@ -42,7 +57,7 @@
     width: 150px;
     height: 50px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .alumni-import-export .custom-btn:focus {
@@ -53,39 +68,9 @@
     display: none;
 }
 
-.alumni-import-export .custom-file-label {
-    background-color: #003366;
-    border: none;
-    color: #ffffff !important;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 150px;
-    height: 50px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: normal;
-}
-
-.alumni-import-export .file-name {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 200px;
-    margin-left: 10px;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border: 1px solid black;
-    margin-top: 10px;
-}
-
 .alumni-import-export .custom-btn-validate {
-    background-color: #ffffff;
-    color: #002855;
+    background-color:  #003366;
+    color: white;
     border: 1px solid #000000;
     border-radius: 8px;
     padding: 10px 20px;
@@ -103,4 +88,16 @@
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 20px;
+}
+
+.export-section, .import-section {
+    padding: 20px;
+    border: 1px solid  #002855;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ant-btn{
+    border: 1px solid black;
+    margin-top: 15px;
 }

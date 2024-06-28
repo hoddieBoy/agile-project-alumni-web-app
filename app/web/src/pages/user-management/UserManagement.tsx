@@ -78,7 +78,7 @@ const UserManagementPage: React.FC = () => {
 
     const columns = [
         {
-            title: 'Username',
+            title: 'Utilisateur',
             dataIndex: 'username',
             key: 'username',
         },
