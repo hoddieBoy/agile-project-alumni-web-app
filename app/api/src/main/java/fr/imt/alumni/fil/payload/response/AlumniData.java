@@ -6,6 +6,7 @@ public record AlumniData(
     String currentCompany,
     String city,
     String country,
-    String graduationYear
+    String graduationYear,
+    String website
 ) {
 }
