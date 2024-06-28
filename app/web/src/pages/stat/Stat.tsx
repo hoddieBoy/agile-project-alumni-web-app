@@ -1,9 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Chart, ChartConfiguration, registerables} from 'chart.js';
+import React, { useEffect, useRef, useState } from 'react';
+import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import axiosConfig from 'config/axiosConfig';
-import {getAccessToken} from 'utils/Token';
+import { getAccessToken } from 'utils/Token';
+import './Stat.css'
 
 Chart.register(...registerables);
 
@@ -340,8 +341,9 @@ const AlumniOverview: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                <div className="spacer mt-5"></div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 };

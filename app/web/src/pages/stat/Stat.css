@@ -31,14 +31,9 @@ h1, h2 {
     font-weight: bold;
 }
 
-.card-title, .card-text, .nav-link, footer p {
+.card-title, .card-text, .nav-link {
     color: #002855;
     font-weight: normal;
-}
-
-footer {
-    padding: 20px 0;
-    background-color: #f8f9fa;
 }
 
 .chart-container {
@@ -53,4 +48,8 @@ footer {
 
 .wide-card {
     padding: 0 15px;
+}
+
+.spacer {
+    height: 10px;
 }
